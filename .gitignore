@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+output/
+assets/*_raw.npz
+assets/*_inspection.png
+assets/*_parts.json
+core
+core.*

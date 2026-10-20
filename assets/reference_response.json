@@ -1,0 +1,24 @@
+{
+  "method": "fixed monotonic camera response fitted to corresponding flat regions",
+  "response": "sigmoid(contrast * logit(display_rgb) + log_exposure_bias)",
+  "cameras": {
+    "right_45": {
+      "contrast": 0.7600865337518635,
+      "log_exposure_bias": 0.14950919144357402,
+      "flat_pixels_used": 75874,
+      "raw_rgb_mae_8bit": 34.98889105902777,
+      "adjusted_rgb_mae_8bit": 32.46796754835735
+    },
+    "wrist": {
+      "contrast": 1.28018334587495,
+      "log_exposure_bias": 1.0063082495418654,
+      "flat_pixels_used": 80076,
+      "raw_rgb_mae_8bit": 41.87281792534721,
+      "adjusted_rgb_mae_8bit": 20.27059867282528
+    }
+  },
+  "assumptions": [
+    "Estimated USB camera ISP/exposure response, not measured shutter/ISO",
+    "Same response applied to live feeds and recorded frames"
+  ]
+}

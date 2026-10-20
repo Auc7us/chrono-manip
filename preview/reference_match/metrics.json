@@ -1,0 +1,224 @@
+{
+  "right_45": {
+    "rgb_mae_8bit": 32.484402126736114,
+    "rgb_rmse_8bit": 47.12262518653313,
+    "reference_sha256": "ad623061ab48667c2f0f06f3f1151168da6661e275d691a8af43e304817376a6",
+    "baseline": {
+      "rgb_mae_8bit": 63.4051953125,
+      "rgb_rmse_8bit": 83.60171427533233
+    },
+    "mae_reduction_percent": 48.766970960923786
+  },
+  "wrist": {
+    "rgb_mae_8bit": 20.254674479166667,
+    "rgb_rmse_8bit": 40.95298999246474,
+    "reference_sha256": "077ae2f88320d9c71887a4c612cb636022cbc1ee4cf04cf692ed5cad5033386e",
+    "baseline": {
+      "rgb_mae_8bit": 79.1757421875,
+      "rgb_rmse_8bit": 99.8320198399785
+    },
+    "mae_reduction_percent": 74.41808069042085
+  },
+  "fixed_camera": {
+    "source": "2026-10-19-161325.jpg",
+    "method": "single-image box/mat landmark fit with construction priors",
+    "pixel_origin": "top-left",
+    "image_size": [
+      640,
+      480
+    ],
+    "optical_position_m": [
+      0.4228175634544222,
+      0.3942072527567545,
+      0.49916275956683687
+    ],
+    "yaw_pitch_roll_deg": [
+      13.011480254805107,
+      37.88417632864802,
+      -12.92334300523981
+    ],
+    "world_from_optical_rotation": [
+      [
+        -0.7689895942204162,
+        -0.08563499046232562,
+        -0.6334995283259783
+      ],
+      [
+        0.17769753775886027,
+        -0.9805658132214033,
+        -0.08315209567946164
+      ],
+      [
+        -0.6140672512479053,
+        -0.17651440267005214,
+        0.7692620337666981
+      ]
+    ],
+    "lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 302.54459848647593,
+      "principal_point_px": [
+        330.99569484286565,
+        200.00000000000003
+      ],
+      "theta_coefficients": [
+        -0.11358535340852814,
+        0.05889864503060655
+      ]
+    },
+    "landmark_rms_px": 2.6369603979642484,
+    "landmarks": {
+      "floor_far_front": {
+        "world_m": [
+          -0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          176,
+          142
+        ],
+        "projected_px": [
+          172.841221971252,
+          142.88481406737685
+        ],
+        "error_px": 3.280361956968939
+      },
+      "floor_far_rear": {
+        "world_m": [
+          -0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          347,
+          156
+        ],
+        "projected_px": [
+          345.444728740231,
+          156.3350321064936
+        ],
+        "error_px": 1.5909478947611402
+      },
+      "floor_near_front": {
+        "world_m": [
+          0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          50,
+          416
+        ],
+        "projected_px": [
+          50.5827493177033,
+          416.44495383827723
+        ],
+        "error_px": 0.7331989399073787
+      },
+      "floor_near_rear": {
+        "world_m": [
+          0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          407,
+          451
+        ],
+        "projected_px": [
+          407.0865523486816,
+          453.0999421045102
+        ],
+        "error_px": 2.1017250418066236
+      },
+      "mat_far_front": {
+        "world_m": [
+          -0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          191,
+          182
+        ],
+        "projected_px": [
+          194.2924783823239,
+          182.20899807841184
+        ],
+        "error_px": 3.29910504453103
+      },
+      "mat_far_rear": {
+        "world_m": [
+          -0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          302,
+          193
+        ],
+        "projected_px": [
+          300.8339853520626,
+          191.08675122590665
+        ],
+        "error_px": 2.240560427833688
+      },
+      "mat_near_front": {
+        "world_m": [
+          0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          143,
+          335
+        ],
+        "projected_px": [
+          144.41358885903452,
+          331.10076878979237
+        ],
+        "error_px": 4.147558015633269
+      },
+      "mat_near_rear": {
+        "world_m": [
+          0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          306,
+          350
+        ],
+        "projected_px": [
+          306.4856052807015,
+          352.00985258333253
+        ],
+        "error_px": 2.0676846701984446
+      }
+    },
+    "uncertainties": [
+      "Landmarks hand-located to approximately 1\u20133 px",
+      "35 x 24 x 20 inch box and centered 18 x 12 inch mat assumed",
+      "A single image does not establish an exact unique physical calibration"
+    ]
+  },
+  "comparison": "Full 640 x 480 RGB frames; no registration, crop, warp or exclusion mask in these metrics",
+  "limitations": "Single-image geometric estimate with nominal box/mat dimensions; not a surveyed physical calibration",
+  "stationary_stability": {
+    "right_45": {
+      "recorded_frames": 7,
+      "settling_frames_skipped": 3,
+      "settled_frames": 4,
+      "maximum_settled_pixel_delta": 0
+    },
+    "wrist": {
+      "recorded_frames": 7,
+      "settling_frames_skipped": 3,
+      "settled_frames": 4,
+      "maximum_settled_pixel_delta": 0
+    }
+  },
+  "camera_profile_file": "assets/reference_camera.json",
+  "default_mount_note": "Saved comparison uses optional photo-fitted pose. Default mount is now assets/nominal_camera.json: centered side-top, approximate 40 mm optical inset."
+}

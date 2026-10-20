@@ -1,0 +1,38 @@
+{
+  "method": "static layout fit to fixed and wrist photographs",
+  "tray_center_xy_m": [
+    0.06570878102688918,
+    0.2905257883420123
+  ],
+  "tray_yaw_rad": 2.5802595706890674,
+  "tray_corner_rms_px": 1.089996437709138,
+  "cube_center_xy_m": [
+    0.06570878102688918,
+    0.2905257883420123
+  ],
+  "cube_yaw_rad": 2.5802595706890674,
+  "inspection_joint_deg": [
+    30.805999006650637,
+    -9.017590689603125,
+    0.18103051463414488,
+    65.30931597214393,
+    75.22670936677618,
+    91.30730503567979
+  ],
+  "pose_fit": {
+    "global_arm_iou": 0.6894049346879536,
+    "wrist_mat_iou": 0.9218313253012048,
+    "wrist_cube_px": [
+      590.1367698586394,
+      262.2320089407298
+    ],
+    "objective": 0.5180250875525712
+  },
+  "assumptions": [
+    "Robot base retains the existing centered mounting transform",
+    "Approximate hand-traced global arm silhouette",
+    "Wrist and fixed camera share the fitted lens",
+    "Static inspection fit does not change automated home/physics"
+  ],
+  "tray_coordinate_rms_px": 0.7707438725733117
+}

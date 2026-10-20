@@ -1,0 +1,28 @@
+{
+  "source": "User estimate: centered near the top of the right side wall, around 40 mm inward",
+  "method": "approximate nominal side-top mount; pose matching deferred at user request",
+  "pixel_origin": "top-left",
+  "image_size": [640, 480],
+  "optical_position_m": [0.4045, 0.3048, 0.488],
+  "yaw_pitch_roll_deg": [0.0, 45.0, 0.0],
+  "world_from_optical_rotation": [
+    [-0.7071067811865476, 0.0, -0.7071067811865476],
+    [0.0, -1.0, 0.0],
+    [-0.7071067811865476, 0.0, 0.7071067811865476]
+  ],
+  "lens_source": "2026-10-19-161325.jpg; lens retained from assets/reference_camera.json",
+  "lens": {
+    "model": "equidistant_polynomial",
+    "focal_px": 302.54459848647593,
+    "principal_point_px": [330.99569484286565, 200.00000000000003],
+    "theta_coefficients": [-0.11358535340852814, 0.05889864503060655]
+  },
+  "landmark_rms_px": null,
+  "uncertainties": [
+    "40 mm interpreted as optical-center inset from the right wall; approximate user estimate",
+    "Optical center assumed 20 mm below the ceiling, centered along the side wall depth",
+    "Nominal 45 degree downward pitch with zero yaw and roll; reference photo was slightly tilted",
+    "Lens and camera response remain image-based estimates; this pose has not been fitted to photo landmarks",
+    "The optional photo-fitted pose remains in assets/reference_camera.json"
+  ]
+}

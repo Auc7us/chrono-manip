@@ -1,0 +1,994 @@
+{
+  "wrist": {
+    "world_from_optical": [
+      [
+        -0.0701952463834196,
+        -0.7738751740341429,
+        -0.6294361305732131,
+        -0.09187775425486916
+      ],
+      [
+        0.25928872672329817,
+        -0.6234587384503897,
+        0.7376100309287371,
+        0.17394362796816834
+      ],
+      [
+        -0.963245546956795,
+        -0.11142897497632831,
+        0.2444209482722425,
+        0.1416923159957771
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "forward_axis": "+X",
+    "up_axis": "+Z",
+    "global_camera_config": "right-45",
+    "mount_to_image_roll_deg": 180,
+    "width": 640,
+    "height": 480,
+    "hfov_deg": 127.55887430840318,
+    "lens_model": {
+      "projection": "reference",
+      "reference_profile": "User estimate: centered near the top of the right side wall, around 40 mm inward",
+      "camera_profile_file": "/home/chrono-user/mountdir/manip-sim2real/attempt-codex/assets/nominal_camera.json",
+      "lens_source": "2026-10-19-161325.jpg; lens retained from assets/reference_camera.json",
+      "fitted_lens": {
+        "model": "equidistant_polynomial",
+        "focal_px": 302.54459848647593,
+        "principal_point_px": [
+          330.99569484286565,
+          200.00000000000003
+        ],
+        "theta_coefficients": [
+          -0.11358535340852814,
+          0.05889864503060655
+        ]
+      },
+      "effective_hfov_deg": 127.55887430840318,
+      "output_focal_px": 302.54459848647593,
+      "output_focal_xy_px": [
+        302.54459848647593,
+        302.5445984864759
+      ],
+      "output_principal_point_px": [
+        330.99569484286565,
+        200.00000000000003
+      ],
+      "response": "fixed estimated per-camera ISP response",
+      "fixed_reference_landmark_rms_px": null,
+      "estimated_pose_landmark_rms_px": null,
+      "calibration_kind": "approximate nominal side-top mount; pose matching deferred at user request"
+    },
+    "render_mode": "fixed_gc21b_tube_quadrature",
+    "appearance": {
+      "profile": "real_lightbox_2026_10_19_fitted",
+      "interior_dimensions_m": [
+        0.889,
+        0.6095999999999999,
+        0.508
+      ],
+      "light": {
+        "model": "NEEWER GC21B",
+        "specification_url": "https://neewer.com/products/neewer-gc21b-21w-bi-color-handheld-led-tube-light-66606507",
+        "maximum_electrical_power_w": 21,
+        "cri_nominal": 95,
+        "rated_illuminance_lux": 1300.0,
+        "rating_distance_m": 0.5,
+        "brightness_fraction": 0.5,
+        "estimated_reference_illuminance_lux": 650.0,
+        "cct_k": 4600.0,
+        "cct_is_estimate": true,
+        "nominal_inflated_length_m": 0.9,
+        "installed_length_m": 0.9014955648504012,
+        "estimated_radius_m": 0.025007916002660068,
+        "center_m": [
+          -0.0024754780918900847,
+          0.5137912811339745,
+          0.47675416595445713
+        ],
+        "emitter_center_m": [
+          -0.004650871097091816,
+          0.49676074206902365,
+          0.45590576238879194
+        ],
+        "axis": [
+          0.985596557069739,
+          -0.1659225702011951,
+          0.0326975135156513
+        ],
+        "backing_fit": {
+          "source": "reference_global.jpg",
+          "method": "bounded capsule/backing silhouette fit to fixed-camera image",
+          "center_m": [
+            -0.0024754780918900847,
+            0.5137912811339745,
+            0.47675416595445713
+          ],
+          "axis": [
+            0.985596557069739,
+            -0.1659225702011951,
+            0.0326975135156513
+          ],
+          "emission_normal": [
+            -0.08054649625641139,
+            -0.6305758305555129,
+            -0.7719367745223963
+          ],
+          "installed_length_m": 0.9014955648504012,
+          "radius_m": 0.025007916002660068,
+          "white_sector_cosine": 0.8499999999999909,
+          "black_mask_iou": 0.826900412492634,
+          "white_mask_iou": 0.696843853820598,
+          "assumptions": [
+            "90 cm nominal length prior",
+            "Circular section and rounded capsule ends",
+            "Backing segmentation from upper-right image region"
+          ]
+        },
+        "emission_normal": [
+          -0.08054649625641139,
+          -0.6305758305555129,
+          -0.7719367745223963
+        ],
+        "emitter_size_m": [
+          0.7614955648504012,
+          0.026347474408445898
+        ],
+        "integration_nodes": 48
+      },
+      "camera": {
+        "white_balance_k": 4600.0,
+        "exposure_scale": 1.0,
+        "response_calibrated": false,
+        "projection": {
+          "projection": "reference",
+          "reference_profile": "User estimate: centered near the top of the right side wall, around 40 mm inward",
+          "camera_profile_file": "/home/chrono-user/mountdir/manip-sim2real/attempt-codex/assets/nominal_camera.json",
+          "lens_source": "2026-10-19-161325.jpg; lens retained from assets/reference_camera.json",
+          "fitted_lens": {
+            "model": "equidistant_polynomial",
+            "focal_px": 302.54459848647593,
+            "principal_point_px": [
+              330.99569484286565,
+              200.00000000000003
+            ],
+            "theta_coefficients": [
+              -0.11358535340852814,
+              0.05889864503060655
+            ]
+          },
+          "effective_hfov_deg": 127.55887430840318,
+          "output_focal_px": 302.54459848647593,
+          "output_focal_xy_px": [
+            302.54459848647593,
+            302.5445984864759
+          ],
+          "output_principal_point_px": [
+            330.99569484286565,
+            200.00000000000003
+          ],
+          "response": "fixed estimated per-camera ISP response",
+          "fixed_reference_landmark_rms_px": null,
+          "estimated_pose_landmark_rms_px": null,
+          "calibration_kind": "approximate nominal side-top mount; pose matching deferred at user request"
+        },
+        "wrist_optical_fit_applied": true,
+        "fixed_response": {
+          "method": "fixed monotonic camera response fitted to corresponding flat regions",
+          "response": "sigmoid(contrast * logit(display_rgb) + log_exposure_bias)",
+          "cameras": {
+            "right_45": {
+              "contrast": 0.7600865337518635,
+              "log_exposure_bias": 0.14950919144357402,
+              "flat_pixels_used": 75874,
+              "raw_rgb_mae_8bit": 34.98889105902777,
+              "adjusted_rgb_mae_8bit": 32.46796754835735
+            },
+            "wrist": {
+              "contrast": 1.28018334587495,
+              "log_exposure_bias": 1.0063082495418654,
+              "flat_pixels_used": 80076,
+              "raw_rgb_mae_8bit": 41.87281792534721,
+              "adjusted_rgb_mae_8bit": 20.27059867282528
+            }
+          },
+          "assumptions": [
+            "Estimated USB camera ISP/exposure response, not measured shutter/ISO",
+            "Same response applied to live feeds and recorded frames"
+          ]
+        },
+        "wrist_optical_fit": {
+          "method": "fixed jaw CAD screw centers and tip alignment; bounded optical correction",
+          "optical_from_corrected_optical": [
+            [
+              0.9941036390941482,
+              0.004922278675872662,
+              -0.1083223241645439,
+              -0.0064624351732349705
+            ],
+            [
+              -0.012678758155953485,
+              0.9973933232349521,
+              -0.07103385008544158,
+              -0.0024208280800318005
+            ],
+            [
+              0.1076903144734675,
+              0.0719884014197786,
+              0.9915747406169797,
+              0.004915472008288013
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_mm": [
+            -6.462435173234953,
+            -2.4208280800317987,
+            4.915472008288046
+          ],
+          "rotation_vector_deg": [
+            4.108884986182375,
+            -6.205825166253718,
+            -0.5056600299492124
+          ],
+          "feature_rms_px": 0.04482165907781337,
+          "reference_pixels": [
+            [
+              282,
+              433
+            ],
+            [
+              333,
+              432
+            ],
+            [
+              299,
+              293
+            ]
+          ],
+          "projected_pixels": [
+            [
+              281.95097875042234,
+              432.9802105247468
+            ],
+            [
+              333.05276356802864,
+              432.01996095253475
+            ],
+            [
+              298.9963023697761,
+              292.9939890998985
+            ]
+          ],
+          "fixed_link_points_m": [
+            [
+              0.03615,
+              -0.14548569,
+              0.14720039
+            ],
+            [
+              0.03615,
+              -0.14555698,
+              0.15529884
+            ],
+            [
+              0.007043742816326533,
+              -0.22618682198367343,
+              0.14139224124489796
+            ]
+          ],
+          "static_jaw_deg": 91.30730503567979,
+          "moving_tip_projected_px": [
+            337.578511580026,
+            295.9758992712998
+          ],
+          "assumptions": [
+            "Small optical alignment correction; mechanical mount mesh remains the supplied STL",
+            "Three hand-located features; estimate is not a measured lens calibration"
+          ]
+        }
+      },
+      "indirect_light": {
+        "model": "deterministic floor/ceiling diffuse return; finite-cell near-field approximation",
+        "enabled": true,
+        "floor_cells": 40,
+        "ceiling_cells": 24,
+        "ambient_residual": 0.055
+      },
+      "materials": {
+        "linear_rgb_reflectance": {
+          "cream": [
+            0.83,
+            0.81,
+            0.72
+          ],
+          "black": [
+            0.012,
+            0.014,
+            0.013
+          ],
+          "metal": [
+            0.38,
+            0.39,
+            0.4
+          ],
+          "electronics": [
+            0.06,
+            0.13,
+            0.09
+          ],
+          "white": [
+            0.8,
+            0.82,
+            0.79
+          ],
+          "red": [
+            0.62,
+            0.012,
+            0.025
+          ],
+          "cable_white": [
+            0.81,
+            0.82,
+            0.77
+          ],
+          "pcb": [
+            0.012,
+            0.013,
+            0.012
+          ],
+          "glass": [
+            0.018,
+            0.04,
+            0.045
+          ],
+          "diffuser": [
+            0.92,
+            0.94,
+            0.91
+          ],
+          "gold": [
+            0.63,
+            0.43,
+            0.12
+          ],
+          "pla": [
+            0.025,
+            0.43,
+            0.085
+          ],
+          "floor_sheet": [
+            0.03,
+            0.036,
+            0.03
+          ],
+          "panel_edge": [
+            0.3,
+            0.29,
+            0.25
+          ],
+          "room_wall": [
+            0.2,
+            0.28,
+            0.14
+          ],
+          "room_floor": [
+            0.035,
+            0.038,
+            0.028
+          ],
+          "room_dark": [
+            0.008,
+            0.011,
+            0.008
+          ],
+          "room_book": [
+            0.038,
+            0.055,
+            0.049
+          ],
+          "room_blue": [
+            0.018,
+            0.037,
+            0.08
+          ],
+          "room_green": [
+            0.025,
+            0.065,
+            0.04
+          ],
+          "room_rust": [
+            0.17,
+            0.045,
+            0.02
+          ],
+          "room_paper": [
+            0.19,
+            0.2,
+            0.15
+          ],
+          "tape": [
+            0.73,
+            0.74,
+            0.66
+          ],
+          "screw_recess": [
+            0.006,
+            0.007,
+            0.006
+          ],
+          "rack_metal": [
+            0.012,
+            0.014,
+            0.012
+          ],
+          "polished_metal": [
+            0.62,
+            0.64,
+            0.68
+          ]
+        },
+        "metal": {
+          "roughness": 0.14,
+          "metallic": 0.96,
+          "specular_rgb": [
+            0.72,
+            0.74,
+            0.77
+          ]
+        },
+        "adapter_screw_heads": {
+          "roughness": 0.095,
+          "metallic": 0.98,
+          "radius_m": 0.0024,
+          "workflow": "metallic",
+          "shape": "domed cap with curved bevel and recessed Phillips opening"
+        },
+        "wrist_camera_mount": "black PLA",
+        "surface_detail": "deterministic procedural estimates",
+        "mat_collision": "flat 1 mm sheet; submillimeter visual creases only"
+      },
+      "panels": {
+        "estimated_wall_gap_m": [
+          0.0016,
+          0.003
+        ],
+        "estimated_bow_m": 0.0013,
+        "front_floor_curl_m": 0.0014,
+        "open_seams": true
+      },
+      "estimates": [
+        "tube diameter and ceiling placement",
+        "panel and PLA reflectance/roughness",
+        "white balance and display exposure",
+        "room geometry beyond open front"
+      ]
+    },
+    "illumination_model": "neewer_gc21b_inflatable_tube",
+    "diffuser_center_m": [
+      -0.004650871097091816,
+      0.49676074206902365,
+      0.45590576238879194
+    ],
+    "diffuser_size_m": [
+      0.7614955648504012,
+      0.026347474408445898
+    ],
+    "dominant_illumination_direction": [
+      -0.08054649625641139,
+      -0.6305758305555129,
+      -0.7719367745223963
+    ],
+    "ambient_fill": 0.055,
+    "samples_per_pixel": 4,
+    "denoised": false,
+    "added_sensor_noise": false,
+    "updates": 5
+  },
+  "right_45": {
+    "world_from_optical": [
+      [
+        -0.7071067811865476,
+        0.0,
+        -0.7071067811865476,
+        0.4045
+      ],
+      [
+        0.0,
+        -1.0,
+        0.0,
+        0.3048
+      ],
+      [
+        -0.7071067811865476,
+        0.0,
+        0.7071067811865476,
+        0.48800000000000004
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "forward_axis": "+X",
+    "up_axis": "+Z",
+    "global_camera_config": "right-45",
+    "mount_to_image_roll_deg": 0,
+    "width": 640,
+    "height": 480,
+    "hfov_deg": 127.55887430840318,
+    "lens_model": {
+      "projection": "reference",
+      "reference_profile": "User estimate: centered near the top of the right side wall, around 40 mm inward",
+      "camera_profile_file": "/home/chrono-user/mountdir/manip-sim2real/attempt-codex/assets/nominal_camera.json",
+      "lens_source": "2026-10-19-161325.jpg; lens retained from assets/reference_camera.json",
+      "fitted_lens": {
+        "model": "equidistant_polynomial",
+        "focal_px": 302.54459848647593,
+        "principal_point_px": [
+          330.99569484286565,
+          200.00000000000003
+        ],
+        "theta_coefficients": [
+          -0.11358535340852814,
+          0.05889864503060655
+        ]
+      },
+      "effective_hfov_deg": 127.55887430840318,
+      "output_focal_px": 302.54459848647593,
+      "output_focal_xy_px": [
+        302.54459848647593,
+        302.5445984864759
+      ],
+      "output_principal_point_px": [
+        330.99569484286565,
+        200.00000000000003
+      ],
+      "response": "fixed estimated per-camera ISP response",
+      "fixed_reference_landmark_rms_px": null,
+      "estimated_pose_landmark_rms_px": null,
+      "calibration_kind": "approximate nominal side-top mount; pose matching deferred at user request"
+    },
+    "render_mode": "fixed_gc21b_tube_quadrature",
+    "appearance": {
+      "profile": "real_lightbox_2026_10_19_fitted",
+      "interior_dimensions_m": [
+        0.889,
+        0.6095999999999999,
+        0.508
+      ],
+      "light": {
+        "model": "NEEWER GC21B",
+        "specification_url": "https://neewer.com/products/neewer-gc21b-21w-bi-color-handheld-led-tube-light-66606507",
+        "maximum_electrical_power_w": 21,
+        "cri_nominal": 95,
+        "rated_illuminance_lux": 1300.0,
+        "rating_distance_m": 0.5,
+        "brightness_fraction": 0.5,
+        "estimated_reference_illuminance_lux": 650.0,
+        "cct_k": 4600.0,
+        "cct_is_estimate": true,
+        "nominal_inflated_length_m": 0.9,
+        "installed_length_m": 0.9014955648504012,
+        "estimated_radius_m": 0.025007916002660068,
+        "center_m": [
+          -0.0024754780918900847,
+          0.5137912811339745,
+          0.47675416595445713
+        ],
+        "emitter_center_m": [
+          -0.004650871097091816,
+          0.49676074206902365,
+          0.45590576238879194
+        ],
+        "axis": [
+          0.985596557069739,
+          -0.1659225702011951,
+          0.0326975135156513
+        ],
+        "backing_fit": {
+          "source": "reference_global.jpg",
+          "method": "bounded capsule/backing silhouette fit to fixed-camera image",
+          "center_m": [
+            -0.0024754780918900847,
+            0.5137912811339745,
+            0.47675416595445713
+          ],
+          "axis": [
+            0.985596557069739,
+            -0.1659225702011951,
+            0.0326975135156513
+          ],
+          "emission_normal": [
+            -0.08054649625641139,
+            -0.6305758305555129,
+            -0.7719367745223963
+          ],
+          "installed_length_m": 0.9014955648504012,
+          "radius_m": 0.025007916002660068,
+          "white_sector_cosine": 0.8499999999999909,
+          "black_mask_iou": 0.826900412492634,
+          "white_mask_iou": 0.696843853820598,
+          "assumptions": [
+            "90 cm nominal length prior",
+            "Circular section and rounded capsule ends",
+            "Backing segmentation from upper-right image region"
+          ]
+        },
+        "emission_normal": [
+          -0.08054649625641139,
+          -0.6305758305555129,
+          -0.7719367745223963
+        ],
+        "emitter_size_m": [
+          0.7614955648504012,
+          0.026347474408445898
+        ],
+        "integration_nodes": 48
+      },
+      "camera": {
+        "white_balance_k": 4600.0,
+        "exposure_scale": 1.0,
+        "response_calibrated": false,
+        "projection": {
+          "projection": "reference",
+          "reference_profile": "User estimate: centered near the top of the right side wall, around 40 mm inward",
+          "camera_profile_file": "/home/chrono-user/mountdir/manip-sim2real/attempt-codex/assets/nominal_camera.json",
+          "lens_source": "2026-10-19-161325.jpg; lens retained from assets/reference_camera.json",
+          "fitted_lens": {
+            "model": "equidistant_polynomial",
+            "focal_px": 302.54459848647593,
+            "principal_point_px": [
+              330.99569484286565,
+              200.00000000000003
+            ],
+            "theta_coefficients": [
+              -0.11358535340852814,
+              0.05889864503060655
+            ]
+          },
+          "effective_hfov_deg": 127.55887430840318,
+          "output_focal_px": 302.54459848647593,
+          "output_focal_xy_px": [
+            302.54459848647593,
+            302.5445984864759
+          ],
+          "output_principal_point_px": [
+            330.99569484286565,
+            200.00000000000003
+          ],
+          "response": "fixed estimated per-camera ISP response",
+          "fixed_reference_landmark_rms_px": null,
+          "estimated_pose_landmark_rms_px": null,
+          "calibration_kind": "approximate nominal side-top mount; pose matching deferred at user request"
+        },
+        "wrist_optical_fit_applied": true,
+        "fixed_response": {
+          "method": "fixed monotonic camera response fitted to corresponding flat regions",
+          "response": "sigmoid(contrast * logit(display_rgb) + log_exposure_bias)",
+          "cameras": {
+            "right_45": {
+              "contrast": 0.7600865337518635,
+              "log_exposure_bias": 0.14950919144357402,
+              "flat_pixels_used": 75874,
+              "raw_rgb_mae_8bit": 34.98889105902777,
+              "adjusted_rgb_mae_8bit": 32.46796754835735
+            },
+            "wrist": {
+              "contrast": 1.28018334587495,
+              "log_exposure_bias": 1.0063082495418654,
+              "flat_pixels_used": 80076,
+              "raw_rgb_mae_8bit": 41.87281792534721,
+              "adjusted_rgb_mae_8bit": 20.27059867282528
+            }
+          },
+          "assumptions": [
+            "Estimated USB camera ISP/exposure response, not measured shutter/ISO",
+            "Same response applied to live feeds and recorded frames"
+          ]
+        },
+        "wrist_optical_fit": {
+          "method": "fixed jaw CAD screw centers and tip alignment; bounded optical correction",
+          "optical_from_corrected_optical": [
+            [
+              0.9941036390941482,
+              0.004922278675872662,
+              -0.1083223241645439,
+              -0.0064624351732349705
+            ],
+            [
+              -0.012678758155953485,
+              0.9973933232349521,
+              -0.07103385008544158,
+              -0.0024208280800318005
+            ],
+            [
+              0.1076903144734675,
+              0.0719884014197786,
+              0.9915747406169797,
+              0.004915472008288013
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_mm": [
+            -6.462435173234953,
+            -2.4208280800317987,
+            4.915472008288046
+          ],
+          "rotation_vector_deg": [
+            4.108884986182375,
+            -6.205825166253718,
+            -0.5056600299492124
+          ],
+          "feature_rms_px": 0.04482165907781337,
+          "reference_pixels": [
+            [
+              282,
+              433
+            ],
+            [
+              333,
+              432
+            ],
+            [
+              299,
+              293
+            ]
+          ],
+          "projected_pixels": [
+            [
+              281.95097875042234,
+              432.9802105247468
+            ],
+            [
+              333.05276356802864,
+              432.01996095253475
+            ],
+            [
+              298.9963023697761,
+              292.9939890998985
+            ]
+          ],
+          "fixed_link_points_m": [
+            [
+              0.03615,
+              -0.14548569,
+              0.14720039
+            ],
+            [
+              0.03615,
+              -0.14555698,
+              0.15529884
+            ],
+            [
+              0.007043742816326533,
+              -0.22618682198367343,
+              0.14139224124489796
+            ]
+          ],
+          "static_jaw_deg": 91.30730503567979,
+          "moving_tip_projected_px": [
+            337.578511580026,
+            295.9758992712998
+          ],
+          "assumptions": [
+            "Small optical alignment correction; mechanical mount mesh remains the supplied STL",
+            "Three hand-located features; estimate is not a measured lens calibration"
+          ]
+        }
+      },
+      "indirect_light": {
+        "model": "deterministic floor/ceiling diffuse return; finite-cell near-field approximation",
+        "enabled": true,
+        "floor_cells": 40,
+        "ceiling_cells": 24,
+        "ambient_residual": 0.055
+      },
+      "materials": {
+        "linear_rgb_reflectance": {
+          "cream": [
+            0.83,
+            0.81,
+            0.72
+          ],
+          "black": [
+            0.012,
+            0.014,
+            0.013
+          ],
+          "metal": [
+            0.38,
+            0.39,
+            0.4
+          ],
+          "electronics": [
+            0.06,
+            0.13,
+            0.09
+          ],
+          "white": [
+            0.8,
+            0.82,
+            0.79
+          ],
+          "red": [
+            0.62,
+            0.012,
+            0.025
+          ],
+          "cable_white": [
+            0.81,
+            0.82,
+            0.77
+          ],
+          "pcb": [
+            0.012,
+            0.013,
+            0.012
+          ],
+          "glass": [
+            0.018,
+            0.04,
+            0.045
+          ],
+          "diffuser": [
+            0.92,
+            0.94,
+            0.91
+          ],
+          "gold": [
+            0.63,
+            0.43,
+            0.12
+          ],
+          "pla": [
+            0.025,
+            0.43,
+            0.085
+          ],
+          "floor_sheet": [
+            0.03,
+            0.036,
+            0.03
+          ],
+          "panel_edge": [
+            0.3,
+            0.29,
+            0.25
+          ],
+          "room_wall": [
+            0.2,
+            0.28,
+            0.14
+          ],
+          "room_floor": [
+            0.035,
+            0.038,
+            0.028
+          ],
+          "room_dark": [
+            0.008,
+            0.011,
+            0.008
+          ],
+          "room_book": [
+            0.038,
+            0.055,
+            0.049
+          ],
+          "room_blue": [
+            0.018,
+            0.037,
+            0.08
+          ],
+          "room_green": [
+            0.025,
+            0.065,
+            0.04
+          ],
+          "room_rust": [
+            0.17,
+            0.045,
+            0.02
+          ],
+          "room_paper": [
+            0.19,
+            0.2,
+            0.15
+          ],
+          "tape": [
+            0.73,
+            0.74,
+            0.66
+          ],
+          "screw_recess": [
+            0.006,
+            0.007,
+            0.006
+          ],
+          "rack_metal": [
+            0.012,
+            0.014,
+            0.012
+          ],
+          "polished_metal": [
+            0.62,
+            0.64,
+            0.68
+          ]
+        },
+        "metal": {
+          "roughness": 0.14,
+          "metallic": 0.96,
+          "specular_rgb": [
+            0.72,
+            0.74,
+            0.77
+          ]
+        },
+        "adapter_screw_heads": {
+          "roughness": 0.095,
+          "metallic": 0.98,
+          "radius_m": 0.0024,
+          "workflow": "metallic",
+          "shape": "domed cap with curved bevel and recessed Phillips opening"
+        },
+        "wrist_camera_mount": "black PLA",
+        "surface_detail": "deterministic procedural estimates",
+        "mat_collision": "flat 1 mm sheet; submillimeter visual creases only"
+      },
+      "panels": {
+        "estimated_wall_gap_m": [
+          0.0016,
+          0.003
+        ],
+        "estimated_bow_m": 0.0013,
+        "front_floor_curl_m": 0.0014,
+        "open_seams": true
+      },
+      "estimates": [
+        "tube diameter and ceiling placement",
+        "panel and PLA reflectance/roughness",
+        "white balance and display exposure",
+        "room geometry beyond open front"
+      ]
+    },
+    "illumination_model": "neewer_gc21b_inflatable_tube",
+    "diffuser_center_m": [
+      -0.004650871097091816,
+      0.49676074206902365,
+      0.45590576238879194
+    ],
+    "diffuser_size_m": [
+      0.7614955648504012,
+      0.026347474408445898
+    ],
+    "dominant_illumination_direction": [
+      -0.08054649625641139,
+      -0.6305758305555129,
+      -0.7719367745223963
+    ],
+    "ambient_fill": 0.055,
+    "samples_per_pixel": 4,
+    "denoised": false,
+    "added_sensor_noise": false,
+    "updates": 5
+  }
+}

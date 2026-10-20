@@ -1,0 +1,44 @@
+{
+  "source": "SO101 Assembly.step",
+  "method": "full STEP tessellation; coincident vertices welded; no decimation or convex hull",
+  "parts": {
+    "fixed_jaw": {
+      "file": "fixed_jaw_collision.obj",
+      "link": 5,
+      "source_part_index": 8,
+      "source_triangles": 11790,
+      "triangles": 11788,
+      "vertices": 5850,
+      "solid_volume_m3": 5.662096162733647e-05,
+      "center_of_mass_ref_m": [
+        0.007589284945295882,
+        -0.15075226976623288,
+        0.13764415826027127
+      ],
+      "dimensions_m": [
+        0.0523801717,
+        0.10537170019999999,
+        0.0659093998
+      ]
+    },
+    "moving_jaw": {
+      "file": "moving_jaw_collision.obj",
+      "link": 6,
+      "source_part_index": 9,
+      "source_triangles": 9438,
+      "triangles": 9438,
+      "vertices": 4687,
+      "solid_volume_m3": 2.0676162329979486e-05,
+      "center_of_mass_ref_m": [
+        0.005728951084309682,
+        -0.14754464972493847,
+        0.2018930230196373
+      ],
+      "dimensions_m": [
+        0.0481248061,
+        0.02301382469999999,
+        0.09207730330000002
+      ]
+    }
+  }
+}

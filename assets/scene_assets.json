@@ -1,0 +1,303 @@
+{
+  "meshes": [
+    {
+      "file": "link_0_black.obj",
+      "link": 0,
+      "material": "black"
+    },
+    {
+      "file": "link_0_cream.obj",
+      "link": 0,
+      "material": "cream"
+    },
+    {
+      "file": "link_0_electronics.obj",
+      "link": 0,
+      "material": "electronics"
+    },
+    {
+      "file": "link_0_metal.obj",
+      "link": 0,
+      "material": "metal"
+    },
+    {
+      "file": "link_1_black.obj",
+      "link": 1,
+      "material": "black"
+    },
+    {
+      "file": "link_1_cream.obj",
+      "link": 1,
+      "material": "cream"
+    },
+    {
+      "file": "link_1_metal.obj",
+      "link": 1,
+      "material": "metal"
+    },
+    {
+      "file": "link_2_black.obj",
+      "link": 2,
+      "material": "black"
+    },
+    {
+      "file": "link_2_cream.obj",
+      "link": 2,
+      "material": "cream"
+    },
+    {
+      "file": "link_2_metal.obj",
+      "link": 2,
+      "material": "metal"
+    },
+    {
+      "file": "link_3_black.obj",
+      "link": 3,
+      "material": "black"
+    },
+    {
+      "file": "link_3_cream.obj",
+      "link": 3,
+      "material": "cream"
+    },
+    {
+      "file": "link_3_metal.obj",
+      "link": 3,
+      "material": "metal"
+    },
+    {
+      "file": "link_4_black.obj",
+      "link": 4,
+      "material": "black"
+    },
+    {
+      "file": "link_4_cream.obj",
+      "link": 4,
+      "material": "cream"
+    },
+    {
+      "file": "link_4_metal.obj",
+      "link": 4,
+      "material": "metal"
+    },
+    {
+      "file": "link_5_black.obj",
+      "link": 5,
+      "material": "black"
+    },
+    {
+      "file": "link_5_cream.obj",
+      "link": 5,
+      "material": "cream"
+    },
+    {
+      "file": "link_5_metal.obj",
+      "link": 5,
+      "material": "metal"
+    },
+    {
+      "file": "link_6_cream.obj",
+      "link": 6,
+      "material": "cream"
+    },
+    {
+      "file": "link_6_metal.obj",
+      "link": 6,
+      "material": "metal"
+    }
+  ],
+  "joints": [
+    {
+      "name": "shoulder_pan",
+      "pivot_m": [
+        -9.900000000000001e-05,
+        -0.007543,
+        0.06243
+      ],
+      "axis": [
+        0,
+        -0.0087265,
+        0.9999619
+      ]
+    },
+    {
+      "name": "shoulder_lift",
+      "pivot_m": [
+        0.0023799999999999997,
+        -0.03872,
+        0.119758
+      ],
+      "axis": [
+        0.9999619,
+        0.0087265,
+        0
+      ]
+    },
+    {
+      "name": "elbow_flex",
+      "pivot_m": [
+        0.00445,
+        0.07373,
+        0.14862
+      ],
+      "axis": [
+        0.9999238,
+        0.0087262,
+        0.0087265
+      ]
+    },
+    {
+      "name": "wrist_flex",
+      "pivot_m": [
+        0.006900000000000001,
+        -0.060577,
+        0.15259
+      ],
+      "axis": [
+        0.9998477,
+        0,
+        0.0174524
+      ]
+    },
+    {
+      "name": "wrist_roll",
+      "pivot_m": [
+        0.007062000000000001,
+        -0.118775,
+        0.152082
+      ],
+      "axis": [
+        0,
+        -0.9999619,
+        -0.0087265
+      ]
+    },
+    {
+      "name": "gripper",
+      "pivot_m": [
+        0.006070000000000001,
+        -0.145704,
+        0.171911
+      ],
+      "axis": [
+        0.9999619,
+        0,
+        0.0087265
+      ]
+    }
+  ],
+  "wrist_camera": {
+    "board_center_m": [
+      0.08217808343971814,
+      -0.11099777485106188,
+      0.15595736424348466
+    ],
+    "rotation": [
+      [
+        -0.4225086520198053,
+        -0.02330660222446017,
+        -0.9060591820702543
+      ],
+      [
+        -0.9062313816106593,
+        -0.005904744536519053,
+        0.4227408392014279
+      ],
+      [
+        -0.015202700588394442,
+        0.9997109263605733,
+        -0.018626368679876576
+      ]
+    ],
+    "optical_offset_m": 0.019,
+    "board_size_mm": [
+      25,
+      24
+    ],
+    "hole_pattern_mm": [
+      21,
+      13.5
+    ],
+    "placement": "centered; PCB front face 5 mm behind mount rear face; lens through opening",
+    "pcb_front_to_mount_rear_m": 0.005,
+    "mount_plate_thickness_m": 0.004199999966162167,
+    "mount_front_center_m": [
+      0.07829100385543271,
+      -0.11933510353121503,
+      0.15581749939858586
+    ],
+    "mount_rear_center_m": [
+      0.0800655401796191,
+      -0.11552893175911517,
+      0.15588135074054268
+    ],
+    "lens_front_protrusion_m": 0.009800000033837832
+  },
+  "alignment": {
+    "gripper_bore_fit_max_error_mm": 0.0003618725027778739,
+    "camera_plate_center_uv_mm": [
+      -53.64072489229068,
+      28.04016923904419
+    ],
+    "camera_plate_center_error_mm": 8.192976963528054e-09,
+    "lens_housing_clears_mount_opening": true,
+    "camera_board_hole_fit_max_error_mm": 0.016678776265245693,
+    "dovetail_bore_fit_max_error_mm": 0.0006268594019405753,
+    "rigid_gripper_dovetail_revision_correction_mm": [
+      0.003712059282213964,
+      0.5411623169974419,
+      -0.20925861838332546
+    ],
+    "stl_to_assembly_rotation": [
+      [
+        -4.973257134159006e-05,
+        -0.9998472925348401,
+        -0.01747538661721459
+      ],
+      [
+        0.9999627982680531,
+        0.00010101118154561167,
+        -0.008625072560023463
+      ],
+      [
+        0.00862552065650631,
+        -0.01747516544960241,
+        0.9998100914603298
+      ]
+    ],
+    "stl_to_assembly_translation_mm": [
+      7.137172634940099,
+      -145.82729143185236,
+      126.29978674104554
+    ],
+    "stl_camera_slot_centers_uv_mm": [
+      [
+        -60.47437231375923,
+        17.580094542386746
+      ],
+      [
+        -60.33923095770342,
+        38.579758154858645
+      ],
+      [
+        -46.97467980529555,
+        17.493168810481507
+      ],
+      [
+        -46.83953869288663,
+        38.49282862843827
+      ]
+    ],
+    "reference_step_camera_hole_pattern_mm": [
+      28,
+      28
+    ],
+    "note": "STL camera plate supersedes the STEP reference camera plate; no adapter is used."
+  },
+  "source_sha256": {
+    "IMXmountSO101.stl": "4c8a268150f541c9f826a0e2221c2db0782081fdb7eb3418eadddf7848361340",
+    "SO-ARM101_Follower_3D.step": "89c30bbfa4187d2a90d6485c3485eaec1c702be4fad76740bafc1139531473c8",
+    "SO101 Assembly.step": "f754be35708382b05ce65768ae33c612f91dca11ad19d14807dc637eb944ba3d",
+    "soarm_soft_gripper.stp": "2d99e3cab96a6c89b961d022ba6c93c86664fc5baef8b67b7dfc90ab671810de"
+  }
+}
