@@ -3,7 +3,7 @@
 
 LeRobot still loads --policy.path for its config, pre/post-processors and temporal ensembler; only
 ACTPolicy.predict_action_chunk runs on the engine. Usage (on the robot computer):
-  ACT_TRT_ENGINE=~/trt_v2_statenoise_001/act_core_fp16.engine python trt_act_record.py [lerobot-record args]
+  ACT_TRT_ENGINE=~/trt_v1/act_core_fp16.engine python trt_act_record.py [lerobot-record args]
   python trt_act_record.py --check POLICY_DIR ENGINE   # engine vs PyTorch on random inputs; no robot
 """
 import json
