@@ -8,15 +8,31 @@ GRASP_MODE='physical_jaw_contacts'
 JAW_MASS=.025
 JAW_KP=1.
 JAW_KD=.015
-JAW_TORQUE_LIMIT=.12
+# LeRobot's SO follower caps the gripper STS3215 at 50% torque and 25% when
+# overloaded; 25% of its ~1.9 Nm stall torque bounds a sustained grip.
+JAW_TORQUE_LIMIT=.45
 CONTACT_FRICTION=.5
 
 class JawPhysics:
     def __init__(self,scene,dynamic):
         self.scene=scene;self.dynamic=dynamic;self.torque=0.;self.contacts={}
         c=scene.c;root=Path(__file__).resolve().parent
+        response_file=root/'assets/recorded_jaw_servo.json'
+        self.response=getattr(scene.args,'jaw_response_override',None) or (json.loads(response_file.read_text()) if response_file.is_file() else None)
+        self.command_history=[];self.filtered_target_deg=None;self.last_drive_time=None
         self.geometry=json.loads((root/'assets/jaw_collision.json').read_text())
         material=c.ChContactMaterialNSC();material.SetFriction(CONTACT_FRICTION);material.SetRestitution(0.)
+        contact_file=root/'assets/recorded_contact_response.json'
+        self.contact_response=json.loads(contact_file.read_text()) if contact_file.exists() else {}
+        requested=getattr(scene.args,'contact_compliance_m_n',None)
+        self.contact_compliance_m_n=float(self.contact_response.get('normal_compliance_m_per_n',0.) if requested is None else requested)
+        self.contact_tangential_ratio=float(self.contact_response.get('tangential_compliance_ratio',.25))
+        self.contact_damping_s=float(getattr(scene.args,'contact_damping_s',self.contact_response.get('damping_time_s',.002)))
+        if self.contact_compliance_m_n<0:raise ValueError('Contact compliance must be nonnegative')
+        if self.contact_compliance_m_n:
+            material.SetCompliance(self.contact_compliance_m_n)
+            material.SetComplianceT(self.contact_compliance_m_n*self.contact_tangential_ratio)
+            material.SetDampingF(self.contact_damping_s)
         identifiers={}
         for name,part in self.geometry['parts'].items():
             body=scene.links[part['link']]
@@ -78,7 +94,9 @@ class JawPhysics:
 
     def set_parent_pose(self,pose,t,reset=False):
         if not self.dynamic:return
-        if reset:self.position.Reset(t);self.rotation.Reset(t)
+        if reset:
+            self.position.Reset(t);self.rotation.Reset(t)
+            self.command_history=[];self.filtered_target_deg=None;self.last_drive_time=None
         self.position.SetSetpoint(self.scene.vec(pose[:3,3]),t)
         self.rotation.SetSetpoint(self.scene.quaternion(pose[:3,:3]),t)
 
@@ -91,6 +109,22 @@ class JawPhysics:
 
     def drive(self,target_deg,actual_deg):
         if not self.dynamic:return
+        if self.response:
+            t=float(self.scene.system.GetChTime())
+            self.command_history.append((t,float(target_deg)))
+            requested=t-self.response['command_latency_s']
+            while len(self.command_history)>2 and self.command_history[1][0]<requested:
+                self.command_history.pop(0)
+            times,targets=zip(*self.command_history)
+            delayed=float(np.interp(requested,times,targets))
+            if self.filtered_target_deg is None:self.filtered_target_deg=float(actual_deg)
+            elapsed=0. if self.last_drive_time is None else max(0.,t-self.last_drive_time)
+            direction='close' if delayed>=self.filtered_target_deg else 'open'
+            # Preserve the existing physical torque controller. Shape its target
+            # to the measured response, accounting for its own KD/KP time scale.
+            tau=max(.005,self.response[direction+'_time_constant_s']-JAW_KD/JAW_KP)
+            self.filtered_target_deg+=(delayed-self.filtered_target_deg)*(-math.expm1(-elapsed/tau))
+            self.last_drive_time=t;target_deg=self.filtered_target_deg
         error=math.radians(target_deg-actual_deg)
         self.torque=float(np.clip(JAW_KP*error-JAW_KD*self.motor.GetMotorAngleDt(),-JAW_TORQUE_LIMIT,JAW_TORQUE_LIMIT))
         self.function.SetConstant(self.torque)

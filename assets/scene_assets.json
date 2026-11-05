@@ -299,5 +299,40 @@
     "SO-ARM101_Follower_3D.step": "89c30bbfa4187d2a90d6485c3485eaec1c702be4fad76740bafc1139531473c8",
     "SO101 Assembly.step": "f754be35708382b05ce65768ae33c612f91dca11ad19d14807dc637eb944ba3d",
     "soarm_soft_gripper.stp": "2d99e3cab96a6c89b961d022ba6c93c86664fc5baef8b67b7dfc90ab671810de"
+  },
+  "base_world_from_cad": [
+    [
+      -1.0,
+      0.0,
+      0.0,
+      0.01960018430618582
+    ],
+    [
+      0.0,
+      -1.0,
+      0.0,
+      0.0652617570818155
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      -0.0003200163676166016
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "base_calibration": {
+    "method": "shared multi-episode metric reprojection fit with CAD and measured mat dimensions",
+    "floor_constraint": "CAD feet remain within 0.15 mm of the measured floor",
+    "translation_delta_m": [
+      0.01960018430618582,
+      0.011261757081815505,
+      6.998363238339837e-05
+    ]
   }
 }

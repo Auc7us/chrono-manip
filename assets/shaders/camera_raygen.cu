@@ -76,17 +76,25 @@ extern "C" __global__ void __raygen__camera() {
 
         // Demo-local fitted equidistant projection. Other cameras retain pinhole/radial.
         float3 ray_direction;
-        if (camera.lens_model == CameraLensModelType::FOV_LENS) {
+        if (camera.lens_model == CameraLensModelType::FOV_LENS || camera.lens_model == CameraLensModelType::RADIAL) {
+            // This demo uses the two non-pinhole selectors for the two measured
+            // USB lenses. Both receive their own polynomial directly in raygen.
+            const bool wrist = camera.lens_model == CameraLensModelType::RADIAL;
+            const float focal = wrist ? WRIST_FOCAL : REF_FOCAL;
+            const float cx = wrist ? WRIST_CX : REF_CX;
+            const float cy = wrist ? WRIST_CY : REF_CY;
+            const float k1 = wrist ? WRIST_K1 : REF_K1;
+            const float k2 = wrist ? WRIST_K2 : REF_K2;
             const float px = (px_2D_idx.x + jitter.x) * 640.f / img_size.x;
             const float py = 480.f - (px_2D_idx.y + jitter.y) * 480.f / img_size.y;
-            const float dx = (px - REF_CX) / REF_FOCAL;
-            const float dy = (py - REF_CY) / REF_FOCAL;
+            const float dx = (px - cx) / focal;
+            const float dy = (py - cy) / focal;
             const float rd = sqrtf(dx*dx + dy*dy);
             float theta = rd;
-            for (int k=0; k<8; ++k) {
+            for (int k=0; k<12; ++k) {
                 const float t2=theta*theta;
-                const float value=theta*(1.f+REF_K1*t2+REF_K2*t2*t2)-rd;
-                const float deriv=1.f+3.f*REF_K1*t2+5.f*REF_K2*t2*t2;
+                const float value=theta*(1.f+k1*t2+k2*t2*t2)-rd;
+                const float deriv=1.f+3.f*k1*t2+5.f*k2*t2*t2;
                 theta -= value/fmaxf(deriv,.1f);
             }
             const float scale = (rd > 1e-8f) ? sinf(theta)/rd : 1.f;

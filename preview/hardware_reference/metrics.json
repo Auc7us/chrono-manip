@@ -1,0 +1,2314 @@
+{
+  "calibration": {
+    "method": "shared multi-episode metric reprojection fit with CAD and measured mat dimensions",
+    "training_episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "validation_episodes": [
+      8,
+      9
+    ],
+    "paired_views": 165,
+    "before": {
+      "train": {
+        "mat_boundary_rms_px": 10.992923260745517,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.317142816663585,
+        "global_outline_rms_px": 6.220269125384682
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 14.195161504658367,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.436796008600744,
+        "global_outline_rms_px": 7.276645843204162
+      }
+    },
+    "after": {
+      "train": {
+        "mat_boundary_rms_px": 4.467555769560502,
+        "fixed_jaw_rms_px": 1.0326840647290354,
+        "moving_tip_rms_px": 6.009768949623836,
+        "global_outline_rms_px": 3.9190059794092638,
+        "plate_boundary_rms_px": 5.614799843474038
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 4.338454711029801,
+        "fixed_jaw_rms_px": 1.0326840647290354,
+        "moving_tip_rms_px": 6.4990471843768765,
+        "global_outline_rms_px": 4.042207877021097,
+        "plate_boundary_rms_px": 3.4719705004764148
+      }
+    },
+    "scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "offset_deg": [
+      2.456356793976032,
+      84.81413229083724,
+      -100.59453495913448,
+      2.201550014682834,
+      80.46982283353651,
+      97.40613768180167
+    ],
+    "base_translation_delta_m": [
+      0.01960018430618582,
+      0.011261757081815505,
+      6.998363238339837e-05
+    ],
+    "wrist_link_from_optical": [
+      [
+        -0.43220889988309863,
+        0.04392298990632354,
+        0.9007031908304705,
+        0.07518260262688849
+      ],
+      [
+        -0.9016696131176655,
+        -0.005887774453967568,
+        -0.4323855259429392,
+        -0.12568232041441563
+      ],
+      [
+        -0.013688527854314994,
+        -0.9990175699504791,
+        0.04214877383169664,
+        0.15523952343124586
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "wrist_lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 267.00443888447955,
+      "principal_point_px": [
+        324.15804549185754,
+        251.92632822848958
+      ],
+      "theta_coefficients": [
+        0.05937713278912255,
+        -0.028389883058592278
+      ]
+    },
+    "parameters": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      2.456356793976032,
+      84.81413229083724,
+      -100.59453495913448,
+      2.201550014682834,
+      80.46982283353651,
+      19.60018430618582,
+      11.261757081815505,
+      0.06998363238339837,
+      3.133088929849764,
+      2.5353561317317497,
+      -5.626731524257633,
+      -2.76149540736425,
+      6.81777203648312,
+      0.30494641571497005,
+      267.00443888447955,
+      324.15804549185754,
+      251.92632822848958,
+      0.05937713278912255,
+      -0.028389883058592278,
+      -1.3345054945054946,
+      97.40613768180167,
+      -0.09036946251474863,
+      0.26440480673299244,
+      0.07359234572465824,
+      0.07052614475250538,
+      0.28246660608375707,
+      0.02686801398115481,
+      -0.049941391231620905,
+      0.3432297692917839,
+      0.017939756842746298,
+      0.0955197528064602,
+      0.25688526053461125,
+      -0.046615465948113624,
+      0.055148878661454244,
+      0.37297205513311954,
+      1.546978559424294,
+      -0.1263643878240943,
+      0.17889441489050464,
+      1.5559547426849942,
+      0.13699983904283974,
+      0.24744146804527378,
+      -0.035005410915766325,
+      -0.031558225024989034,
+      0.19289430509277694,
+      -0.04747224098192551
+    ],
+    "initial_parameters": [
+      -0.6157539105908126,
+      1.0071239642037337,
+      1.013485490962381,
+      1.0249901494260787,
+      -0.7682826024813909,
+      1.6212975131516267,
+      86.8541488246861,
+      -104.92219864429104,
+      -1.9749883542868092,
+      73.64087785311425,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      302.54459848647593,
+      330.99569484286565,
+      200.00000000000003,
+      -0.11358535340852814,
+      0.05889864503060655,
+      -1.0,
+      92.0,
+      -0.08986742961396851,
+      0.26375473997772064,
+      0.01950105683169461,
+      0.06938213477305188,
+      0.28123114599717836,
+      0.03198412514903277,
+      -0.049211483942074905,
+      0.3433016382323608,
+      -0.01352413666835635,
+      0.09484202029779215,
+      0.2567643748553972,
+      -0.05713985353840716,
+      0.052226543596597626,
+      0.3709449157589383,
+      1.5432713722700904,
+      -0.12844577840404228,
+      0.18329095711320506,
+      1.5561480167602366,
+      0.13573699691523106,
+      0.2438348585530044,
+      -0.010499569654399304,
+      -0.03183823146053891,
+      0.19565402522638317,
+      -0.08128123216866873
+    ],
+    "solver": {
+      "success": true,
+      "message": "`ftol` termination condition is satisfied.",
+      "nfev": 45
+    },
+    "external_camera_constraint": {
+      "source": "green_cube_red_plate_1/videos/observation.images.external/chunk-000/file-000.mp4, frame 0",
+      "method": "independent optical pose/lens fit to mat, box corners and curved near-wall seam",
+      "pixel_origin": "top-left",
+      "image_size": [
+        640,
+        480
+      ],
+      "optical_position_m": [
+        0.42942477557451153,
+        0.36615960921408,
+        0.47795329558544786
+      ],
+      "yaw_pitch_roll_deg": [
+        13.797045830215815,
+        43.82622453105621,
+        -10.947382854789224
+      ],
+      "world_from_optical_rotation": [
+        [
+          -0.7006272455053079,
+          -0.10643199409834136,
+          -0.7055449620597511
+        ],
+        [
+          0.17205225393540927,
+          -0.9848356133444925,
+          -0.022289831854963
+        ],
+        [
+          -0.6924734541997913,
+          -0.13700746447047218,
+          0.7083145275285421
+        ]
+      ],
+      "lens": {
+        "model": "equidistant_polynomial",
+        "focal_px": 286.44424271338204,
+        "principal_point_px": [
+          331.6193569040149,
+          240.23297064150782
+        ],
+        "theta_coefficients": [
+          -0.005349402851141891,
+          -0.0057887208838837256
+        ]
+      },
+      "landmark_rms_px": 3.281868945059853,
+      "landmarks": {
+        "floor_far_front": {
+          "world_m": [
+            -0.4445,
+            0.0,
+            0.0
+          ],
+          "reference_px": [
+            184.0,
+            153.0
+          ],
+          "projected_px": [
+            183.34158739953702,
+            158.47838170696502
+          ],
+          "error_px": 5.517805114323759,
+          "weight": 0.35
+        },
+        "floor_far_rear": {
+          "world_m": [
+            -0.4445,
+            0.6095999999999999,
+            0.0
+          ],
+          "reference_px": [
+            357.0,
+            158.0
+          ],
+          "projected_px": [
+            354.60817386483933,
+            163.0983832046511
+          ],
+          "error_px": 5.631548948762325,
+          "weight": 1.0
+        },
+        "floor_near_front": {
+          "world_m": [
+            0.4445,
+            0.0,
+            0.0
+          ],
+          "reference_px": [
+            82.0,
+            439.0
+          ],
+          "projected_px": [
+            83.55458873478955,
+            439.51888954743674
+          ],
+          "error_px": 1.6388997824069882,
+          "weight": 1.0
+        },
+        "floor_near_rear": {
+          "world_m": [
+            0.4445,
+            0.6095999999999999,
+            0.0
+          ],
+          "reference_px": [
+            438.0,
+            450.0
+          ],
+          "projected_px": [
+            436.5255666266144,
+            451.753516449809
+          ],
+          "error_px": 2.2910202339359604,
+          "weight": 1.0
+        },
+        "mat_far_front": {
+          "world_m": [
+            -0.2286,
+            0.15239999999999998,
+            0.001
+          ],
+          "reference_px": [
+            209.0,
+            194.0
+          ],
+          "projected_px": [
+            209.6954429160549,
+            193.9878489795251
+          ],
+          "error_px": 0.6955490613821039,
+          "weight": 1.0
+        },
+        "mat_far_rear": {
+          "world_m": [
+            -0.2286,
+            0.45719999999999994,
+            0.001
+          ],
+          "reference_px": [
+            315.0,
+            198.0
+          ],
+          "projected_px": [
+            315.5360127920361,
+            196.47146794435795
+          ],
+          "error_px": 1.619790097003818,
+          "weight": 1.0
+        },
+        "mat_near_front": {
+          "world_m": [
+            0.2286,
+            0.15239999999999998,
+            0.001
+          ],
+          "reference_px": [
+            169.0,
+            348.0
+          ],
+          "projected_px": [
+            167.6643039076165,
+            345.79566197605817
+          ],
+          "error_px": 2.577438685013539,
+          "weight": 1.0
+        },
+        "mat_near_rear": {
+          "world_m": [
+            0.2286,
+            0.45719999999999994,
+            0.001
+          ],
+          "reference_px": [
+            331.0,
+            352.0
+          ],
+          "projected_px": [
+            333.26089718870514,
+            350.90105850869816
+          ],
+          "error_px": 2.513827460109294,
+          "weight": 1.0
+        }
+      },
+      "uncertainties": [
+        "Hand-located corners, approximately 2 px; partly occluded front corner downweighted",
+        "Metric enclosure/mat dimensions and optional known-size stereo plates; optics/pose remain image-derived",
+        "Pixel alignment estimate, not a measured metric camera calibration"
+      ],
+      "lens_source": "independent external-lens fit; wrist-camera estimate used only as a weak same-model prior",
+      "pose_change_from_photo_mm": [
+        6.607212120089356,
+        -28.04764354267453,
+        -21.20946398138901
+      ],
+      "stereo_plate_training_episodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "wrist_lens_held_fixed": false,
+    "assumptions": [
+      "Metric scale comes from enclosure/mat and CAD dimensions",
+      "No per-frame camera, robot or motor correction; last two episodes held out",
+      "Visible cream outline and tip measurements have occlusion/segmentation uncertainty",
+      "Hardware normalization verified against saved follower/leader calibrations; physical CAD zeros and contact properties still need geometric/dynamic identification"
+    ],
+    "encoder_scale_constraint": {
+      "method": "supplied LeRobot calibration cross-checked against all recorded encoder values",
+      "motors": [
+        {
+          "name": "shoulder_pan",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+          "cad_degrees_per_recorded_unit": -1.0,
+          "normalization": "degrees",
+          "calibration_span_ticks": 1938,
+          "absolute_grid_99th_percentile_error_ticks": 1.9073486328125e-05
+        },
+        {
+          "name": "shoulder_lift",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+          "cad_degrees_per_recorded_unit": 1.0,
+          "normalization": "degrees",
+          "calibration_span_ticks": 2383,
+          "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+        },
+        {
+          "name": "elbow_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+          "cad_degrees_per_recorded_unit": 1.0,
+          "normalization": "degrees",
+          "calibration_span_ticks": 2190,
+          "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+        },
+        {
+          "name": "wrist_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+          "cad_degrees_per_recorded_unit": 1.0,
+          "normalization": "degrees",
+          "calibration_span_ticks": 2349,
+          "absolute_grid_99th_percentile_error_ticks": 4.291534423828125e-05
+        },
+        {
+          "name": "wrist_roll",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+          "cad_degrees_per_recorded_unit": -1.0,
+          "normalization": "degrees",
+          "calibration_span_ticks": 4095,
+          "absolute_grid_99th_percentile_error_ticks": 1.2874603271484375e-05
+        },
+        {
+          "name": "gripper",
+          "inferred_calibration_span_ticks": 1518,
+          "recorded_units_per_encoder_tick": 0.06587615283267458,
+          "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+          "cad_degrees_per_recorded_unit": -1.3345054945054946,
+          "normalization": "range_0_100",
+          "calibration_span_ticks": 1518,
+          "absolute_grid_99th_percentile_error_ticks": 2.593994122435106e-05
+        }
+      ],
+      "signed_scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "sources": [
+        "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/motors/motors_bus.py",
+        "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/robots/so_follower/so_follower.py"
+      ],
+      "assumptions": [
+        "Homing offsets are already applied in motor firmware; never add them to normalized recorded states",
+        "Float32 saved actions are recovered on the verified integer leader grid before reproducing follower command truncation"
+      ],
+      "hardware_calibration": "recorded_motor_calibration.json"
+    },
+    "motor_calibration": {
+      "method": "supplied LeRobot calibration cross-checked against all recorded encoder values",
+      "rows": 6632,
+      "follower": {
+        "source": "calib/robots/so_follower/so101_follower.json",
+        "sha256": "c2b8953fadcc1af32fa7a96c6b5e7a8031fff3100868c1afc2f95ee19437afc2",
+        "calibration": {
+          "shoulder_pan": {
+            "id": 1,
+            "drive_mode": 0,
+            "homing_offset": 1252,
+            "range_min": 999,
+            "range_max": 2937
+          },
+          "shoulder_lift": {
+            "id": 2,
+            "drive_mode": 0,
+            "homing_offset": -1476,
+            "range_min": 811,
+            "range_max": 3194
+          },
+          "elbow_flex": {
+            "id": 3,
+            "drive_mode": 0,
+            "homing_offset": 1483,
+            "range_min": 840,
+            "range_max": 3030
+          },
+          "wrist_flex": {
+            "id": 4,
+            "drive_mode": 0,
+            "homing_offset": -673,
+            "range_min": 914,
+            "range_max": 3263
+          },
+          "wrist_roll": {
+            "id": 5,
+            "drive_mode": 0,
+            "homing_offset": -182,
+            "range_min": 0,
+            "range_max": 4095
+          },
+          "gripper": {
+            "id": 6,
+            "drive_mode": 0,
+            "homing_offset": 758,
+            "range_min": 2033,
+            "range_max": 3551
+          }
+        },
+        "body_normalization": "degrees",
+        "gripper_normalization": "range_0_100",
+        "grid_99th_percentile_error_ticks": {
+          "degrees": [
+            1.9073486328125e-05,
+            4.100799560546875e-05,
+            4.100799560546875e-05,
+            4.291534423828125e-05,
+            1.2874603271484375e-05,
+            2.593994122435106e-05
+          ],
+          "range_m100_100": [
+            0.48483394622803644,
+            0.49630069732666016,
+            0.4944660186767328,
+            0.49116196689626995,
+            0.4000154495240622,
+            2.593994122435106e-05
+          ]
+        },
+        "decoded_tick_min": [
+          1388.9999856948853,
+          997.9999866485596,
+          936.0000324249268,
+          2676.9999947547913,
+          1572.999987602234,
+          2041.9999999928475
+        ],
+        "decoded_tick_max": [
+          2466.000002861023,
+          2942.0000009536743,
+          2918.999984741211,
+          3244.999960899353,
+          2397.0000035762787,
+          2654.0000157928466
+        ]
+      },
+      "leader": {
+        "source": "calib/teleoperators/so_leader/so101_leader.json",
+        "sha256": "76f7671cfa47a4c2b465ae4edade81907f5969ee219727c94964511b8ad8d2da",
+        "calibration": {
+          "shoulder_pan": {
+            "id": 1,
+            "drive_mode": 0,
+            "homing_offset": -451,
+            "range_min": 1173,
+            "range_max": 2888
+          },
+          "shoulder_lift": {
+            "id": 2,
+            "drive_mode": 0,
+            "homing_offset": -742,
+            "range_min": 912,
+            "range_max": 2929
+          },
+          "elbow_flex": {
+            "id": 3,
+            "drive_mode": 0,
+            "homing_offset": -797,
+            "range_min": 1078,
+            "range_max": 3041
+          },
+          "wrist_flex": {
+            "id": 4,
+            "drive_mode": 0,
+            "homing_offset": -729,
+            "range_min": 823,
+            "range_max": 3138
+          },
+          "wrist_roll": {
+            "id": 5,
+            "drive_mode": 0,
+            "homing_offset": 1350,
+            "range_min": 0,
+            "range_max": 4095
+          },
+          "gripper": {
+            "id": 6,
+            "drive_mode": 0,
+            "homing_offset": -890,
+            "range_min": 2046,
+            "range_max": 3255
+          }
+        },
+        "body_normalization": "degrees",
+        "gripper_normalization": "range_0_100",
+        "grid_99th_percentile_error_ticks": {
+          "degrees": [
+            2.002716064453125e-05,
+            3.910064697265625e-05,
+            4.100799560546875e-05,
+            4.291534423828125e-05,
+            1.52587890625e-05,
+            2.136230477844947e-05
+          ],
+          "range_m100_100": [
+            0.4923089504241034,
+            0.4909873199467256,
+            0.4971634292605813,
+            0.49232807159432923,
+            0.4000171661375589,
+            2.136230477844947e-05
+          ]
+        },
+        "decoded_tick_min": [
+          1448.0000157356262,
+          914.0000410079956,
+          1036.0000257492065,
+          2559.000006198883,
+          1567.9999933242798,
+          2046.0
+        ],
+        "decoded_tick_max": [
+          2532.9999890327454,
+          2857.000039100647,
+          3039.9999713897705,
+          3138.99999332428,
+          2401.999997854233,
+          2546.9999905014038
+        ]
+      },
+      "signed_scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "nominal_home_offset_deg": [
+        7.032967032967033,
+        86.0,
+        -99.93406593406593,
+        3.5604395604395602,
+        90.04395604395604
+      ],
+      "home_tick_convention_uncertainty": [
+        2047,
+        2048
+      ],
+      "visual_offset_minus_nominal_home_deg": [
+        -4.605538338139359,
+        0.6681730176403278,
+        0.004677754043058258,
+        -3.1394343349542972,
+        -10.397920872394181
+      ],
+      "command_quantization_max_abs_deg": [
+        0.043957930344802776,
+        3.7727775179519085e-06,
+        0.04395981673356175,
+        3.7727775179519085e-06,
+        1.8863887589759543e-06,
+        0.08769310584434921
+      ],
+      "notes": [
+        "Homing offsets are already applied in motor firmware; never add them to normalized recorded states",
+        "Arm degree zero is the midpoint of each saved follower range, not encoder tick 2048",
+        "The leader gripper spans 1209 ticks and the follower spans 1518; commands are normalized targets sent through follower calibration",
+        "Float32 saved actions are recovered on the verified integer leader grid before reproducing follower command truncation",
+        "A hand-set homing pose is not a surveyed CAD joint zero; nominal home offsets are conditional priors",
+        "No friction, stiffness, backlash or loaded servo response is encoded in these files"
+      ],
+      "sources": [
+        "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/motors/motors_bus.py",
+        "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/robots/so_follower/so_follower.py"
+      ]
+    },
+    "home_prior_std_deg": null,
+    "offset_correction_from_nominal_home_deg": [
+      -4.576610238991001,
+      -1.185867709162764,
+      -0.6604690250685508,
+      -1.358889545756726,
+      -9.574133210419532
+    ],
+    "floor_clearance_constraint": {
+      "training_states": 1563,
+      "target_minimum_z_m": 0.0005,
+      "before_minimum_z_m": -0.0008280952341525594,
+      "after_minimum_z_m": -0.0003617443714809543,
+      "method": "Exact CAD extrema, training episodes only; one-sided floor clearance, no cube or endpoint fitting"
+    }
+  },
+  "encoder_units": {
+    "method": "supplied LeRobot calibration cross-checked against all recorded encoder values",
+    "motors": [
+      {
+        "name": "shoulder_pan",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+        "cad_degrees_per_recorded_unit": -1.0,
+        "normalization": "degrees",
+        "calibration_span_ticks": 1938,
+        "absolute_grid_99th_percentile_error_ticks": 1.9073486328125e-05
+      },
+      {
+        "name": "shoulder_lift",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+        "cad_degrees_per_recorded_unit": 1.0,
+        "normalization": "degrees",
+        "calibration_span_ticks": 2383,
+        "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+      },
+      {
+        "name": "elbow_flex",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+        "cad_degrees_per_recorded_unit": 1.0,
+        "normalization": "degrees",
+        "calibration_span_ticks": 2190,
+        "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+      },
+      {
+        "name": "wrist_flex",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+        "cad_degrees_per_recorded_unit": 1.0,
+        "normalization": "degrees",
+        "calibration_span_ticks": 2349,
+        "absolute_grid_99th_percentile_error_ticks": 4.291534423828125e-05
+      },
+      {
+        "name": "wrist_roll",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+        "cad_degrees_per_recorded_unit": -1.0,
+        "normalization": "degrees",
+        "calibration_span_ticks": 4095,
+        "absolute_grid_99th_percentile_error_ticks": 1.2874603271484375e-05
+      },
+      {
+        "name": "gripper",
+        "inferred_calibration_span_ticks": 1518,
+        "recorded_units_per_encoder_tick": 0.06587615283267458,
+        "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+        "cad_degrees_per_recorded_unit": -1.3345054945054946,
+        "normalization": "range_0_100",
+        "calibration_span_ticks": 1518,
+        "absolute_grid_99th_percentile_error_ticks": 2.593994122435106e-05
+      }
+    ],
+    "signed_scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "sources": [
+      "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/motors/motors_bus.py",
+      "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/robots/so_follower/so_follower.py"
+    ],
+    "assumptions": [
+      "Homing offsets are already applied in motor firmware; never add them to normalized recorded states",
+      "A hand-set homing pose is not a surveyed CAD joint zero; nominal home offsets are conditional priors"
+    ],
+    "hardware_calibration": "recorded_motor_calibration.json"
+  },
+  "external_camera": {
+    "source": "green_cube_red_plate_1/videos/observation.images.external/chunk-000/file-000.mp4, frame 0",
+    "method": "independent optical pose/lens fit to mat, box corners and curved near-wall seam",
+    "pixel_origin": "top-left",
+    "image_size": [
+      640,
+      480
+    ],
+    "optical_position_m": [
+      0.42942477557451153,
+      0.36615960921408,
+      0.47795329558544786
+    ],
+    "yaw_pitch_roll_deg": [
+      13.797045830215815,
+      43.82622453105621,
+      -10.947382854789224
+    ],
+    "world_from_optical_rotation": [
+      [
+        -0.7006272455053079,
+        -0.10643199409834136,
+        -0.7055449620597511
+      ],
+      [
+        0.17205225393540927,
+        -0.9848356133444925,
+        -0.022289831854963
+      ],
+      [
+        -0.6924734541997913,
+        -0.13700746447047218,
+        0.7083145275285421
+      ]
+    ],
+    "lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 286.44424271338204,
+      "principal_point_px": [
+        331.6193569040149,
+        240.23297064150782
+      ],
+      "theta_coefficients": [
+        -0.005349402851141891,
+        -0.0057887208838837256
+      ]
+    },
+    "landmark_rms_px": 3.281868945059853,
+    "landmarks": {
+      "floor_far_front": {
+        "world_m": [
+          -0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          184.0,
+          153.0
+        ],
+        "projected_px": [
+          183.34158739953702,
+          158.47838170696502
+        ],
+        "error_px": 5.517805114323759,
+        "weight": 0.35
+      },
+      "floor_far_rear": {
+        "world_m": [
+          -0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          357.0,
+          158.0
+        ],
+        "projected_px": [
+          354.60817386483933,
+          163.0983832046511
+        ],
+        "error_px": 5.631548948762325,
+        "weight": 1.0
+      },
+      "floor_near_front": {
+        "world_m": [
+          0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          82.0,
+          439.0
+        ],
+        "projected_px": [
+          83.55458873478955,
+          439.51888954743674
+        ],
+        "error_px": 1.6388997824069882,
+        "weight": 1.0
+      },
+      "floor_near_rear": {
+        "world_m": [
+          0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          438.0,
+          450.0
+        ],
+        "projected_px": [
+          436.5255666266144,
+          451.753516449809
+        ],
+        "error_px": 2.2910202339359604,
+        "weight": 1.0
+      },
+      "mat_far_front": {
+        "world_m": [
+          -0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          209.0,
+          194.0
+        ],
+        "projected_px": [
+          209.6954429160549,
+          193.9878489795251
+        ],
+        "error_px": 0.6955490613821039,
+        "weight": 1.0
+      },
+      "mat_far_rear": {
+        "world_m": [
+          -0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          315.0,
+          198.0
+        ],
+        "projected_px": [
+          315.5360127920361,
+          196.47146794435795
+        ],
+        "error_px": 1.619790097003818,
+        "weight": 1.0
+      },
+      "mat_near_front": {
+        "world_m": [
+          0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          169.0,
+          348.0
+        ],
+        "projected_px": [
+          167.6643039076165,
+          345.79566197605817
+        ],
+        "error_px": 2.577438685013539,
+        "weight": 1.0
+      },
+      "mat_near_rear": {
+        "world_m": [
+          0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          331.0,
+          352.0
+        ],
+        "projected_px": [
+          333.26089718870514,
+          350.90105850869816
+        ],
+        "error_px": 2.513827460109294,
+        "weight": 1.0
+      }
+    },
+    "uncertainties": [
+      "Hand-located corners, approximately 2 px; partly occluded front corner downweighted",
+      "Metric enclosure/mat dimensions and optional known-size stereo plates; optics/pose remain image-derived",
+      "Pixel alignment estimate, not a measured metric camera calibration"
+    ],
+    "lens_source": "independent external-lens fit; wrist-camera estimate used only as a weak same-model prior",
+    "pose_change_from_photo_mm": [
+      6.607212120089356,
+      -28.04764354267453,
+      -21.20946398138901
+    ],
+    "stereo_plate_training_episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "physical_validation": [
+    {
+      "episode": 0,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.005184800043944019,
+      "maximum_penetration_m": 0.0004583005284075625,
+      "maximum_cube_height_m": 0.06686719166143042,
+      "maximum_contact_force_n": 4.043762539601448,
+      "first_contact_s": 7.1953333333333545,
+      "bilateral_contact_render_frames": 154
+    },
+    {
+      "episode": 1,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.00232074461547712,
+      "maximum_penetration_m": 0.00036074300442123786,
+      "maximum_cube_height_m": 0.06352184483608032,
+      "maximum_contact_force_n": 3.510002235711206,
+      "first_contact_s": 4.821000000000007,
+      "bilateral_contact_render_frames": 127
+    },
+    {
+      "episode": 2,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.0022589207146155687,
+      "maximum_penetration_m": 0.0029449307548929937,
+      "maximum_cube_height_m": 0.051332108045834296,
+      "maximum_contact_force_n": 885.2560790079071,
+      "first_contact_s": 6.084666666666672,
+      "bilateral_contact_render_frames": 102
+    },
+    {
+      "episode": 3,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.012837713239551152,
+      "maximum_penetration_m": 0.00021461677533807233,
+      "maximum_cube_height_m": 0.11582334440802956,
+      "maximum_contact_force_n": 3.7664589025768858,
+      "first_contact_s": 8.794333333333299,
+      "bilateral_contact_render_frames": 177
+    },
+    {
+      "episode": 4,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.005934973825528038,
+      "maximum_penetration_m": 0.0009296197167714126,
+      "maximum_cube_height_m": 0.08315063794686994,
+      "maximum_contact_force_n": 31.897306233499236,
+      "first_contact_s": 7.388333333333351,
+      "bilateral_contact_render_frames": 105
+    },
+    {
+      "episode": 5,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.0034108328069520385,
+      "maximum_penetration_m": 0.0002156521732104011,
+      "maximum_cube_height_m": 0.1517567834985951,
+      "maximum_contact_force_n": 8.975660578180953,
+      "first_contact_s": 5.1296666666666875,
+      "bilateral_contact_render_frames": 141
+    },
+    {
+      "episode": 6,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.0061883499339294695,
+      "maximum_penetration_m": 0.0004650200789910741,
+      "maximum_cube_height_m": 0.17161808550011592,
+      "maximum_contact_force_n": 10.99742808668511,
+      "first_contact_s": 7.665000000000021,
+      "bilateral_contact_render_frames": 154
+    },
+    {
+      "episode": 7,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.009508248388661619,
+      "maximum_penetration_m": 0.0008962790670921095,
+      "maximum_cube_height_m": 0.12832580350957093,
+      "maximum_contact_force_n": 209.25411459258297,
+      "first_contact_s": 6.036000000000012,
+      "bilateral_contact_render_frames": 114
+    },
+    {
+      "episode": 8,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.009154076636478822,
+      "maximum_penetration_m": 0.0004933019008603878,
+      "maximum_cube_height_m": 0.11789812143172976,
+      "maximum_contact_force_n": 16.15616015948788,
+      "first_contact_s": 7.58333333333335,
+      "bilateral_contact_render_frames": 94
+    },
+    {
+      "episode": 9,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.003804505547599424,
+      "maximum_penetration_m": 0.000841048029542435,
+      "maximum_cube_height_m": 0.12839153723776395,
+      "maximum_contact_force_n": 52.378129590347015,
+      "first_contact_s": 6.379333333333348,
+      "bilateral_contact_render_frames": 87
+    }
+  ],
+  "gripper_response": {
+    "method": "unloaded command-to-observed velocity response; episodes 0-7 fit, 8-9 validate",
+    "commands_quantized_to_follower_ticks": true,
+    "close_time_constant_s": 0.10497322278417646,
+    "open_time_constant_s": 0.10032158774851133,
+    "command_latency_s": 0.025,
+    "speed_limits_identified": false,
+    "candidate_speed_limits_used_in_fit_deg_s": [
+      180.0,
+      180.0
+    ],
+    "unloaded_threshold_recorded_percent": 25.0,
+    "training_velocity_rms_deg_s": 4.047482150398252,
+    "held_out_velocity_rms_deg_s": 3.313337453046876,
+    "previous_held_out_velocity_rms_deg_s": 104.76262312718973,
+    "assumptions": [
+      "Fit uses measured motion in open gaps, excluding the cube-loaded stall",
+      "Torque limit, damping, friction and compliance remain unmeasured",
+      "The velocity controller retains physical torque saturation and contact-determined actual jaw motion"
+    ]
+  },
+  "limitations": [
+    "Image-derived calibration and rigid CAD geometry; physical servo/friction/compliance parameters are unmeasured",
+    "The first five arm joints remain prescribed from measured states; only the gripper/cube use contact dynamics",
+    "Final reference position is reconstructed from both images on an assumed plate plane, not independently surveyed",
+    "All contact outcomes and force spikes are retained; matching images does not guarantee matching dynamics"
+  ],
+  "measured_gripper_response_check": {
+    "current": {
+      "samples": 177,
+      "held_out_open_gap_position_rms_deg": 0.3907912634417096,
+      "held_out_loaded_samples": 174,
+      "held_out_loaded_position_rms_deg": 0.5162973283278964
+    },
+    "previous_model": {
+      "samples": 177,
+      "held_out_open_gap_position_rms_deg": 0.4492989630789522,
+      "held_out_loaded_samples": 174,
+      "held_out_loaded_position_rms_deg": 12.310467396506642
+    }
+  },
+  "aggregate_validation": {
+    "current": {
+      "episodes": 10,
+      "cube_centers_on_plate": 8,
+      "median_endpoint_xy_error_mm": 5.559886934736028
+    },
+    "previous_model": {
+      "episodes": 10,
+      "cube_centers_on_plate": 4,
+      "median_endpoint_xy_error_mm": 19.247157361577585
+    }
+  },
+  "hardware_motor_calibration": {
+    "method": "supplied LeRobot calibration cross-checked against all recorded encoder values",
+    "rows": 6632,
+    "follower": {
+      "source": "calib/robots/so_follower/so101_follower.json",
+      "sha256": "c2b8953fadcc1af32fa7a96c6b5e7a8031fff3100868c1afc2f95ee19437afc2",
+      "calibration": {
+        "shoulder_pan": {
+          "id": 1,
+          "drive_mode": 0,
+          "homing_offset": 1252,
+          "range_min": 999,
+          "range_max": 2937
+        },
+        "shoulder_lift": {
+          "id": 2,
+          "drive_mode": 0,
+          "homing_offset": -1476,
+          "range_min": 811,
+          "range_max": 3194
+        },
+        "elbow_flex": {
+          "id": 3,
+          "drive_mode": 0,
+          "homing_offset": 1483,
+          "range_min": 840,
+          "range_max": 3030
+        },
+        "wrist_flex": {
+          "id": 4,
+          "drive_mode": 0,
+          "homing_offset": -673,
+          "range_min": 914,
+          "range_max": 3263
+        },
+        "wrist_roll": {
+          "id": 5,
+          "drive_mode": 0,
+          "homing_offset": -182,
+          "range_min": 0,
+          "range_max": 4095
+        },
+        "gripper": {
+          "id": 6,
+          "drive_mode": 0,
+          "homing_offset": 758,
+          "range_min": 2033,
+          "range_max": 3551
+        }
+      },
+      "body_normalization": "degrees",
+      "gripper_normalization": "range_0_100",
+      "grid_99th_percentile_error_ticks": {
+        "degrees": [
+          1.9073486328125e-05,
+          4.100799560546875e-05,
+          4.100799560546875e-05,
+          4.291534423828125e-05,
+          1.2874603271484375e-05,
+          2.593994122435106e-05
+        ],
+        "range_m100_100": [
+          0.48483394622803644,
+          0.49630069732666016,
+          0.4944660186767328,
+          0.49116196689626995,
+          0.4000154495240622,
+          2.593994122435106e-05
+        ]
+      },
+      "decoded_tick_min": [
+        1388.9999856948853,
+        997.9999866485596,
+        936.0000324249268,
+        2676.9999947547913,
+        1572.999987602234,
+        2041.9999999928475
+      ],
+      "decoded_tick_max": [
+        2466.000002861023,
+        2942.0000009536743,
+        2918.999984741211,
+        3244.999960899353,
+        2397.0000035762787,
+        2654.0000157928466
+      ]
+    },
+    "leader": {
+      "source": "calib/teleoperators/so_leader/so101_leader.json",
+      "sha256": "76f7671cfa47a4c2b465ae4edade81907f5969ee219727c94964511b8ad8d2da",
+      "calibration": {
+        "shoulder_pan": {
+          "id": 1,
+          "drive_mode": 0,
+          "homing_offset": -451,
+          "range_min": 1173,
+          "range_max": 2888
+        },
+        "shoulder_lift": {
+          "id": 2,
+          "drive_mode": 0,
+          "homing_offset": -742,
+          "range_min": 912,
+          "range_max": 2929
+        },
+        "elbow_flex": {
+          "id": 3,
+          "drive_mode": 0,
+          "homing_offset": -797,
+          "range_min": 1078,
+          "range_max": 3041
+        },
+        "wrist_flex": {
+          "id": 4,
+          "drive_mode": 0,
+          "homing_offset": -729,
+          "range_min": 823,
+          "range_max": 3138
+        },
+        "wrist_roll": {
+          "id": 5,
+          "drive_mode": 0,
+          "homing_offset": 1350,
+          "range_min": 0,
+          "range_max": 4095
+        },
+        "gripper": {
+          "id": 6,
+          "drive_mode": 0,
+          "homing_offset": -890,
+          "range_min": 2046,
+          "range_max": 3255
+        }
+      },
+      "body_normalization": "degrees",
+      "gripper_normalization": "range_0_100",
+      "grid_99th_percentile_error_ticks": {
+        "degrees": [
+          2.002716064453125e-05,
+          3.910064697265625e-05,
+          4.100799560546875e-05,
+          4.291534423828125e-05,
+          1.52587890625e-05,
+          2.136230477844947e-05
+        ],
+        "range_m100_100": [
+          0.4923089504241034,
+          0.4909873199467256,
+          0.4971634292605813,
+          0.49232807159432923,
+          0.4000171661375589,
+          2.136230477844947e-05
+        ]
+      },
+      "decoded_tick_min": [
+        1448.0000157356262,
+        914.0000410079956,
+        1036.0000257492065,
+        2559.000006198883,
+        1567.9999933242798,
+        2046.0
+      ],
+      "decoded_tick_max": [
+        2532.9999890327454,
+        2857.000039100647,
+        3039.9999713897705,
+        3138.99999332428,
+        2401.999997854233,
+        2546.9999905014038
+      ]
+    },
+    "signed_scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "nominal_home_offset_deg": [
+      7.032967032967033,
+      86.0,
+      -99.93406593406593,
+      3.5604395604395602,
+      90.04395604395604
+    ],
+    "home_tick_convention_uncertainty": [
+      2047,
+      2048
+    ],
+    "visual_offset_minus_nominal_home_deg": [
+      -4.605538338139359,
+      0.6681730176403278,
+      0.004677754043058258,
+      -3.1394343349542972,
+      -10.397920872394181
+    ],
+    "command_quantization_max_abs_deg": [
+      0.043957930344802776,
+      3.7727775179519085e-06,
+      0.04395981673356175,
+      3.7727775179519085e-06,
+      1.8863887589759543e-06,
+      0.08769310584434921
+    ],
+    "notes": [
+      "Homing offsets are already applied in motor firmware; never add them to normalized recorded states",
+      "Arm degree zero is the midpoint of each saved follower range, not encoder tick 2048",
+      "The leader gripper spans 1209 ticks and the follower spans 1518; commands are normalized targets sent through follower calibration",
+      "Float32 saved actions are recovered on the verified integer leader grid before reproducing follower command truncation",
+      "A hand-set homing pose is not a surveyed CAD joint zero; nominal home offsets are conditional priors",
+      "No friction, stiffness, backlash or loaded servo response is encoded in these files"
+    ],
+    "sources": [
+      "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/motors/motors_bus.py",
+      "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/robots/so_follower/so_follower.py"
+    ]
+  },
+  "effective_contact_response": {
+    "method": "effective contact-compliance candidate selected by recorded loaded-jaw tracking; no endpoint objective",
+    "training_episodes": [
+      0,
+      2,
+      7
+    ],
+    "held_out_episodes": [
+      8,
+      9
+    ],
+    "normal_compliance_m_per_n": 0.0001,
+    "tangential_compliance_ratio": 0.25,
+    "damping_time_s": 0.002,
+    "training_loaded_jaw_rms_deg": 0.3532064247881735,
+    "candidates": [
+      {
+        "normal_compliance_m_per_n": 0.0,
+        "loaded_jaw_rms_deg": 13.743105235227324,
+        "samples": 340,
+        "episodes": [
+          {
+            "episode": 0,
+            "samples": 137,
+            "loaded_jaw_rms_deg": 0.15620305775574314,
+            "maximum_contact_force_n": 29.62776345364889,
+            "maximum_penetration_m": 0.00038361195038305596,
+            "source": "output/metric_refit/hardware_contact_validation/episode_000/physics_replay.json"
+          },
+          {
+            "episode": 2,
+            "samples": 94,
+            "loaded_jaw_rms_deg": 17.720996331654653,
+            "maximum_contact_force_n": 839.3819733412225,
+            "maximum_penetration_m": 0.0007225837398436852,
+            "source": "output/metric_refit/hardware_contact_validation/episode_002/physics_replay.json"
+          },
+          {
+            "episode": 7,
+            "samples": 109,
+            "loaded_jaw_rms_deg": 17.84085831294444,
+            "maximum_contact_force_n": 807.695546046139,
+            "maximum_penetration_m": 4.483234806684777e-05,
+            "source": "output/metric_refit/hardware_contact_validation/episode_007/physics_replay.json"
+          }
+        ]
+      },
+      {
+        "normal_compliance_m_per_n": 0.0001,
+        "loaded_jaw_rms_deg": 0.3532064247881735,
+        "samples": 340,
+        "episodes": [
+          {
+            "episode": 0,
+            "samples": 137,
+            "loaded_jaw_rms_deg": 0.06302670243063853,
+            "maximum_contact_force_n": 9.6087641465406,
+            "maximum_penetration_m": 0.0007155662824516185,
+            "source": "output/metric_refit/compliance_1e4_training/episode_000/physics_replay.json"
+          },
+          {
+            "episode": 2,
+            "samples": 94,
+            "loaded_jaw_rms_deg": 0.5192155290465773,
+            "maximum_contact_force_n": 969.8767957069886,
+            "maximum_penetration_m": 0.0030919141790946014,
+            "source": "output/metric_refit/compliance_1e4_training/episode_002/physics_replay.json"
+          },
+          {
+            "episode": 7,
+            "samples": 109,
+            "loaded_jaw_rms_deg": 0.38944141004170313,
+            "maximum_contact_force_n": 209.2801344713906,
+            "maximum_penetration_m": 0.0008961895437096246,
+            "source": "output/metric_refit/compliance_1e4_training/episode_007/physics_replay.json"
+          }
+        ]
+      },
+      {
+        "normal_compliance_m_per_n": 0.001,
+        "loaded_jaw_rms_deg": 12.25957659014618,
+        "samples": 340,
+        "episodes": [
+          {
+            "episode": 0,
+            "samples": 137,
+            "loaded_jaw_rms_deg": 14.218510994228364,
+            "maximum_contact_force_n": 19.497767048781533,
+            "maximum_penetration_m": 0.004122135062061716,
+            "source": "output/metric_refit/compliance_1e3_training/episode_000/physics_replay.json"
+          },
+          {
+            "episode": 2,
+            "samples": 94,
+            "loaded_jaw_rms_deg": 0.379856645094409,
+            "maximum_contact_force_n": 115.02909594646641,
+            "maximum_penetration_m": 0.0016277647300739773,
+            "source": "output/metric_refit/compliance_1e3_training/episode_002/physics_replay.json"
+          },
+          {
+            "episode": 7,
+            "samples": 109,
+            "loaded_jaw_rms_deg": 14.649025798678245,
+            "maximum_contact_force_n": 28.811662671013437,
+            "maximum_penetration_m": 0.002140911361493636,
+            "source": "output/metric_refit/compliance_1e3_training/episode_007/physics_replay.json"
+          }
+        ]
+      }
+    ],
+    "material_parameters_independently_measured": false,
+    "assumptions": [
+      "Effective contact compliance represents omitted printed-jaw and arm compliance; not measured PLA stiffness",
+      "Existing friction, jaw torque saturation and CAD collision geometry are retained",
+      "Later images and final cube positions never drive simulated cube motion",
+      "Large contact-force/penetration outliers remain visible and are not used as a calibrated force response"
+    ]
+  },
+  "recorded_jaw_floor_clearance": {
+    "method": "Exact extrema of full jaw meshes at recorded measured joint states; no physics or object correction",
+    "mat_plane_world_z_m": 0.001,
+    "joint_map": {
+      "scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "offset_deg": [
+        2.456356793976032,
+        84.81413229083724,
+        -100.59453495913448,
+        2.201550014682834,
+        80.46982283353651,
+        97.40613768180167
+      ]
+    },
+    "episodes": [
+      {
+        "episode": 0,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.008664933839067884,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 232,
+          "minimum_timestamp_s": 7.733333110809326
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.007419480956967317,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 232,
+          "minimum_timestamp_s": 7.733333110809326
+        }
+      },
+      {
+        "episode": 1,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.009583422159216676,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 967,
+          "minimum_timestamp_s": 8.199999809265137
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.008016364684911292,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 967,
+          "minimum_timestamp_s": 8.199999809265137
+        }
+      },
+      {
+        "episode": 2,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.0064650022783093175,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 1617,
+          "minimum_timestamp_s": 7.633333206176758
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.0071622987402585325,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 1648,
+          "minimum_timestamp_s": 8.666666984558105
+        }
+      },
+      {
+        "episode": 3,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.005127605595995177,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 2285,
+          "minimum_timestamp_s": 9.066666603088379
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.006005372681427201,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 2284,
+          "minimum_timestamp_s": 9.033333778381348
+        }
+      },
+      {
+        "episode": 4,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.0003617443714809543,
+          "penetration_below_mat_m": 0.0013617443714809543,
+          "frames_below_mat": 9,
+          "minimum_dataset_index": 3251,
+          "minimum_timestamp_s": 15.633333206176758
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.0015537216519749264,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 3250,
+          "minimum_timestamp_s": 15.600000381469727
+        }
+      },
+      {
+        "episode": 5,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.0036639858348033183,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 3716,
+          "minimum_timestamp_s": 7.166666507720947
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.001924064543996129,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 3716,
+          "minimum_timestamp_s": 7.166666507720947
+        }
+      },
+      {
+        "episode": 6,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.00860594718021479,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 4398,
+          "minimum_timestamp_s": 7.833333492279053
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.006972584048693442,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 4398,
+          "minimum_timestamp_s": 7.833333492279053
+        }
+      },
+      {
+        "episode": 7,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.010979990729177241,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 5151,
+          "minimum_timestamp_s": 8.333333015441895
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.010297230597551776,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 5151,
+          "minimum_timestamp_s": 8.333333015441895
+        }
+      },
+      {
+        "episode": 8,
+        "held_out": true,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.008632528665800637,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6019,
+          "minimum_timestamp_s": 14.5
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.009864108101996782,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6002,
+          "minimum_timestamp_s": 13.933333396911621
+        }
+      },
+      {
+        "episode": 9,
+        "held_out": true,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.012951056862589988,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6297,
+          "minimum_timestamp_s": 6.266666889190674
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.013709540102466222,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6297,
+          "minimum_timestamp_s": 6.266666889190674
+        }
+      }
+    ]
+  },
+  "previous_recorded_jaw_floor_clearance": {
+    "method": "Exact extrema of full jaw meshes at recorded measured joint states; no physics or object correction",
+    "mat_plane_world_z_m": 0.001,
+    "joint_map": {
+      "method": "shared multi-episode metric reprojection fit with CAD and measured mat dimensions",
+      "validation": {
+        "train": {
+          "mat_boundary_rms_px": 3.4731725682190406,
+          "fixed_jaw_rms_px": 1.423352381620222,
+          "moving_tip_rms_px": 5.249979375349412,
+          "global_outline_rms_px": 2.3683195009399465,
+          "plate_boundary_rms_px": 5.674709505462242
+        },
+        "held_out": {
+          "mat_boundary_rms_px": 3.4917475140304,
+          "fixed_jaw_rms_px": 1.423352381620222,
+          "moving_tip_rms_px": 5.700313377825211,
+          "global_outline_rms_px": 2.848449881763089,
+          "plate_boundary_rms_px": 3.7300901445789427
+        }
+      },
+      "assumptions": [
+        "Metric scale comes from enclosure/mat and CAD dimensions",
+        "No per-frame camera, robot or motor correction; last two episodes held out",
+        "Visible cream outline and tip measurements have occlusion/segmentation uncertainty",
+        "Image-derived calibration; hardware encoder calibration and measured contact properties remain unavailable"
+      ],
+      "source": "green_cube_red_plate_1; shared multi-episode fit",
+      "scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "offset_deg": [
+        2.4274286948276735,
+        86.66817301764033,
+        -99.92938818002287,
+        0.4210052254852628,
+        79.64603517156186,
+        97.24604958961125
+      ],
+      "units": "cad_degrees = recorded_state * scale + offset_deg",
+      "encoder_scale_constraint": {
+        "method": "integer encoder-grid inference from all 6632 observed states",
+        "motors": [
+          {
+            "name": "shoulder_pan",
+            "inferred_calibration_span_ticks": 2275,
+            "recorded_units_per_encoder_tick": 0.08791208791208792,
+            "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+            "cad_degrees_per_recorded_unit": -1.0
+          },
+          {
+            "name": "shoulder_lift",
+            "inferred_calibration_span_ticks": 2275,
+            "recorded_units_per_encoder_tick": 0.08791208791208792,
+            "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+            "cad_degrees_per_recorded_unit": 1.0
+          },
+          {
+            "name": "elbow_flex",
+            "inferred_calibration_span_ticks": 2275,
+            "recorded_units_per_encoder_tick": 0.08791208791208792,
+            "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+            "cad_degrees_per_recorded_unit": 1.0
+          },
+          {
+            "name": "wrist_flex",
+            "inferred_calibration_span_ticks": 2275,
+            "recorded_units_per_encoder_tick": 0.08791208791208792,
+            "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+            "cad_degrees_per_recorded_unit": 1.0
+          },
+          {
+            "name": "wrist_roll",
+            "inferred_calibration_span_ticks": 2275,
+            "recorded_units_per_encoder_tick": 0.08791208791208792,
+            "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+            "cad_degrees_per_recorded_unit": -1.0
+          },
+          {
+            "name": "gripper",
+            "inferred_calibration_span_ticks": 1518,
+            "recorded_units_per_encoder_tick": 0.06587615283267458,
+            "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+            "cad_degrees_per_recorded_unit": -1.3345054945054946
+          }
+        ],
+        "signed_scale": [
+          -1.0,
+          1.0,
+          1.0,
+          1.0,
+          -1.0,
+          -1.3345054945054946
+        ],
+        "sources": [
+          "https://github.com/huggingface/lerobot/blob/main/src/lerobot/motors/motors_bus.py",
+          "https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py"
+        ],
+        "assumptions": [
+          "12-bit STS3215 position encoder, matching the supplied SO follower model",
+          "First five columns are consistent with degrees or an equivalent 2275-tick normalized span; either interpretation yields the same angular scale",
+          "Gripper remains a calibrated percentage; its inferred span is 1518 ticks",
+          "Signs follow CAD axes; absolute offsets are fitted separately"
+        ]
+      }
+    },
+    "episodes": [
+      {
+        "episode": 0,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.0009051909606412056,
+          "penetration_below_mat_m": 0.0019051909606412057,
+          "frames_below_mat": 33,
+          "minimum_dataset_index": 232,
+          "minimum_timestamp_s": 7.733333110809326
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.002132605842465496,
+          "penetration_below_mat_m": 0.003132605842465496,
+          "frames_below_mat": 24,
+          "minimum_dataset_index": 232,
+          "minimum_timestamp_s": 7.733333110809326
+        }
+      },
+      {
+        "episode": 1,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.0025310582670819426,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 967,
+          "minimum_timestamp_s": 8.199999809265137
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.001031266213636528,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 967,
+          "minimum_timestamp_s": 8.199999809265137
+        }
+      },
+      {
+        "episode": 2,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.003090873595082394,
+          "penetration_below_mat_m": 0.004090873595082394,
+          "frames_below_mat": 51,
+          "minimum_dataset_index": 1617,
+          "minimum_timestamp_s": 7.633333206176758
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.0024331046514053933,
+          "penetration_below_mat_m": 0.0034331046514053934,
+          "frames_below_mat": 26,
+          "minimum_dataset_index": 1648,
+          "minimum_timestamp_s": 8.666666984558105
+        }
+      },
+      {
+        "episode": 3,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.0034760329359091735,
+          "penetration_below_mat_m": 0.0044760329359091735,
+          "frames_below_mat": 46,
+          "minimum_dataset_index": 2285,
+          "minimum_timestamp_s": 9.066666603088379
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.0024540669019976757,
+          "penetration_below_mat_m": 0.0034540669019976758,
+          "frames_below_mat": 60,
+          "minimum_dataset_index": 2284,
+          "minimum_timestamp_s": 9.033333778381348
+        }
+      },
+      {
+        "episode": 4,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.009806023804672187,
+          "penetration_below_mat_m": 0.010806023804672188,
+          "frames_below_mat": 60,
+          "minimum_dataset_index": 3251,
+          "minimum_timestamp_s": 15.633333206176758
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.008028374656881387,
+          "penetration_below_mat_m": 0.009028374656881388,
+          "frames_below_mat": 38,
+          "minimum_dataset_index": 3250,
+          "minimum_timestamp_s": 15.600000381469727
+        }
+      },
+      {
+        "episode": 5,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.005675784447137844,
+          "penetration_below_mat_m": 0.006675784447137844,
+          "frames_below_mat": 50,
+          "minimum_dataset_index": 3716,
+          "minimum_timestamp_s": 7.166666507720947
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.007512039719939856,
+          "penetration_below_mat_m": 0.008512039719939857,
+          "frames_below_mat": 29,
+          "minimum_dataset_index": 3716,
+          "minimum_timestamp_s": 7.166666507720947
+        }
+      },
+      {
+        "episode": 6,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": -0.0009326141033733359,
+          "penetration_below_mat_m": 0.001932614103373336,
+          "frames_below_mat": 17,
+          "minimum_dataset_index": 4398,
+          "minimum_timestamp_s": 7.833333492279053
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": -0.002508180514145586,
+          "penetration_below_mat_m": 0.003508180514145586,
+          "frames_below_mat": 14,
+          "minimum_dataset_index": 4398,
+          "minimum_timestamp_s": 7.833333492279053
+        }
+      },
+      {
+        "episode": 7,
+        "held_out": false,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.0013157714331627213,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 5151,
+          "minimum_timestamp_s": 8.333333015441895
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.0006437088288306914,
+          "penetration_below_mat_m": 0.00035629117116930866,
+          "frames_below_mat": 2,
+          "minimum_dataset_index": 5151,
+          "minimum_timestamp_s": 8.333333015441895
+        }
+      },
+      {
+        "episode": 8,
+        "held_out": true,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.003135197951682933,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6019,
+          "minimum_timestamp_s": 14.5
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.002564737000993411,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 5824,
+          "minimum_timestamp_s": 8.0
+        }
+      },
+      {
+        "episode": 9,
+        "held_out": true,
+        "fixed_jaw": {
+          "minimum_world_z_m": 0.0034433617639119396,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6297,
+          "minimum_timestamp_s": 6.266666889190674
+        },
+        "moving_jaw": {
+          "minimum_world_z_m": 0.004195397449407057,
+          "penetration_below_mat_m": 0.0,
+          "frames_below_mat": 0,
+          "minimum_dataset_index": 6297,
+          "minimum_timestamp_s": 6.266666889190674
+        }
+      }
+    ]
+  },
+  "previous_calibration": {
+    "method": "shared multi-episode metric reprojection fit with CAD and measured mat dimensions",
+    "training_episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "validation_episodes": [
+      8,
+      9
+    ],
+    "paired_views": 165,
+    "before": {
+      "train": {
+        "mat_boundary_rms_px": 10.992923260745517,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.317142816663585,
+        "global_outline_rms_px": 4.2614186259337945
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 14.195161504658367,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.436796008600744,
+        "global_outline_rms_px": 5.3335470401578
+      }
+    },
+    "after": {
+      "train": {
+        "mat_boundary_rms_px": 3.4731725682190406,
+        "fixed_jaw_rms_px": 1.423352381620222,
+        "moving_tip_rms_px": 5.249979375349412,
+        "global_outline_rms_px": 2.3683195009399465,
+        "plate_boundary_rms_px": 5.674709505462242
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 3.4917475140304,
+        "fixed_jaw_rms_px": 1.423352381620222,
+        "moving_tip_rms_px": 5.700313377825211,
+        "global_outline_rms_px": 2.848449881763089,
+        "plate_boundary_rms_px": 3.7300901445789427
+      }
+    },
+    "scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "offset_deg": [
+      2.4274286948276735,
+      86.66817301764033,
+      -99.92938818002287,
+      0.4210052254852628,
+      79.64603517156186,
+      97.24604958961125
+    ],
+    "base_translation_delta_m": [
+      0.01853460466595827,
+      0.012840466896693896,
+      0.00014959580868792097
+    ],
+    "wrist_link_from_optical": [
+      [
+        -0.4314013317843878,
+        0.0488593118710422,
+        0.9008360887147036,
+        0.07410378914760225
+      ],
+      [
+        -0.9021556214878602,
+        -0.02020870551992897,
+        -0.4309371682644643,
+        -0.12684305622312303
+      ],
+      [
+        -0.0028505622644107733,
+        -0.9986012096251974,
+        0.05279676533618312,
+        0.15587315786531314
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "wrist_lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 262.18975783041867,
+      "principal_point_px": [
+        327.8685495048704,
+        251.3952277098577
+      ],
+      "theta_coefficients": [
+        0.050216966142828084,
+        -0.023847979791381348
+      ]
+    },
+    "parameters": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      2.4274286948276735,
+      86.66817301764033,
+      -99.92938818002287,
+      0.4210052254852628,
+      79.64603517156186,
+      18.53460466595827,
+      12.840466896693895,
+      0.14959580868792097,
+      4.57961279049074,
+      1.8448232968398384,
+      -6.212710927390779,
+      -2.1885665228516142,
+      6.7208938310471416,
+      -0.3462270088291381,
+      262.18975783041867,
+      327.8685495048704,
+      251.3952277098577,
+      0.050216966142828084,
+      -0.023847979791381348,
+      -1.3345054945054946,
+      97.24604958961125,
+      -0.09335031600171402,
+      0.26654396115715534,
+      0.03699772077478315,
+      0.0696276310555216,
+      0.28529328951455146,
+      -0.008047429721255467,
+      -0.04819771455213617,
+      0.34723576279217905,
+      -0.0136027094144021,
+      0.09595641945788903,
+      0.26100252399870816,
+      -0.0795113102596906,
+      0.05374973417398404,
+      0.37559329078249065,
+      -0.016691337163056236,
+      -0.12762621269136568,
+      0.18020468063483883,
+      -0.016895640056475487,
+      0.13713539857460771,
+      0.24985952001191772,
+      -0.09633985667900655,
+      -0.03209424189702762,
+      0.19533836195471507,
+      -0.060488348041253366
+    ],
+    "initial_parameters": [
+      -0.6157539105908126,
+      1.0071239642037337,
+      1.013485490962381,
+      1.0249901494260787,
+      -0.7682826024813909,
+      1.6212975131516267,
+      86.8541488246861,
+      -104.92219864429104,
+      -1.9749883542868092,
+      73.64087785311425,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      302.54459848647593,
+      330.99569484286565,
+      200.00000000000003,
+      -0.11358535340852814,
+      0.05889864503060655,
+      -1.0,
+      92.0,
+      -0.08950547494803772,
+      0.2657414891069029,
+      0.02613250652184496,
+      0.06804474250494154,
+      0.2822127191695089,
+      0.04603861397310025,
+      -0.049704876247266765,
+      0.3436306127391043,
+      -0.011829420870919828,
+      0.09330751893715687,
+      0.2575143303275217,
+      -0.050003165737898134,
+      0.05153716365449327,
+      0.3717061942621675,
+      -0.03020764311531625,
+      -0.1271009895578019,
+      0.18451224920768516,
+      -0.001806340343133911,
+      0.13418477722566136,
+      0.2446371476465922,
+      -0.026206293112203235,
+      -0.031794680812511016,
+      0.19628476768874867,
+      -0.06613031296061532
+    ],
+    "solver": {
+      "success": true,
+      "message": "`xtol` termination condition is satisfied.",
+      "nfev": 84
+    },
+    "assumptions": [
+      "Metric scale comes from enclosure/mat and CAD dimensions",
+      "No per-frame camera, robot or motor correction; last two episodes held out",
+      "Visible cream outline and tip measurements have occlusion/segmentation uncertainty",
+      "Image-derived calibration; hardware encoder calibration and measured contact properties remain unavailable"
+    ],
+    "encoder_scale_constraint": {
+      "method": "integer encoder-grid inference from all 6632 observed states",
+      "motors": [
+        {
+          "name": "shoulder_pan",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+          "cad_degrees_per_recorded_unit": -1.0
+        },
+        {
+          "name": "shoulder_lift",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "elbow_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "wrist_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "wrist_roll",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+          "cad_degrees_per_recorded_unit": -1.0
+        },
+        {
+          "name": "gripper",
+          "inferred_calibration_span_ticks": 1518,
+          "recorded_units_per_encoder_tick": 0.06587615283267458,
+          "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+          "cad_degrees_per_recorded_unit": -1.3345054945054946
+        }
+      ],
+      "signed_scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "sources": [
+        "https://github.com/huggingface/lerobot/blob/main/src/lerobot/motors/motors_bus.py",
+        "https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py"
+      ],
+      "assumptions": [
+        "12-bit STS3215 position encoder, matching the supplied SO follower model",
+        "First five columns are consistent with degrees or an equivalent 2275-tick normalized span; either interpretation yields the same angular scale",
+        "Gripper remains a calibrated percentage; its inferred span is 1518 ticks",
+        "Signs follow CAD axes; absolute offsets are fitted separately"
+      ]
+    }
+  }
+}

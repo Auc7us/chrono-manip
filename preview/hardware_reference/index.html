@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Metric twin and physical contact replay</title><style>body{max-width:1400px;margin:28px auto;padding:0 20px;background:#141d26;color:#edf2f8;font:16px system-ui;line-height:1.5}h1{font-size:28px}h2{font-size:21px}img,video{width:100%;background:black}table{border-collapse:collapse}th,td{padding:9px 20px 9px 0;text-align:left;border-bottom:1px solid #35414f}button,select{padding:8px;font:inherit;margin:8px}a{color:#a3d5ff}.note{color:#b8c7d5}</style>
+<h1>Metric calibration and physical contact replay</h1>
+<p>The unsupported white support slab has been removed. Robot mounting, motor coordinates, separate camera optics,
+initial object poses, the shallow red plate and fixed material/lighting estimates now share one scene.</p>
+<p>The supplied follower and leader calibration files are checked against every saved encoder value.
+Commands pass through follower tick quantization; firmware homing offsets are applied once.
+The files do not specify surveyed CAD joint zeros. Training poses also constrain the full CAD jaws above the mat.</p>
+<h2>Default views: real / previous / corrected</h2><img src="before_after.jpg">
+<h2>Actual contact replay</h2><p>Real video is on the left. The cube on the right is initialized once and stays dynamic and collision-enabled.
+Later image measurements never reposition it. The first five arm joints follow observed states and the jaw uses recorded commands.</p>
+<select id="episode"></select><button id="play">Play both cameras</button>
+<h2>External</h2><video id="external" controls playsinline preload="metadata"></video>
+<h2>Wrist</h2><video id="wrist" controls playsinline preload="metadata"></video>
+<h2>Calibration checks</h2><p>165 paired views; episodes 0–7 train the fit and episodes 8–9 are held out.
+Masked held-out mat-edge residual: 3.49 px → 4.34 px. These residuals include the fit's visibility weights;
+they are not a measured millimeter contact tolerance. Encoder-derived angular scales are fixed during calibration.</p>
+<p>Maximum recorded-pose jaw intersection with the mat: 1.36 mm. Previous fit: 10.81 mm. The revised fit accepts a small image residual increase to reduce this physical inconsistency.</p>
+<h2>Every physical replay outcome</h2><p>Endpoint error compares the simulated cube center to its reconstructed real final position.
+An on-plate center does not establish a fully contained footprint. High force spikes and penetration expose remaining contact-model error.</p>
+<p>Cube centers on the plate: 8/10. Median reference endpoint error: 5.56 mm. Previous model: 4/10, 19.25 mm. Held-out loaded-jaw tracking RMS: 0.52°.</p>
+<table><thead><tr><th>Episode</th><th>Placement</th><th>Endpoint XY error, mm</th><th>Peak penetration, mm</th><th>Peak reported force, N</th></tr></thead><tbody><tr><td>0</td><td>Endpoint mismatch</td><td>5.2</td><td>0.458</td><td>4.0</td></tr><tr><td>1</td><td>Within 5 mm of reference</td><td>2.3</td><td>0.361</td><td>3.5</td></tr><tr><td>2</td><td>Within 5 mm of reference</td><td>2.3</td><td>2.945</td><td>885.3</td></tr><tr><td>3</td><td>Endpoint mismatch</td><td>12.8</td><td>0.215</td><td>3.8</td></tr><tr><td>4</td><td>Endpoint mismatch</td><td>5.9</td><td>0.930</td><td>31.9</td></tr><tr><td>5</td><td>Within 5 mm of reference</td><td>3.4</td><td>0.216</td><td>9.0</td></tr><tr><td>6</td><td>Endpoint mismatch</td><td>6.2</td><td>0.465</td><td>11.0</td></tr><tr><td>7</td><td>Endpoint mismatch</td><td>9.5</td><td>0.896</td><td>209.3</td></tr><tr><td>8</td><td>Endpoint mismatch</td><td>9.2</td><td>0.493</td><td>16.2</td></tr><tr><td>9</td><td>Within 5 mm of reference</td><td>3.8</td><td>0.841</td><td>52.4</td></tr></tbody></table>
+<p class="note">The gripper uses recorded unloaded response timing. Effective contact compliance is selected by loaded-jaw tracking on training episodes;
+it is a surrogate for omitted arm/jaw flexibility. Material stiffness, loaded servo impedance and friction remain independently unmeasured.
+The report retains unsuccessful cases. This is an improvement in alignment and diagnosis, not a claim of a fully calibrated physical twin.</p>
+<p><a href="metrics.json">Complete fit, motor-unit inference and validation measurements</a></p>
+<script>const clips=[{"episode": 0, "frames": 361, "fps": 15.0, "external": "episode_000_external.mp4", "wrist": "episode_000_wrist.mp4"}, {"episode": 8, "frames": 263, "fps": 15.0, "external": "episode_008_external.mp4", "wrist": "episode_008_wrist.mp4"}],select=document.querySelector('#episode'),videos=['external','wrist'].map(k=>document.getElementById(k));
+for(const [i,c] of clips.entries()){const option=document.createElement('option');option.value=i;option.textContent='Episode '+c.episode+' · '+c.frames+' frames';select.append(option);}
+function load(){const c=clips[+select.value];videos.forEach((v,i)=>{v.pause();v.src=c[['external','wrist'][i]];});}select.onchange=load;
+document.querySelector('#play').onclick=()=>{const start=videos[0].paused;videos[1].currentTime=videos[0].currentTime;videos.forEach(v=>start?v.play():v.pause());};load();</script>

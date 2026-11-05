@@ -1,0 +1,242 @@
+{
+  "metric": "Mean absolute RGB8 difference over complete 640 x 480 frames; no registration or crop",
+  "camera_profile": {
+    "source": "green_cube_red_plate_1/videos/observation.images.external/chunk-000/file-000.mp4, frame 0",
+    "method": "six-parameter optical pose fit to video floor/mat landmarks; lens held fixed",
+    "pixel_origin": "top-left",
+    "image_size": [
+      640,
+      480
+    ],
+    "optical_position_m": [
+      0.4202463190459886,
+      0.3871644909202528,
+      0.5030872013490985
+    ],
+    "yaw_pitch_roll_deg": [
+      10.04172027778218,
+      38.02021217499111,
+      -6.6922071394936795
+    ],
+    "world_from_optical_rotation": [
+      [
+        -0.7757253479467903,
+        -0.1024978636972813,
+        -0.622691233670689
+      ],
+      [
+        0.13736379442665828,
+        -0.9904876780116094,
+        -0.008083791677244587
+      ],
+      [
+        -0.6159394227791739,
+        -0.09180603272478269,
+        0.7824258941406491
+      ]
+    ],
+    "lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 302.54459848647593,
+      "principal_point_px": [
+        330.99569484286565,
+        200.00000000000003
+      ],
+      "theta_coefficients": [
+        -0.11358535340852814,
+        0.05889864503060655
+      ]
+    },
+    "landmark_rms_px": 2.7572959785097364,
+    "landmarks": {
+      "floor_far_front": {
+        "world_m": [
+          -0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          184.0,
+          153.0
+        ],
+        "projected_px": [
+          181.97091901047602,
+          157.45462795041075
+        ],
+        "error_px": 4.894985172462559,
+        "weight": 0.35
+      },
+      "floor_far_rear": {
+        "world_m": [
+          -0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          357.0,
+          158.0
+        ],
+        "projected_px": [
+          356.271899480359,
+          157.71163300057825
+        ],
+        "error_px": 0.7831257198285367,
+        "weight": 1.0
+      },
+      "floor_near_front": {
+        "world_m": [
+          0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          82.0,
+          439.0
+        ],
+        "projected_px": [
+          81.79321347853238,
+          436.61297364072726
+        ],
+        "error_px": 2.3959665075546326,
+        "weight": 1.0
+      },
+      "floor_near_rear": {
+        "world_m": [
+          0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          438.0,
+          450.0
+        ],
+        "projected_px": [
+          438.05583572120514,
+          448.84792319523143
+        ],
+        "error_px": 1.1534290580041124,
+        "weight": 1.0
+      },
+      "mat_far_front": {
+        "world_m": [
+          -0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          209.0,
+          194.0
+        ],
+        "projected_px": [
+          207.28058236732414,
+          195.31040963078325
+        ],
+        "error_px": 2.1618442117798757,
+        "weight": 1.0
+      },
+      "mat_far_rear": {
+        "world_m": [
+          -0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          315.0,
+          198.0
+        ],
+        "projected_px": [
+          315.10894822651954,
+          196.0977452848048
+        ],
+        "error_px": 1.905372068007747,
+        "weight": 1.0
+      },
+      "mat_near_front": {
+        "world_m": [
+          0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          169.0,
+          348.0
+        ],
+        "projected_px": [
+          169.09377363081543,
+          347.4320829902625
+        ],
+        "error_px": 0.5756068309058923,
+        "weight": 1.0
+      },
+      "mat_near_rear": {
+        "world_m": [
+          0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          331.0,
+          352.0
+        ],
+        "projected_px": [
+          333.0630693788879,
+          356.0354228373926
+        ],
+        "error_px": 4.532206166830327,
+        "weight": 1.0
+      }
+    },
+    "uncertainties": [
+      "Hand-located corners, approximately 2 px; partly occluded front corner downweighted",
+      "Interior and mat dimensions retained; optical intrinsics held fixed to avoid single-plane overfitting",
+      "Pixel alignment estimate, not a measured metric camera calibration"
+    ],
+    "lens_source": "2026-10-19-161325.jpg",
+    "pose_change_from_photo_mm": [
+      -2.571244408433593,
+      -7.042761836501709,
+      3.9244417822615896
+    ]
+  },
+  "baseline": {
+    "episode": 0,
+    "frames": 361,
+    "mean_rgb_mae": {
+      "external": 53.52839563916301,
+      "wrist": 31.99149118298419
+    }
+  },
+  "fitted": [
+    {
+      "episode": 0,
+      "frames": 361,
+      "fps": 15.0,
+      "mean_rgb_mae": {
+        "external": 21.29555981467856,
+        "wrist": 27.757688615727915
+      }
+    },
+    {
+      "episode": 1,
+      "frames": 334,
+      "fps": 15.0,
+      "mean_rgb_mae": {
+        "external": 21.354556281317574,
+        "wrist": 35.199684300019754
+      }
+    }
+  ],
+  "limitations": [
+    "Motor mapping and wrist optical pose are visually estimated",
+    "Cube trajectory uses color-centroid triangulation with floor/hold fallbacks; orientation is not tracked",
+    "Tray center is visually estimated; tray orientation is not tracked",
+    "Kinematic replay does not test physical grasps or calibrated arm dynamics",
+    "The recorded red plate appears flatter than the retained 1 cm simulation tray rim",
+    "Episode 0 was used for response fitting; episode 1 supplies an additional motion check",
+    "Baseline uses the earlier nominal camera and scene; object reconstruction also depends on the selected camera pose"
+  ],
+  "episode_0_error_reduction_percent": {
+    "external": 60.216330864401854,
+    "wrist": 13.234151990727383
+  }
+}

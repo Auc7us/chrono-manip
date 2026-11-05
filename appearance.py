@@ -17,11 +17,14 @@ LIGHT_BRIGHTNESS = .50
 LIGHT_KELVIN = 4600.
 WHITE_BALANCE_KELVIN = 4600.
 # Tube runs across the rear ceiling edge, as seen at image right from the wall camera.
-_tube=json.loads((Path(__file__).resolve().parent/'assets/reference_tube.json').read_text())
+_tube=json.loads((Path(__file__).resolve().parent/'assets/video_tube.json').read_text())
 TUBE_LENGTH = _tube['installed_length_m']
 TUBE_RADIUS = _tube['radius_m']
 TUBE_CENTER = np.array(_tube['center_m'])
 TUBE_NORMAL = np.array(_tube['emission_normal'])
+# The broad inflated diffuser radiates below its curved face. Its integrated
+# emission direction differs from the visible white/black sector's normal.
+LIGHT_NORMAL = np.array([0.,-.12,-1.]);LIGHT_NORMAL/=np.linalg.norm(LIGHT_NORMAL)
 TUBE_U = np.array(_tube['axis'])
 _y=np.array([0.,1.,0.]);_y-=TUBE_U*(TUBE_U@_y);_y/=np.linalg.norm(_y)
 TUBE_FRAME=np.column_stack([TUBE_U,_y,np.cross(TUBE_U,_y)])
@@ -38,13 +41,16 @@ COLORS = dict(cream=(.83,.81,.72), black=(.012,.014,.013), metal=(.38,.39,.40),
               electronics=(.06,.13,.09), white=(.80,.82,.79), red=(.62,.012,.025),
               cable_white=(.81,.82,.77), pcb=(.012,.013,.012), glass=(.018,.04,.045),
               diffuser=(.92,.94,.91), gold=(.63,.43,.12), pla=(.025,.43,.085),
-              floor_sheet=(.030,.036,.030), panel_edge=(.30,.29,.25),
-              room_wall=(.20,.28,.14), room_floor=(.035,.038,.028),
+              floor_sheet=(.006,.007,.0055), panel_edge=(.30,.29,.25),
+              room_wall=(.065,.075,.012), room_floor=(.006,.007,.004),
               room_dark=(.008,.011,.008), room_book=(.038,.055,.049),
-              room_blue=(.018,.037,.080),room_green=(.025,.065,.040),
-              room_rust=(.17,.045,.020),room_paper=(.19,.20,.15),
+              room_blue=(.003,.006,.012),room_green=(.004,.010,.006),
+              room_rust=(.13,.023,.008),room_paper=(.025,.027,.018),
               tape=(.73,.74,.66), screw_recess=(.006,.007,.006),rack_metal=(.012,.014,.012),
               polished_metal=(.62,.64,.68))
+_material_fit=Path(__file__).resolve().parent/'assets/video_materials.json'
+if _material_fit.is_file():
+    COLORS.update({k:tuple(v) for k,v in json.loads(_material_fit.read_text())['colors'].items()})
 
 
 def quadrature(nx=16, ny=3):
@@ -60,10 +66,10 @@ def node_strength(brightness):
     Chrono's legacy point shader approximates the emitter angular response;
     the absolute camera photometry remains uncalibrated.
     """
-    target=EMITTER_CENTER+TUBE_NORMAL*LIGHT_REFERENCE_DISTANCE
+    target=EMITTER_CENTER+LIGHT_NORMAL*LIGHT_REFERENCE_DISTANCE
     rays=target-quadrature()
     distances=np.linalg.norm(rays,axis=1)
-    cosines=(rays@TUBE_NORMAL)/distances
+    cosines=(rays@LIGHT_NORMAL)/distances
     angles=np.arccos(np.clip(cosines,0,1))
     emission=np.clip((math.pi/2-angles)/(math.pi/2-.80),0,1)**2
     geometric_sum=np.sum(emission*cosines**2/distances**2)
@@ -84,7 +90,7 @@ def floor_bounce_nodes(brightness,exposure=1.,nx=8,ny=6):
             p=np.array([x,y,.004]);rays=quadrature()-p
             distances=np.linalg.norm(rays,axis=1);direction=rays/distances[:,None]
             receiver=np.maximum(direction[:,2],0)
-            angle=np.arccos(np.clip((-direction)@TUBE_NORMAL,0,1))
+            angle=np.arccos(np.clip((-direction)@LIGHT_NORMAL,0,1))
             emission=np.clip((math.pi/2-angle)/(math.pi/2-.80),0,1)**2
             incoming=np.sum(emission*receiver**2/distances**2)*node_strength(brightness)*exposure
             strengths.append(incoming*area/math.pi*np.array(COLORS['white']))
@@ -108,9 +114,9 @@ def ceiling_bounce_nodes(brightness,exposure=1.,nx=6,ny=4):
 
 
 def appearance_metadata(args):
-    from reference_camera import camera_metadata
-    response=json.loads((Path(__file__).resolve().parent/'assets/reference_response.json').read_text())
-    return dict(profile='real_lightbox_2026_10_19_fitted',
+    from reference_camera import camera_metadata,load_wrist_profile
+    response=json.loads((Path(__file__).resolve().parent/'assets/video_response.json').read_text())
+    return dict(profile='green_cube_red_plate_1_video_fitted',
         interior_dimensions_m=[WIDTH,DEPTH,HEIGHT],
         light=dict(model='NEEWER GC21B',specification_url=LIGHT_SPEC_URL,
             maximum_electrical_power_w=21,cri_nominal=95,
@@ -122,12 +128,13 @@ def appearance_metadata(args):
             center_m=TUBE_CENTER.tolist(),emitter_center_m=EMITTER_CENTER.tolist(),
             axis=TUBE_U.tolist(),backing_fit=_tube,
             emission_normal=TUBE_NORMAL.tolist(),emitter_size_m=list(EMITTER_SIZE),
+            integrated_emission_normal=LIGHT_NORMAL.tolist(),
             integration_nodes=len(quadrature())),
         camera=dict(white_balance_k=args.white_balance_kelvin,exposure_scale=args.exposure,
             response_calibrated=False,projection=camera_metadata(args),
             wrist_optical_fit_applied=args.lens_model=='reference',
             fixed_response=None if args.raw_response else response,
-            wrist_optical_fit=json.loads((Path(__file__).resolve().parent/'assets/reference_wrist.json').read_text())),
+            wrist_optical_fit=load_wrist_profile()),
         indirect_light=dict(model='deterministic floor/ceiling diffuse return; finite-cell near-field approximation',
             enabled=not(args.fast or args.path_traced or args.stochastic_area),
             floor_cells=len(floor_bounce_nodes(args.light_brightness)[0]),

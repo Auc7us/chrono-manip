@@ -1,0 +1,700 @@
+{
+  "calibration": {
+    "method": "shared multi-episode metric reprojection fit with CAD and measured mat dimensions",
+    "training_episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "validation_episodes": [
+      8,
+      9
+    ],
+    "paired_views": 165,
+    "before": {
+      "train": {
+        "mat_boundary_rms_px": 10.992923260745517,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.317142816663585,
+        "global_outline_rms_px": 4.2614186259337945
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 14.195161504658367,
+        "fixed_jaw_rms_px": 1.776494941576324,
+        "moving_tip_rms_px": 6.436796008600744,
+        "global_outline_rms_px": 5.3335470401578
+      }
+    },
+    "after": {
+      "train": {
+        "mat_boundary_rms_px": 3.4731725682190406,
+        "fixed_jaw_rms_px": 1.423352381620222,
+        "moving_tip_rms_px": 5.249979375349412,
+        "global_outline_rms_px": 2.3683195009399465,
+        "plate_boundary_rms_px": 5.674709505462242
+      },
+      "held_out": {
+        "mat_boundary_rms_px": 3.4917475140304,
+        "fixed_jaw_rms_px": 1.423352381620222,
+        "moving_tip_rms_px": 5.700313377825211,
+        "global_outline_rms_px": 2.848449881763089,
+        "plate_boundary_rms_px": 3.7300901445789427
+      }
+    },
+    "scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "offset_deg": [
+      2.4274286948276735,
+      86.66817301764033,
+      -99.92938818002287,
+      0.4210052254852628,
+      79.64603517156186,
+      97.24604958961125
+    ],
+    "base_translation_delta_m": [
+      0.01853460466595827,
+      0.012840466896693896,
+      0.00014959580868792097
+    ],
+    "wrist_link_from_optical": [
+      [
+        -0.4314013317843878,
+        0.0488593118710422,
+        0.9008360887147036,
+        0.07410378914760225
+      ],
+      [
+        -0.9021556214878602,
+        -0.02020870551992897,
+        -0.4309371682644643,
+        -0.12684305622312303
+      ],
+      [
+        -0.0028505622644107733,
+        -0.9986012096251974,
+        0.05279676533618312,
+        0.15587315786531314
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "wrist_lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 262.18975783041867,
+      "principal_point_px": [
+        327.8685495048704,
+        251.3952277098577
+      ],
+      "theta_coefficients": [
+        0.050216966142828084,
+        -0.023847979791381348
+      ]
+    },
+    "parameters": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      2.4274286948276735,
+      86.66817301764033,
+      -99.92938818002287,
+      0.4210052254852628,
+      79.64603517156186,
+      18.53460466595827,
+      12.840466896693895,
+      0.14959580868792097,
+      4.57961279049074,
+      1.8448232968398384,
+      -6.212710927390779,
+      -2.1885665228516142,
+      6.7208938310471416,
+      -0.3462270088291381,
+      262.18975783041867,
+      327.8685495048704,
+      251.3952277098577,
+      0.050216966142828084,
+      -0.023847979791381348,
+      -1.3345054945054946,
+      97.24604958961125,
+      -0.09335031600171402,
+      0.26654396115715534,
+      0.03699772077478315,
+      0.0696276310555216,
+      0.28529328951455146,
+      -0.008047429721255467,
+      -0.04819771455213617,
+      0.34723576279217905,
+      -0.0136027094144021,
+      0.09595641945788903,
+      0.26100252399870816,
+      -0.0795113102596906,
+      0.05374973417398404,
+      0.37559329078249065,
+      -0.016691337163056236,
+      -0.12762621269136568,
+      0.18020468063483883,
+      -0.016895640056475487,
+      0.13713539857460771,
+      0.24985952001191772,
+      -0.09633985667900655,
+      -0.03209424189702762,
+      0.19533836195471507,
+      -0.060488348041253366
+    ],
+    "initial_parameters": [
+      -0.6157539105908126,
+      1.0071239642037337,
+      1.013485490962381,
+      1.0249901494260787,
+      -0.7682826024813909,
+      1.6212975131516267,
+      86.8541488246861,
+      -104.92219864429104,
+      -1.9749883542868092,
+      73.64087785311425,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      302.54459848647593,
+      330.99569484286565,
+      200.00000000000003,
+      -0.11358535340852814,
+      0.05889864503060655,
+      -1.0,
+      92.0,
+      -0.08950547494803772,
+      0.2657414891069029,
+      0.02613250652184496,
+      0.06804474250494154,
+      0.2822127191695089,
+      0.04603861397310025,
+      -0.049704876247266765,
+      0.3436306127391043,
+      -0.011829420870919828,
+      0.09330751893715687,
+      0.2575143303275217,
+      -0.050003165737898134,
+      0.05153716365449327,
+      0.3717061942621675,
+      -0.03020764311531625,
+      -0.1271009895578019,
+      0.18451224920768516,
+      -0.001806340343133911,
+      0.13418477722566136,
+      0.2446371476465922,
+      -0.026206293112203235,
+      -0.031794680812511016,
+      0.19628476768874867,
+      -0.06613031296061532
+    ],
+    "solver": {
+      "success": true,
+      "message": "`xtol` termination condition is satisfied.",
+      "nfev": 84
+    },
+    "assumptions": [
+      "Metric scale comes from enclosure/mat and CAD dimensions",
+      "No per-frame camera, robot or motor correction; last two episodes held out",
+      "Visible cream outline and tip measurements have occlusion/segmentation uncertainty",
+      "Image-derived calibration; hardware encoder calibration and measured contact properties remain unavailable"
+    ],
+    "encoder_scale_constraint": {
+      "method": "integer encoder-grid inference from all 6632 observed states",
+      "motors": [
+        {
+          "name": "shoulder_pan",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+          "cad_degrees_per_recorded_unit": -1.0
+        },
+        {
+          "name": "shoulder_lift",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "elbow_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "wrist_flex",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+          "cad_degrees_per_recorded_unit": 1.0
+        },
+        {
+          "name": "wrist_roll",
+          "inferred_calibration_span_ticks": 2275,
+          "recorded_units_per_encoder_tick": 0.08791208791208792,
+          "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+          "cad_degrees_per_recorded_unit": -1.0
+        },
+        {
+          "name": "gripper",
+          "inferred_calibration_span_ticks": 1518,
+          "recorded_units_per_encoder_tick": 0.06587615283267458,
+          "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+          "cad_degrees_per_recorded_unit": -1.3345054945054946
+        }
+      ],
+      "signed_scale": [
+        -1.0,
+        1.0,
+        1.0,
+        1.0,
+        -1.0,
+        -1.3345054945054946
+      ],
+      "sources": [
+        "https://github.com/huggingface/lerobot/blob/main/src/lerobot/motors/motors_bus.py",
+        "https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py"
+      ],
+      "assumptions": [
+        "12-bit STS3215 position encoder, matching the supplied SO follower model",
+        "First five columns are consistent with degrees or an equivalent 2275-tick normalized span; either interpretation yields the same angular scale",
+        "Gripper remains a calibrated percentage; its inferred span is 1518 ticks",
+        "Signs follow CAD axes; absolute offsets are fitted separately"
+      ]
+    }
+  },
+  "encoder_units": {
+    "method": "integer encoder-grid inference from all 6632 observed states",
+    "motors": [
+      {
+        "name": "shoulder_pan",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+        "cad_degrees_per_recorded_unit": -1.0
+      },
+      {
+        "name": "shoulder_lift",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+        "cad_degrees_per_recorded_unit": 1.0
+      },
+      {
+        "name": "elbow_flex",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+        "cad_degrees_per_recorded_unit": 1.0
+      },
+      {
+        "name": "wrist_flex",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+        "cad_degrees_per_recorded_unit": 1.0
+      },
+      {
+        "name": "wrist_roll",
+        "inferred_calibration_span_ticks": 2275,
+        "recorded_units_per_encoder_tick": 0.08791208791208792,
+        "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+        "cad_degrees_per_recorded_unit": -1.0
+      },
+      {
+        "name": "gripper",
+        "inferred_calibration_span_ticks": 1518,
+        "recorded_units_per_encoder_tick": 0.06587615283267458,
+        "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+        "cad_degrees_per_recorded_unit": -1.3345054945054946
+      }
+    ],
+    "signed_scale": [
+      -1.0,
+      1.0,
+      1.0,
+      1.0,
+      -1.0,
+      -1.3345054945054946
+    ],
+    "sources": [
+      "https://github.com/huggingface/lerobot/blob/main/src/lerobot/motors/motors_bus.py",
+      "https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py"
+    ],
+    "assumptions": [
+      "12-bit STS3215 position encoder, matching the supplied SO follower model",
+      "First five columns are consistent with degrees or an equivalent 2275-tick normalized span; either interpretation yields the same angular scale",
+      "Gripper remains a calibrated percentage; its inferred span is 1518 ticks",
+      "Signs follow CAD axes; absolute offsets are fitted separately"
+    ]
+  },
+  "external_camera": {
+    "source": "green_cube_red_plate_1/videos/observation.images.external/chunk-000/file-000.mp4, frame 0",
+    "method": "independent optical pose/lens fit to mat, box corners and curved near-wall seam",
+    "pixel_origin": "top-left",
+    "image_size": [
+      640,
+      480
+    ],
+    "optical_position_m": [
+      0.42942477557451153,
+      0.36615960921408,
+      0.47795329558544786
+    ],
+    "yaw_pitch_roll_deg": [
+      13.797045830215815,
+      43.82622453105621,
+      -10.947382854789224
+    ],
+    "world_from_optical_rotation": [
+      [
+        -0.7006272455053079,
+        -0.10643199409834136,
+        -0.7055449620597511
+      ],
+      [
+        0.17205225393540927,
+        -0.9848356133444925,
+        -0.022289831854963
+      ],
+      [
+        -0.6924734541997913,
+        -0.13700746447047218,
+        0.7083145275285421
+      ]
+    ],
+    "lens": {
+      "model": "equidistant_polynomial",
+      "focal_px": 286.44424271338204,
+      "principal_point_px": [
+        331.6193569040149,
+        240.23297064150782
+      ],
+      "theta_coefficients": [
+        -0.005349402851141891,
+        -0.0057887208838837256
+      ]
+    },
+    "landmark_rms_px": 3.281868945059853,
+    "landmarks": {
+      "floor_far_front": {
+        "world_m": [
+          -0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          184.0,
+          153.0
+        ],
+        "projected_px": [
+          183.34158739953702,
+          158.47838170696502
+        ],
+        "error_px": 5.517805114323759,
+        "weight": 0.35
+      },
+      "floor_far_rear": {
+        "world_m": [
+          -0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          357.0,
+          158.0
+        ],
+        "projected_px": [
+          354.60817386483933,
+          163.0983832046511
+        ],
+        "error_px": 5.631548948762325,
+        "weight": 1.0
+      },
+      "floor_near_front": {
+        "world_m": [
+          0.4445,
+          0.0,
+          0.0
+        ],
+        "reference_px": [
+          82.0,
+          439.0
+        ],
+        "projected_px": [
+          83.55458873478955,
+          439.51888954743674
+        ],
+        "error_px": 1.6388997824069882,
+        "weight": 1.0
+      },
+      "floor_near_rear": {
+        "world_m": [
+          0.4445,
+          0.6095999999999999,
+          0.0
+        ],
+        "reference_px": [
+          438.0,
+          450.0
+        ],
+        "projected_px": [
+          436.5255666266144,
+          451.753516449809
+        ],
+        "error_px": 2.2910202339359604,
+        "weight": 1.0
+      },
+      "mat_far_front": {
+        "world_m": [
+          -0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          209.0,
+          194.0
+        ],
+        "projected_px": [
+          209.6954429160549,
+          193.9878489795251
+        ],
+        "error_px": 0.6955490613821039,
+        "weight": 1.0
+      },
+      "mat_far_rear": {
+        "world_m": [
+          -0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          315.0,
+          198.0
+        ],
+        "projected_px": [
+          315.5360127920361,
+          196.47146794435795
+        ],
+        "error_px": 1.619790097003818,
+        "weight": 1.0
+      },
+      "mat_near_front": {
+        "world_m": [
+          0.2286,
+          0.15239999999999998,
+          0.001
+        ],
+        "reference_px": [
+          169.0,
+          348.0
+        ],
+        "projected_px": [
+          167.6643039076165,
+          345.79566197605817
+        ],
+        "error_px": 2.577438685013539,
+        "weight": 1.0
+      },
+      "mat_near_rear": {
+        "world_m": [
+          0.2286,
+          0.45719999999999994,
+          0.001
+        ],
+        "reference_px": [
+          331.0,
+          352.0
+        ],
+        "projected_px": [
+          333.26089718870514,
+          350.90105850869816
+        ],
+        "error_px": 2.513827460109294,
+        "weight": 1.0
+      }
+    },
+    "uncertainties": [
+      "Hand-located corners, approximately 2 px; partly occluded front corner downweighted",
+      "Metric enclosure/mat dimensions and optional known-size stereo plates; optics/pose remain image-derived",
+      "Pixel alignment estimate, not a measured metric camera calibration"
+    ],
+    "lens_source": "independent external-lens fit; wrist-camera estimate used only as a weak same-model prior",
+    "pose_change_from_photo_mm": [
+      6.607212120089356,
+      -28.04764354267453,
+      -21.20946398138901
+    ],
+    "stereo_plate_training_episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "physical_validation": [
+    {
+      "episode": 0,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.0690955022844829,
+      "maximum_penetration_m": 0.0011534303848748095,
+      "maximum_cube_height_m": 0.04732999171539054,
+      "maximum_contact_force_n": 1277.3079807058532,
+      "first_contact_s": 7.589333333333352,
+      "bilateral_contact_render_frames": 111
+    },
+    {
+      "episode": 1,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.002417152026991472,
+      "maximum_penetration_m": 0.00024957804271252826,
+      "maximum_cube_height_m": 0.06061991070820653,
+      "maximum_contact_force_n": 190.21606705312504,
+      "first_contact_s": 4.491666666666675,
+      "bilateral_contact_render_frames": 126
+    },
+    {
+      "episode": 2,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.026770890680431148,
+      "maximum_penetration_m": 0.0027531653831829317,
+      "maximum_cube_height_m": 0.04940052776651772,
+      "maximum_contact_force_n": 4555.916335668753,
+      "first_contact_s": 5.919666666666684,
+      "bilateral_contact_render_frames": 93
+    },
+    {
+      "episode": 3,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.2559529915592467,
+      "maximum_penetration_m": 0.0007848591267247684,
+      "maximum_cube_height_m": 0.026842057419555372,
+      "maximum_contact_force_n": 149.7981492315584,
+      "first_contact_s": 7.8200000000000065,
+      "bilateral_contact_render_frames": 0
+    },
+    {
+      "episode": 4,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.02753095592948338,
+      "maximum_penetration_m": 0.0010200909528066404,
+      "maximum_cube_height_m": 0.07534085980697576,
+      "maximum_contact_force_n": 52.310301052819,
+      "first_contact_s": 5.142333333333337,
+      "bilateral_contact_render_frames": 86
+    },
+    {
+      "episode": 5,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.00299271910520773,
+      "maximum_penetration_m": 0.0018443784865667112,
+      "maximum_cube_height_m": 0.14601103417159184,
+      "maximum_contact_force_n": 282.49741533898225,
+      "first_contact_s": 5.0906666666666744,
+      "bilateral_contact_render_frames": 124
+    },
+    {
+      "episode": 6,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.012012746689890316,
+      "maximum_penetration_m": 0.0011084855723311193,
+      "maximum_cube_height_m": 0.1589579521944818,
+      "maximum_contact_force_n": 343.1421347417016,
+      "first_contact_s": 8.023999999999987,
+      "bilateral_contact_render_frames": 126
+    },
+    {
+      "episode": 7,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.185060574039887,
+      "maximum_penetration_m": 4.527698183665052e-05,
+      "maximum_cube_height_m": 0.016516178786473802,
+      "maximum_contact_force_n": 842.8547418447337,
+      "first_contact_s": 5.298666666666677,
+      "bilateral_contact_render_frames": 0
+    },
+    {
+      "episode": 8,
+      "cube_inside_plate": true,
+      "final_xy_error_m": 0.005759942082161299,
+      "maximum_penetration_m": 4.970959707861766e-05,
+      "maximum_cube_height_m": 0.1192582413496459,
+      "maximum_contact_force_n": 5.455346092311672,
+      "first_contact_s": 7.563333333333343,
+      "bilateral_contact_render_frames": 95
+    },
+    {
+      "episode": 9,
+      "cube_inside_plate": false,
+      "final_xy_error_m": 0.14348987798644855,
+      "maximum_penetration_m": 0.00048053276987047866,
+      "maximum_cube_height_m": 0.05472565819286947,
+      "maximum_contact_force_n": 962.9872671849511,
+      "first_contact_s": 3.980333333333328,
+      "bilateral_contact_render_frames": 0
+    }
+  ],
+  "gripper_response": {
+    "method": "unloaded command-to-observed velocity response; episodes 0-7 fit, 8-9 validate",
+    "close_time_constant_s": 0.10163596417558676,
+    "open_time_constant_s": 0.10240518436370212,
+    "command_latency_s": 0.025,
+    "unloaded_threshold_recorded_percent": 25.0,
+    "training_velocity_rms_deg_s": 4.091657414882381,
+    "held_out_velocity_rms_deg_s": 3.3187720416377537,
+    "previous_held_out_velocity_rms_deg_s": 104.5102187577297,
+    "assumptions": [
+      "Fit uses measured motion in open gaps, excluding the cube-loaded stall",
+      "Torque limit, damping, friction and compliance remain unmeasured",
+      "The velocity controller retains physical torque saturation and contact-determined actual jaw motion"
+    ],
+    "candidate_speed_limits_used_in_fit_deg_s": [
+      180.0,
+      180.0
+    ],
+    "speed_limits_identified": false
+  },
+  "limitations": [
+    "Image-derived calibration and rigid CAD geometry; physical servo/friction/compliance parameters are unmeasured",
+    "The first five arm joints remain prescribed from measured states; only the gripper/cube use contact dynamics",
+    "Final reference position is reconstructed from both images on an assumed plate plane, not independently surveyed",
+    "All contact outcomes and force spikes are retained; matching images does not guarantee matching dynamics"
+  ],
+  "measured_gripper_response_check": {
+    "current": {
+      "samples": 177,
+      "held_out_open_gap_position_rms_deg": 0.41230327445145487
+    },
+    "previous_timing": {
+      "samples": 177,
+      "held_out_open_gap_position_rms_deg": 1.5872585744235208
+    }
+  }
+}

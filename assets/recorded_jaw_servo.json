@@ -1,0 +1,21 @@
+{
+  "method": "unloaded command-to-observed velocity response; episodes 0-7 fit, 8-9 validate",
+  "commands_quantized_to_follower_ticks": true,
+  "close_time_constant_s": 0.10497322278417646,
+  "open_time_constant_s": 0.10032158774851133,
+  "command_latency_s": 0.025,
+  "speed_limits_identified": false,
+  "candidate_speed_limits_used_in_fit_deg_s": [
+    180.0,
+    180.0
+  ],
+  "unloaded_threshold_recorded_percent": 25.0,
+  "training_velocity_rms_deg_s": 4.047482150398252,
+  "held_out_velocity_rms_deg_s": 3.313337453046876,
+  "previous_held_out_velocity_rms_deg_s": 104.76262312718973,
+  "assumptions": [
+    "Fit uses measured motion in open gaps, excluding the cube-loaded stall",
+    "Torque limit, damping, friction and compliance remain unmeasured",
+    "The velocity controller retains physical torque saturation and contact-determined actual jaw motion"
+  ]
+}

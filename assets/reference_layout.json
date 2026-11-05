@@ -1,38 +1,82 @@
 {
-  "method": "static layout fit to fixed and wrist photographs",
+  "method": "initial recorded state and two-camera rigid object silhouette fit",
+  "source": "green_cube_red_plate_1 episode 0 frame 0",
   "tray_center_xy_m": [
-    0.06570878102688918,
-    0.2905257883420123
+    -0.08993926113259193,
+    0.26413972415072184
   ],
-  "tray_yaw_rad": 2.5802595706890674,
-  "tray_corner_rms_px": 1.089996437709138,
+  "tray_yaw_rad": 0.019457043458239936,
   "cube_center_xy_m": [
-    0.06570878102688918,
-    0.2905257883420123
+    -0.03247082664679748,
+    0.3646963236068403
   ],
-  "cube_yaw_rad": 2.5802595706890674,
+  "cube_center_xyz_m": [
+    -0.03247082664679748,
+    0.3646963236068403,
+    0.016
+  ],
+  "cube_yaw_rad": -0.06392532698514729,
   "inspection_joint_deg": [
-    30.805999006650637,
-    -9.017590689603125,
-    0.18103051463414488,
-    65.30931597214393,
-    75.22670936677618,
-    91.30730503567979
+    6.236576587295734,
+    -3.317734164240889,
+    -14.089041795071978,
+    53.93781328982932,
+    78.14015240430678,
+    89.75778577438597
   ],
-  "pose_fit": {
-    "global_arm_iou": 0.6894049346879536,
-    "wrist_mat_iou": 0.9218313253012048,
-    "wrist_cube_px": [
-      590.1367698586394,
-      262.2320089407298
-    ],
-    "objective": 0.5180250875525712
+  "initial_object_fit": {
+    "cube": {
+      "center_m": [
+        -0.03247082664679748,
+        0.3646963236068403,
+        0.016
+      ],
+      "yaw_rad": -0.06392532698514729,
+      "dimensions_m": [
+        0.03,
+        0.03,
+        0.03
+      ],
+      "reprojection_rms_px": 1.478077538886544,
+      "observations": {
+        "external": {
+          "silhouette_iou": 0.6658227848101266,
+          "reference_area_px": 366
+        },
+        "wrist": {
+          "silhouette_iou": 0.9066022544283414,
+          "reference_area_px": 1816
+        }
+      }
+    },
+    "plate": {
+      "center_m": [
+        -0.08993926113259193,
+        0.26413972415072184,
+        0.002
+      ],
+      "yaw_rad": 0.019457043458239936,
+      "dimensions_m": [
+        0.05,
+        0.05,
+        0.002
+      ],
+      "reprojection_rms_px": 1.1091314799459573,
+      "observations": {
+        "external": {
+          "silhouette_iou": 0.7948717948717948,
+          "reference_area_px": 299
+        },
+        "wrist": {
+          "silhouette_iou": 0.9396662387676509,
+          "reference_area_px": 3833
+        }
+      }
+    }
   },
   "assumptions": [
-    "Robot base retains the existing centered mounting transform",
-    "Approximate hand-traced global arm silhouette",
-    "Wrist and fixed camera share the fitted lens",
-    "Static inspection fit does not change automated home/physics"
-  ],
-  "tray_coordinate_rms_px": 0.7707438725733117
+    "Shared fitted base and independent wrist/global optics",
+    "Recorded hardware normalization; image-fitted CAD joint zeros",
+    "Known 30 mm cube and 50 mm plate; cube initially on the 1 mm mat"
+  ]
 }

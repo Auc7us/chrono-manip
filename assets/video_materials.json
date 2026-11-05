@@ -1,0 +1,63 @@
+{
+  "method": "fixed linear reflectance estimates from both aligned initial object views",
+  "source": "green_cube_red_plate_1 episode 0 frame 0; per-camera response inverted before fitting",
+  "colors": {
+    "pla": [
+      0.006672889506894796,
+      0.19158016717806803,
+      0.03112564079722439
+    ],
+    "red": [
+      0.33977689380748943,
+      0.003314537315995248,
+      0.005551610068092325
+    ]
+  },
+  "measurements": {
+    "pla": [
+      {
+        "camera": "wrist",
+        "matched_pixels": 1532,
+        "linear_ratio": [
+          0.1598363593157994,
+          0.31923492107897483,
+          0.2511403923828457
+        ]
+      },
+      {
+        "camera": "external",
+        "matched_pixels": 195,
+        "linear_ratio": [
+          0.4457304164016979,
+          0.6218044015269247,
+          0.533927368085611
+        ]
+      }
+    ],
+    "red": [
+      {
+        "camera": "wrist",
+        "matched_pixels": 3366,
+        "linear_ratio": [
+          0.41914763974440866,
+          0.19986828654060046,
+          0.1167525347183724
+        ]
+      },
+      {
+        "camera": "external",
+        "matched_pixels": 203,
+        "linear_ratio": [
+          0.7165347866864926,
+          0.3817151913614152,
+          0.422368551363627
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    "One material per object for all poses and both sensors",
+    "RGB photographic estimate; lighting/ISP ambiguity remains",
+    "No reference photo is applied as a texture"
+  ]
+}

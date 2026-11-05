@@ -1,0 +1,82 @@
+{
+  "method": "supplied LeRobot calibration cross-checked against all recorded encoder values",
+  "motors": [
+    {
+      "name": "shoulder_pan",
+      "inferred_calibration_span_ticks": 2275,
+      "recorded_units_per_encoder_tick": 0.08791208791208792,
+      "grid_99th_percentile_error_ticks": 1.9222497883220058e-05,
+      "cad_degrees_per_recorded_unit": -1.0,
+      "normalization": "degrees",
+      "calibration_span_ticks": 1938,
+      "absolute_grid_99th_percentile_error_ticks": 1.9073486328125e-05
+    },
+    {
+      "name": "shoulder_lift",
+      "inferred_calibration_span_ticks": 2275,
+      "recorded_units_per_encoder_tick": 0.08791208791208792,
+      "grid_99th_percentile_error_ticks": 5.7220459211748675e-05,
+      "cad_degrees_per_recorded_unit": 1.0,
+      "normalization": "degrees",
+      "calibration_span_ticks": 2383,
+      "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+    },
+    {
+      "name": "elbow_flex",
+      "inferred_calibration_span_ticks": 2275,
+      "recorded_units_per_encoder_tick": 0.08791208791208792,
+      "grid_99th_percentile_error_ticks": 5.340576171875e-05,
+      "cad_degrees_per_recorded_unit": 1.0,
+      "normalization": "degrees",
+      "calibration_span_ticks": 2190,
+      "absolute_grid_99th_percentile_error_ticks": 4.100799560546875e-05
+    },
+    {
+      "name": "wrist_flex",
+      "inferred_calibration_span_ticks": 2275,
+      "recorded_units_per_encoder_tick": 0.08791208791208792,
+      "grid_99th_percentile_error_ticks": 4.8160552950093916e-05,
+      "cad_degrees_per_recorded_unit": 1.0,
+      "normalization": "degrees",
+      "calibration_span_ticks": 2349,
+      "absolute_grid_99th_percentile_error_ticks": 4.291534423828125e-05
+    },
+    {
+      "name": "wrist_roll",
+      "inferred_calibration_span_ticks": 2275,
+      "recorded_units_per_encoder_tick": 0.08791208791208792,
+      "grid_99th_percentile_error_ticks": 1.3530254307170253e-05,
+      "cad_degrees_per_recorded_unit": -1.0,
+      "normalization": "degrees",
+      "calibration_span_ticks": 4095,
+      "absolute_grid_99th_percentile_error_ticks": 1.2874603271484375e-05
+    },
+    {
+      "name": "gripper",
+      "inferred_calibration_span_ticks": 1518,
+      "recorded_units_per_encoder_tick": 0.06587615283267458,
+      "grid_99th_percentile_error_ticks": 2.629280095334252e-05,
+      "cad_degrees_per_recorded_unit": -1.3345054945054946,
+      "normalization": "range_0_100",
+      "calibration_span_ticks": 1518,
+      "absolute_grid_99th_percentile_error_ticks": 2.593994122435106e-05
+    }
+  ],
+  "signed_scale": [
+    -1.0,
+    1.0,
+    1.0,
+    1.0,
+    -1.0,
+    -1.3345054945054946
+  ],
+  "sources": [
+    "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/motors/motors_bus.py",
+    "https://github.com/huggingface/lerobot/blob/v0.4.3/src/lerobot/robots/so_follower/so_follower.py"
+  ],
+  "assumptions": [
+    "Homing offsets are already applied in motor firmware; never add them to normalized recorded states",
+    "A hand-set homing pose is not a surveyed CAD joint zero; nominal home offsets are conditional priors"
+  ],
+  "hardware_calibration": "recorded_motor_calibration.json"
+}

@@ -1,0 +1,26 @@
+{
+  "videos": [
+    {
+      "file": "preview/hardware_reference/episode_000_wrist.mp4",
+      "frames": 361,
+      "codec": "h264"
+    },
+    {
+      "file": "preview/hardware_reference/episode_000_external.mp4",
+      "frames": 361,
+      "codec": "h264"
+    },
+    {
+      "file": "preview/hardware_reference/episode_008_wrist.mp4",
+      "frames": 263,
+      "codec": "h264"
+    },
+    {
+      "file": "preview/hardware_reference/episode_008_external.mp4",
+      "frames": 263,
+      "codec": "h264"
+    }
+  ],
+  "physical_reports": 10,
+  "tests": 26
+}

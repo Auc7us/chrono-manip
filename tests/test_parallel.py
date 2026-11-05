@@ -8,6 +8,16 @@ import unittest
 from tools.collect_parallel import combine_manifests,stop_workers
 
 class ParallelCollectionTests(unittest.TestCase):
+    def test_different_tray_geometries_cannot_share_a_batch(self):
+        from scene_config import tray_geometry
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);workers=[]
+            for i,style in enumerate(['reference','raised']):
+                directory=f'worker_{i:03d}';path=root/directory/'dataset.json';path.parent.mkdir()
+                path.write_text(json.dumps(dict(fps=30,seed=i,tray_geometry=tray_geometry(style),episodes=[])))
+                workers.append(dict(id=i,seed=i,directory=directory))
+            with self.assertRaisesRegex(ValueError,'tray_geometry'):combine_manifests(root,workers)
+
     def test_index_shards_without_colliding_local_episode_numbers(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);workers=[];originals=[]

@@ -14,18 +14,22 @@ def main():
     parser.add_argument('--episode',type=Path);parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--seed',type=int,default=42);parser.add_argument('--episodes',type=int,default=1)
     parser.add_argument('--start-pose',choices=['folded','side'],default='folded')
+    parser.add_argument('--tray-style',choices=['reference','raised'])
     parser.add_argument('--probe-fixed-jaw',action='store_true',help='deliberately reproduce the old tooth overlap and require a physical cube response')
     parser.add_argument('--with-sensors',action='store_true',help='also profile headless wrist/global camera rendering')
     parser.add_argument('--rate',type=int,default=15)
+    parser.add_argument('--dart-noise-deg',type=float,default=0.)
     options=parser.parse_args()
     from demo_attempt_codex import Scene,parse_args
     from pick_place import PickPlaceController
     from so101_ik import tool_pose
     from scene_config import WORK_SURFACE_Z
     sys.argv=['check','--auto','--headless','--no-sensors','--no-realtime','--seed',str(options.seed),
-              '--episodes',str(options.episodes),'--start-pose',options.start_pose,'--rate',str(options.rate)]
+              '--episodes',str(options.episodes),'--start-pose',options.start_pose,'--rate',str(options.rate),
+              '--dart-noise-deg',str(options.dart_noise_deg)]
     if options.with_sensors:sys.argv.remove('--no-sensors')
     if options.episode:sys.argv+=['--replay-episode',str(options.episode)]
+    if options.tray_style:sys.argv+=['--tray-style',options.tray_style]
     args=parse_args()
     import pychrono.core as chrono
     assets=json.loads((ROOT/'assets/scene_assets.json').read_text())

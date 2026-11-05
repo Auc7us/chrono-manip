@@ -4,8 +4,8 @@ PyChrono SO-101 follower in a white lightbox. Launching the demo opens three win
 
 1. An interactive third-person view, looking through the open front.
 2. A Chrono Sensor wrist camera attached to the gripper and supplied STL mount.
-3. The installed right-wall global camera, using an approximate centered mount,
-   45° downward tilt and wide-angle lens. `--global-camera top-down` retains an
+3. The installed right-wall global camera, fitted to the recorded external video
+   with a wide-angle lens. `--global-camera top-down` retains an
    optional virtual view.
 
 The included OBJ files were converted from the supplied STEP assembly. Running the
@@ -54,8 +54,9 @@ independently. All views show the same scene and joint coordinates.
 python3 demo_attempt_codex.py --validate       # asset/fit checks; no PyChrono needed
 ```
 
-The appearance now follows the October 19 setup photographs: a **35-inch-wide**
-white enclosure, charcoal sheet with rounded corners and subtle creases, ivory
+The appearance now follows both camera chunks in
+`../ref_data/green_cube_red_plate_1/videos`: a **35-inch-wide**
+white enclosure, dark sheet with rounded corners and visible crease bands, ivory
 printed links, black camera mount, and a narrow black-backed GC21B tube near the
 rear ceiling edge. The open front looks into a dim room approximation.
 For the default wall-camera view, run:
@@ -81,44 +82,44 @@ that scene. `--global-camera top-down` moves the modeled global camera to the
 optional virtual overhead pose; the wrist remains the other sensor in both modes.
 The tube and surrounding room retain the same physical positions.
 
-The default mount follows the user's approximate placement: near the top center
-of the side wall, about 40 mm inward. The default profile is
-`assets/nominal_camera.json`; the inset refers to the **optical center**.
-The vertical clearance and orientation are nominal assumptions, since the
-reference photograph was slightly tilted and precise pose matching is deferred.
-
-| Nominal optical-center quantity | Value |
-| --- | --- |
-| Inward from right wall | 4.0 cm |
-| Distance from open front | 30.48 cm (side-wall center) |
-| Height above floor | 48.8 cm (assumed 2 cm below ceiling) |
-| Downward pitch | 45° |
-| Yaw / roll | 0° / 0° |
+The default `assets/video_camera.json` fits the external lens and optical pose
+using box/mat landmarks, the curved near-wall floor seam, and known-size red
+plates reconstructed from paired wrist views. `assets/video_wrist.json` stores
+the independent wrist lens and its rigid optical transform in the jaw frame.
+The robot-base transform is shared by rendering, IK and collision geometry in
+`assets/scene_assets.json`. Exact poses, residuals and assumptions are retained
+in the JSON profiles and the [hardware calibration/contact report](preview/hardware_reference/index.html).
 
 The earlier photograph-fitted pose remains available explicitly:
 
 ```bash
 ./run-docker.sh --camera-profile assets/reference_camera.json
+./run-docker.sh --camera-profile assets/nominal_camera.json  # earlier centered estimate
 ```
 
 That optional profile retains its eight floor/mat landmarks, 2.64 px RMS residual,
 2.17 cm inset, 39.42 cm front distance, 49.92 cm height and tilted orientation.
-It is an estimate from one image and nominal dimensions. The nominal default
-has no landmark-fit score. Both profiles retain the same estimated wide-angle
-lens. `--camera-profile FILE` loads another profile.
+It is an estimate from one image and nominal dimensions. The earlier nominal
+profile has no landmark-fit score. These historical global profiles retain their
+earlier lens; the current wrist calibration stays independent.
+`--camera-profile FILE` loads another global profile.
 The fitted equidistant polynomial generates rays directly in
 OptiX for live windows, PNG recordings and datasets. `--lens-model pinhole`
 selects the earlier rectified projection; `--hfov-deg` controls that option.
-The wrist has a separately estimated optical alignment from its visible fixed
-jaw/screw features, stored in `assets/reference_wrist.json`.
+The earlier wrist photo fit remains in `assets/reference_wrist.json`; normal
+runs now load `assets/video_wrist.json`. Both fitted lenses generate rays in the
+sensor renderer directly, including live windows and training recordings.
 
 Both USB cameras use fixed photographic response estimates from
-`assets/reference_response.json`. `--raw-response` bypasses them for fitting.
+`assets/video_response.json`, fitted jointly to nine poses from episode 0.
+`--raw-response` bypasses them for fitting.
 This response is fixed per camera; no frame-dependent autoexposure or noise is
-introduced. The [photo-fit comparison report](preview/reference_match/index.html) includes
-both original photos, actual sensor renders, opacity overlays, difference maps
-and complete-frame RGB errors. It uses the optional photograph-fitted pose,
-not the nominal default mount. Its metrics apply no image registration or crop.
+introduced. The [hardware calibration/contact report](preview/hardware_reference/index.html)
+contains corrected views, actual contact replays, and every validation outcome.
+The [earlier visual replay report](preview/video_reference/index.html)
+is retained as an archive.
+The [earlier photo report](preview/reference_match/index.html) is an archived
+comparison of the previous scene. Metrics apply no image registration or crop.
 
 The default camera images are 640 × 480 at 15 Hz. Rendering uses a fixed 2 × 2
 subpixel grid, followed by a spatial box average, **without a learned denoiser**.
@@ -183,6 +184,14 @@ Use `--start-pose side` for the earlier fully extended left-side pose. This
 selection controls both the start and return pose in every automated episode,
 combines with either global-camera configuration, and is recorded in metadata.
 
+Add `--tray-style raised` to collect with the earlier red tray: 5 × 5 cm outer
+footprint, 2 mm base/walls, and **10 mm walls above its interior floor**.
+The default `--tray-style reference` keeps the video's shallow 1 mm lip.
+Visual and collision walls share the selected dimensions. The planner raises
+the release height for the taller rim. `tray_geometry` in dataset and episode
+metadata identifies the selected shape; episode layout replay inherits that
+style unless `--tray-style` explicitly overrides it.
+
 Automatic layouts use a tested downward-grasp workspace near the front of the
 box, rather than the static inspection tray's Y=45 cm position. Cube centers are
 sampled at X=±7.5 cm, Y=22–28.5 cm and tray centers at X=±7.5 cm, Y=23.5–28.5 cm,
@@ -236,6 +245,24 @@ See [COLLECTING_ACT.md](COLLECTING_ACT.md) for collection, LeRobot export, local
 ACT training commands, the coordinate mapping required for real motors, and
 evaluation recommendations.
 
+See [ACT_TRAINING.md](ACT_TRAINING.md) for the installed local RTX 4080 training
+environment, grouped data split, actual ACT runs, resumable checkpoints and
+physical rollout reports/videos.
+
+Native trajectory arrays use CAD-relative radians. To export the same SO101
+representation as the supplied real recordings (five arm angles in degrees,
+gripper in 0–100 percent, and `wrist`/`external` camera keys), use:
+
+```bash
+python3 tools/export_lerobot.py output/pick_and_place_raised output/lerobot_so101_raised --so101
+```
+
+The full export uses the official LeRobot writer in a LeRobot Python environment.
+Add `--trajectories-only` and choose a separate output directory for converted
+NPZ arrays inside the Chrono container without LeRobot. `--validate-only`
+checks the conversion without writing a dataset. No recollection is necessary;
+new native collections also save their calibration mapping for later export.
+
 ## Parallel collection
 
 Independent recording processes can collect episodes concurrently on multiple
@@ -247,6 +274,20 @@ camera settings and synchronized observations in every worker:
   --output output/parallel_picks_001 -- \
   --rate 30 --global-camera right-45 --start-pose folded --tray-every 5
 ```
+
+Inside `chrono-orb`, use `run-parallel.sh`. For 500 total attempts with the
+raised-edge tray:
+
+```bash
+./run-parallel.sh --workers 4 --episodes 500 --seed 42 \
+  --output output/pick_and_place_raised -- \
+  --rate 30 --global-camera right-45 --start-pose folded --tray-every 5 \
+  --tray-style raised
+```
+
+Choose a fresh output directory. A running batch uses its startup settings;
+stop it with Ctrl-C and start a new batch to change tray style. Completed data
+from the previous batch remains in its original directory.
 
 `--episodes` is the total attempt count across the batch. Shared demo options
 follow `--`. Worker i uses seed `42+i`, its own output folder and log, and no
@@ -264,7 +305,24 @@ python3 tools/export_lerobot.py output/parallel_picks_001 output/lerobot_paralle
 
 Failed workers retain their logs and completed recordings. Ctrl-C stops the
 workers and preserves partial episodes. Existing batch directories are never
-overwritten. Try increasing worker counts while checking successful episodes
+overwritten by a fresh run. To stop now and continue the same batch later,
+press Ctrl-C once and wait for the launcher to exit. Inside the container:
+
+```bash
+./run-parallel.sh --resume --output output/pick_and_place
+```
+
+Resume restores the original total attempt target, workers, seeds and demo
+flags (including tray style, camera view and FPS). Completed attempts, including
+failed-but-complete attempts, count toward that original target. The first
+unfinished episode restarts from its beginning. Interrupted files are preserved
+under each worker's `interrupted/` directory, while completed episodes keep
+their paths and contents. Checkpoints preserve RNG/layout state; older batches
+without checkpoints rebuild and verify their seeded layout history. Resume
+refuses an active batch or changed settings/scene metadata. For the host, use
+`run-parallel-docker.sh` with the same resume arguments.
+
+Try increasing worker counts while checking successful episodes
 per hour in `batch.json`; GPU memory, rendering load, CPU scheduling and storage
 can eventually limit scaling. Logical CPU count alone does not set the optimum.
 
@@ -281,17 +339,18 @@ can eventually limit scaling. Logical CPU count alone does not set the optimum.
   It provides contrast against the cream arm. Cube spawns and the tray sit on
   its collidable top surface; grasp heights include the sheet thickness.
   The visual surface adds rounded 7 mm corners, fine grain and creases below
-  0.5 mm; the contact surface stays flat at 1 mm to preserve grasp heights.
-- The CAD base is centered on the front edge and held by two modeled screw clamps.
-  The support board and clamp dimensions are visual approximations.
+  0.7 mm, plus procedural crease shading; the contact surface stays flat at 1 mm.
+- The CAD base uses the calibrated front mounting transform, with two modeled
+  screw clamps following that transform. The unsupported extended white support
+  slab has been removed; the floor ends at the enclosure perimeter.
 - Cream printed links, black servo housings, metal hardware, and visible red,
   black, and white strands between all six daisy-chained motors.
-- One green **3 × 3 × 3 cm PLA cube, mass 30 g**, resting in a red tray.
-  The tray's outside footprint is **5 × 5 cm**, with a **1 cm raised edge** above
-  its inside floor. Its base and walls are 2 mm thick, giving a 4.6 × 4.6 cm
-  usable floor. The static tray is fitted at X=6.57 cm, Y=29.05 cm and yaw 147.84°;
-  its four observed rim corners fit to 1.09 px RMS (0.77 px per coordinate). Automated episodes
-  sample reachable cube/tray layouts as described above.
+- One green **3 × 3 × 3 cm PLA cube, mass 30 g**, initially beside the red plate,
+  matching the first recorded frame. The plate footprint is **5 × 5 cm**, with
+  a 2 mm base and an estimated **1 mm shallow lip** in reference mode. The
+  optional raised style uses the earlier **1 cm rim**. The same dimensions create visual and collision shapes. Initial
+  object positions and yaw come from both silhouettes and are retained in
+  `assets/reference_layout.json`. Automated episodes sample reachable layouts.
   The cube is a dynamic body with the specified mass and uniform cube inertia;
   the fixed tray has collision geometry for its floor and all four edges.
 - The rigid jaws come from `SO101 Assembly.step`. The soft fingers are **not**
@@ -323,7 +382,8 @@ can eventually limit scaling. Logical CPU count alone does not set the optimum.
 - The [NEEWER GC21B](https://neewer.com/products/neewer-gc21b-21w-bi-color-handheld-led-tube-light-66606507)
   has a nominal 90 cm inflated length, 21 W maximum electrical input, CRI95 and
   2700–6500 K CCT range. The visible body/backing silhouette is fitted to the
-  reference image, giving a 90.15 cm long capsule, estimated 5.0 cm diameter,
+  recorded external image; its current fitted capsule dimensions are retained
+  in `assets/video_tube.json`,
   and a slight diagonal ceiling mounting. Its physical section is not measured.
   It has an inward/downward white diffuser and black backing, rather than a
   luminous ceiling. A 16 × 3 fixed quadrature approximates the luminous face.
@@ -350,9 +410,9 @@ sweeps should be checked for clearance before collecting data.
 ## Simulation limits
 
 The arm's first five joints follow prescribed CAD trajectories. Automated
-gripping uses detailed rigid contacts and a physical torque-limited moving jaw.
+gripping uses complete CAD contact meshes and a physical torque-limited moving jaw.
 Jaw mass/inertia, servo gains, friction and torque limit are approximate and
-have not been fitted to the real robot; detailed geometry does not establish
+are not independently measured; detailed geometry does not establish
 calibrated real-world grasp performance. The 30 g cube moves under gravity and
 contact forces; it does not model PLA elasticity. Full arm dynamics and cable
 mechanics are not simulated, and general arm self-collision is not checked.
@@ -414,29 +474,137 @@ normal execution needs PyChrono and NumPy, plus optional PIL for PNG export.
 Saved run previews are in [preview/](preview/). Temporary camera captures,
 conversion caches, and Python bytecode are ignored by Git.
 
-## Reproducing the image fit
+## Reference trajectory replay and video fit
 
-The fit utilities use SciPy/OpenCV already available in the Chrono container.
-The ordinary demo uses the saved JSON profiles and does not import those tools.
-The corner/feature measurements are hand-located for the two supplied photos;
-edit the measurements before fitting different photos. With copies named
-`output/reference_inputs/reference_global.jpg` and `reference_wrist.jpg`, run
-inside the configured container environment:
+The supplied dataset contains 6,632 observed states and ten episodes at 30 Hz.
+Preparation needs PyArrow and NumPy, and can run on the host. It retains actions, episode
+video offsets, state names and Parquet hashes, so chunk boundaries and per-episode
+timestamps remain distinct:
 
 ```bash
-python3 tools/fit_reference_camera.py
-python3 tools/fit_reference_tube.py output/reference_inputs/reference_global.jpg
-python3 tools/fit_reference_layout.py
-python3 tools/fit_wrist_mount.py
-python3 tools/fit_reference_layout.py
-python3 tools/prepare_appearance.py
-./run.sh --headless --duration .3 --no-realtime --camera-profile assets/reference_camera.json --raw-response --save-dir output/refit_raw
-python3 tools/fit_reference_response.py output/refit_raw
-./run.sh --headless --duration .3 --no-realtime --camera-profile assets/reference_camera.json --save-dir output/refit
-python3 tools/review_reference_match.py --renders output/refit --camera-profile assets/reference_camera.json
+python3 tools/replay_reference.py --prepare-only
 ```
+
+The supplied `../calib/robots/so_follower/so101_follower.json` and
+`../calib/teleoperators/so_leader/so101_leader.json` are now imported with source
+hashes in `assets/recorded_motor_calibration.json`. Both files explain every
+recorded state/action on its integer encoder grid. This confirms degree mode
+for the first five joints and percentage mode for the gripper, independently
+of the camera fit. The first five columns yield one CAD degree per recorded
+unit (with CAD axis signs); the gripper yields approximately 1.3345 degrees per
+recorded percent. This follows the STS3215 encoder grid and LeRobot's
+[degree/percentage conversions](https://github.com/huggingface/lerobot/blob/main/src/lerobot/motors/motors_bus.py).
+The [SO follower](https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py)
+uses a separate percentage mode for the gripper. Inference details, tick-grid
+residuals and remaining assumptions are stored in `assets/encoder_units.json`.
+The follower gripper range is 2033–3551 (1518 ticks); the leader range is
+2046–3255 (1209 ticks). Replays recover the verified integer leader readings
+from saved float32 actions, then apply the follower's SDK conversion and
+integer command truncation. Leader tick counts are never treated as follower
+tick counts. `tools/infer_encoder_units.py` prefers these supplied files over
+the older grid-only inference when they are present.
+
+Firmware has already applied `homing_offset` to saved positions. Adding it
+again would double count it. Degree zero is the midpoint of each follower
+range. Assuming an exactly aligned nominal hand-set calibration pose would
+give CAD offsets `[7.033, 86, -99.934, 3.560, 90.044]` degrees for the arm.
+The JSON does not record the physical home pose, so those numbers are a
+conditional CAD convention, not surveyed joint zeros. An optional
+`--home-prior-deg` tests that convention; the selected fit leaves this prior
+disabled and fits absolute CAD offsets, base placement and wrist optics from
+geometry instead.
+
+`assets/recorded_jaw_servo.json` adds the command delay and unloaded response
+time inferred from recorded actions/positions. A delayed first-order target
+filter precedes the existing torque-limited physical jaw; cube contact still
+determines actual motion. Open-gap samples train this estimate, reserving the
+last two episodes for checking. Its loaded stiffness, speed ceiling and force
+response are not independently measured.
+
+`assets/recorded_contact_response.json` adds effective normal contact compliance
+of `1e-4 m/N`, tangential compliance one quarter of that, and 2 ms damping.
+It is selected from rigid / `1e-4` / `1e-3 m/N` candidates using loaded-jaw
+tracking in training episodes 0, 2 and 7, without a cube endpoint objective.
+The training RMS is 0.35 degrees; held-out loaded-jaw RMS is 0.52 degrees.
+This is a surrogate for omitted arm/jaw flexibility, not measured PLA stiffness.
+The ten-episode replay puts 8/10 cube centers on the plate with median reference
+endpoint error 5.56 mm (hardware-normalized previous model: 4/10 and 19.25 mm).
+Force/penetration outliers remain, including a peak near 885 N and 2.95 mm;
+these results do not establish a calibrated force response. The standalone
+planner releases at a 26 mm TCP height above the mat to reduce the cube's fall
+onto the shallow plate; recorded replay trajectories are unchanged.
+
+Inside the configured Chrono container (OpenCV/SciPy/Pillow and ffmpeg installed):
+
+```bash
+source ../../chrono_env.sh
+python3 tools/replay_physical_reference.py --episode 0 --output output/contact_replay_000
+python3 tools/replay_physical_reference.py --episode 8 --output output/contact_replay_008
+python3 tools/validate_physical_reference.py --workers 4 --output output/contact_validation
+# Optional explicit rigid-contact comparison:
+# python3 tools/replay_physical_reference.py --contact-compliance 0 --episode 0 --output output/rigid_000
+# --stride 1 renders every 30 Hz state; default stride 2 renders 15 Hz.
+```
+
+Physical runs save `external_physical.mp4`, `wrist_physical.mp4`, sampled views,
+`physics_replay.json`, and contact diagnostics. The first five arm joints follow
+recorded observed positions. The jaw uses recorded command targets, so contacts
+determine its actual angle under load. Cube and plate poses are fitted once to
+the initial two-camera silhouettes. The cube then stays dynamic and colliding;
+later image measurements never reposition it. Videos are H.264 when ffmpeg is
+available. Sensor captures wait for fresh matching buffers.
+
+The all-episode validator retains misses, endpoint errors and force/penetration
+spikes. Servo impedance, friction and printed-part compliance are unmeasured;
+successful image registration alone does not establish correct contact dynamics.
+Final reference positions are image reconstructions on the plate plane, rather
+than independent surveyed measurements. `--step` and `--arm-interpolation`
+allow integration checks without altering recorded sample positions.
+
+`tools/audit_jaw_clearance.py` checks full-mesh minimum jaw height against
+every recorded state without relying on dynamic contact forces. An earlier
+image-only fit placed some CAD jaws about 10 mm through the mat. The current
+fit adds one-sided floor constraints from training episodes, while leaving
+episodes 8–9 out of optimization. It uses the active external-camera profile
+for arm silhouettes. Exact CAD extrema are used for the clearance calculation;
+the full triangle collision meshes remain in the simulator. No reference cube
+endpoint is included in this calibration objective.
+
+`tools/replay_reference.py` remains an explicitly labeled **visual replay** for
+appearance fitting. It follows image-based cube estimates and bypasses cube
+physics. Use the physical tool above to assess contact and placement.
+
+To refit the scene with SciPy/OpenCV, retain a decoded external frame as
+`output/video_fit/real_external_000.png` and run:
+
+```bash
+python3 tools/infer_encoder_units.py
+python3 tools/fit_metric_twin.py --encoder-scales assets/encoder_units.json \
+  --motor-calibration assets/recorded_motor_calibration.json \
+  --initial-fit output/metric_refit/calibration/fit.json --plate-constraints \
+  --floor-clearance --output output/metric_refit/hardware_refined
+python3 tools/audit_jaw_clearance.py \
+  --fit output/metric_refit/hardware_refined/fit.json \
+  --output output/metric_refit/hardware_refined/clearance.json
+python3 tools/apply_metric_fit.py output/metric_refit/hardware_refined/fit.json
+python3 tools/update_reference_layout.py
+python3 tools/fit_video_camera.py --refine-lens --stereo-plates
+python3 tools/fit_reference_tube.py output/video_fit/real_external_000.png \
+  --camera-profile assets/video_camera.json --output assets/video_tube.json
+python3 tools/prepare_appearance.py
+python3 tools/replay_reference.py --episode 0 --stride 15 --raw-response \
+  --output output/video_fit/response_samples_new
+python3 tools/fit_video_response.py output/video_fit/response_samples_new
+```
+
+The shared fit uses 165 paired views, reserving episodes 8 and 9 for validation.
+It includes mat edges, fixed CAD jaw features, moving finger measurements,
+global arm outlines and optional known-size plate constraints. No per-frame
+robot or camera correction is introduced. Historical freely fitted motor maps
+should not be used for physical replay.
 
 The review metrics include the entire RGB frame. The automatically selected flat-region
 mask is used only to fit a monotonic camera response, not to exclude pixels from
 reported error. Room depths, material properties and single-view lens/pose
-ambiguities remain explicit estimates in the saved profiles.
+ambiguities remain explicit estimates in the saved profiles. The historical
+`fit_reference_*.py` photo utilities and original profiles remain available.
