@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Run `lerobot-record` with ACT's network replaced by a TensorRT engine from tools/export_act_onnx.py.
+"""Run `lerobot-rollout` or `lerobot-record` with ACT's network replaced by a TensorRT engine
+from tools/export_act_onnx.py.
 
 LeRobot still loads --policy.path for its config, pre/post-processors and temporal ensembler; only
 ACTPolicy.predict_action_chunk runs on the engine. Usage (on the robot computer):
-  ACT_TRT_ENGINE=~/trt_v1/act_core_fp16.engine python trt_act_record.py [lerobot-record args]
-  python trt_act_record.py --check POLICY_DIR ENGINE   # engine vs PyTorch on random inputs; no robot
+  ACT_TRT_ENGINE=~/trt_v1/act_core_fp16.engine python trt_act.py rollout [lerobot-rollout args]
+  ACT_TRT_ENGINE=~/trt_v1/act_core_fp16.engine python trt_act.py record [lerobot-record args]
+  python trt_act.py --check POLICY_DIR ENGINE   # engine vs PyTorch on random inputs; no robot
 """
+import importlib
 import json
 import os
 from pathlib import Path
@@ -72,7 +75,8 @@ def check(policy_dir,engine_path):
 
 if __name__=='__main__':
     if sys.argv[1:2]==['--check']:check(*sys.argv[2:4]);sys.exit()
+    if sys.argv[1:2] not in [['rollout'],['record']]:sys.exit(__doc__)
     if 'ACT_TRT_ENGINE' not in os.environ:sys.exit('Set ACT_TRT_ENGINE to the .engine file')
+    command=sys.argv.pop(1);sys.argv[0]=f'lerobot-{command}'
     patch(os.environ['ACT_TRT_ENGINE'])
-    from lerobot.scripts.lerobot_record import main
-    main()
+    importlib.import_module(f'lerobot.scripts.lerobot_{command}').main()
