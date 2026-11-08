@@ -113,8 +113,9 @@ def parse_args(argv=None):
     p.add_argument('--auto',action='store_true',help='IK pick-and-place episodes with physical jaw contacts and torque-limited gripping')
     p.add_argument('--start-pose',choices=list(START_POSES_DEG),default='folded',
                    help='automated start/return pose: folded resting position (default), or fully extended to the left side')
-    p.add_argument('--planner',choices=['direct','cautious'],default='direct',
-                   help='direct: original IK paths over the central patch; cautious: rise/traverse/hover/descend over the whole reachable mat')
+    p.add_argument('--planner',choices=['direct','cautious','aligned'],default='direct',
+                   help='direct: original IK paths over the central patch; cautious: rise/traverse/hover/descend over the whole reachable mat; '
+                        'aligned: cautious, but turn to the tray just above it and lower slowly')
     p.add_argument('--episodes',type=int,default=1,help='number of automated episodes')
     p.add_argument('--seed',type=int,default=42,help='reproducible cube/tray randomization seed')
     p.add_argument('--tray-every',type=int,default=5,help='move the red tray every N episodes (0 keeps its first sampled pose)')

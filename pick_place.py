@@ -21,6 +21,9 @@ DART_ENVELOPE={'approach_cube':(0.,1.),'descend_to_cube':(1.,0.),'transfer_to_tr
 # Cautious planner: noise holds through each hover and fades out over the first part of the descent.
 DART_ENVELOPE_CAUTIOUS={'approach_cube':(0.,1.),'hover_cube':(1.,1.),'descend_above_cube':(1.,0.),
     'transfer_to_tray':(0.,1.),'hover_tray':(1.,1.),'lower_into_tray':(1.,0.)}
+# Aligned planner: noise also holds while the wrist turns to the tray just above it.
+DART_ENVELOPE_ALIGNED={**DART_ENVELOPE_CAUTIOUS,'descend_above_tray':(1.,1.),'align_to_tray':(1.,1.)}
+DART_ENVELOPES={'direct':DART_ENVELOPE,'cautious':DART_ENVELOPE_CAUTIOUS,'aligned':DART_ENVELOPE_ALIGNED}
 DART_JOINT_WEIGHTS=np.array([1.,1.,1.,1.,2.,0.])
 
 @dataclass
@@ -45,7 +48,7 @@ class EpisodePlan:
         self.tray_geometry=tray_geometry(tray_style)
         self.start_pose=start_pose;self.home_deg=START_POSES_DEG[start_pose].copy()
         self.assets=assets;self.ik=SO101IK(assets);self.clock=0.
-        if planner=='cautious':self.plan_cautious()
+        if planner in ['cautious','aligned']:self.plan_cautious()
         else:self.plan_direct()
         self.duration=self.clock
 
@@ -73,7 +76,7 @@ class EpisodePlan:
             if not result.success:
                 raise ValueError(f'{name} unreachable: {result.position_error_m*1000:.2f} mm, {result.approach_error_deg:.2f} deg')
             # Near the base the elbow folds to its limit and IK can switch branch mid-path.
-            if self.planner=='cautious' and np.rad2deg(np.abs(result.q[:5]-path[-1][:5])).max()>12:
+            if self.planner!='direct' and np.rad2deg(np.abs(result.q[:5]-path[-1][:5])).max()>12:
                 raise ValueError(f'{name} switches IK branch')
             self.ik_results.append(result);path.append(result.q)
         self.append(name,duration,result.q,np.array(path) if len(path)>2 else None)
@@ -100,7 +103,9 @@ class EpisodePlan:
     def plan_cautious(self):
         """Up, across, pause, then down: hover above each target fully aligned before descending.
         Speed, hover/carry heights, a sideways bow in the carry and the start pose vary per layout,
-        seeded from the layout itself so replays and resumes rebuild the identical plan."""
+        seeded from the layout itself so replays and resumes rebuild the identical plan.
+        The aligned planner carries without turning the wrist, lowers to just above the tray, turns
+        to the tray there (in view of the wrist camera) and then lowers slowly to the release."""
         layout=self.layout
         key=np.r_[layout.cube_xy,layout.cube_yaw,layout.tray_xy,layout.tray_yaw].astype(float).tobytes()
         rng=np.random.default_rng(int.from_bytes(hashlib.sha256(key).digest()[:8],'little'))
@@ -128,10 +133,21 @@ class EpisodePlan:
                 self.cart('descend_above_cube',.6*slow,grasp_xy,GRASP_TCP_HEIGHT_M+.035,grasp_yaw,OPEN_DEG)
                 self.cart('descend_to_cube',.8*slow,grasp_xy,GRASP_TCP_HEIGHT_M,grasp_yaw,OPEN_DEG)
                 closed=self.q.copy();closed[5]=math.radians(GRASP_DEG);self.append('close_gripper',.6,closed)
-                self.cart('lift_cube',1.*slow,grasp_xy,c,grasp_yaw,GRASP_DEG)
-                self.cart('transfer_to_tray',(.8+travel/.25)*slow,layout.tray_xy,c,place_yaw,GRASP_DEG,30,bulge=bulge)
-                self.append('hover_tray',dwell*.75,self.q)
-                self.cart('lower_into_tray',1.*slow,layout.tray_xy,release,place_yaw,GRASP_DEG)
+                if self.planner=='aligned':
+                    # The cube slowly pivots in the grip (~3-4 deg/s), and past ~20 deg it lands on the rim, so
+                    # the lift and carry are quicker and there are no dwells: the cube is held only ~1 s longer
+                    # than in the cautious plan, all of it spent turning and lowering just above the tray.
+                    carry_yaw=natural(layout.tray_xy)+offset
+                    self.cart('lift_cube',.8*slow,grasp_xy,c,grasp_yaw,GRASP_DEG)
+                    self.cart('transfer_to_tray',(.6+travel/.3)*slow,layout.tray_xy,c,carry_yaw,GRASP_DEG,30,bulge=bulge)
+                    self.cart('descend_above_tray',.6*slow,layout.tray_xy,release+.035,carry_yaw,GRASP_DEG)
+                    self.cart('align_to_tray',(.25+.55*abs(place_yaw-carry_yaw)/(math.pi/4))*slow,layout.tray_xy,release+.035,place_yaw,GRASP_DEG)
+                    self.cart('lower_into_tray',1.2*slow,layout.tray_xy,release,place_yaw,GRASP_DEG)
+                else:
+                    self.cart('lift_cube',1.*slow,grasp_xy,c,grasp_yaw,GRASP_DEG)
+                    self.cart('transfer_to_tray',(.8+travel/.25)*slow,layout.tray_xy,c,place_yaw,GRASP_DEG,30,bulge=bulge)
+                    self.append('hover_tray',dwell*.75,self.q)
+                    self.cart('lower_into_tray',1.*slow,layout.tray_xy,release,place_yaw,GRASP_DEG)
                 opened=self.q.copy();opened[5]=math.radians(OPEN_DEG);self.append('open_gripper',.6,opened)
                 self.cart('retreat',.8*slow,layout.tray_xy,h,place_yaw,OPEN_DEG)
                 self.cart('return_home',(.9+np.linalg.norm(layout.tray_xy-home[:2,3])/.25)*slow,home[:2,3],home[2,3]-WORK_SURFACE_Z,
@@ -160,7 +176,7 @@ class EpisodePlan:
 
 def sample_layout(assets,rng,tray_xy=None,tray_yaw=0.,fixed_cube=False,start_pose='folded',tray_style='reference',planner='direct'):
     for attempt in range(100):
-        if planner=='cautious':
+        if planner!='direct':
             # Anywhere on the mat the arm can reach top-down; any orientation (both are square).
             tray=np.array(tray_xy if tray_xy is not None else [rng.uniform(-.19,.19),rng.uniform(.19,.34)])
             tyaw=tray_yaw if tray_xy is not None else rng.uniform(-math.pi/4,math.pi/4)
@@ -242,7 +258,7 @@ class PickPlaceController:
 
     def command(self,elapsed):
         q,phase,u=self.plan.sample(elapsed)
-        weights=(DART_ENVELOPE_CAUTIOUS if self.plan.planner=='cautious' else DART_ENVELOPE).get(phase)
+        weights=DART_ENVELOPES[self.plan.planner].get(phase)
         if weights and self.dart_amplitude_deg:
             s=u*u*(3-2*u);envelope=weights[0]+(weights[1]-weights[0])*s
             # Three slow sinusoids per joint, scaled to unit RMS.
@@ -268,7 +284,7 @@ class PickPlaceController:
         self.max_grip_force=max(self.max_grip_force,*forces)
         if self.phase in ['approach_cube','hover_cube','descend_above_cube','descend_to_cube'] and max(forces)>.02:
             self.premature_contact=True
-        if min(forces)>.02 and self.phase in ['close_gripper','lift_cube','transfer_to_tray','hover_tray','lower_into_tray']:
+        if min(forces)>.02 and self.phase in ['close_gripper','lift_cube','transfer_to_tray','hover_tray','descend_above_tray','align_to_tray','lower_into_tray']:
             self.ever_grasped=True
         position=np.array(scene.cube_pose()[:3]);tcp=scene.tool_world_pose()
         # Physics has advanced to t; joint_deg still describes the preceding
