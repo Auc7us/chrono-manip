@@ -63,7 +63,8 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('photo',type=Path)
     parser.add_argument('--output',type=Path,default=ROOT/'assets/reference_tube.json')
-    args=parser.parse_args();profile=load_profile(PHOTO_FIT_PROFILE)
+    parser.add_argument('--camera-profile',type=Path,default=PHOTO_FIT_PROFILE)
+    args=parser.parse_args();profile=load_profile(args.camera_profile)
     image=cv2.imread(str(args.photo));gray=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     y,x=np.mgrid[0:465:3,320:640:3];px=x.ravel().astype(float)+.5;py=y.ravel().astype(float)+.5
     value=gray[y,x].ravel();black=(value<90).astype(float);white=(value>212).astype(float)

@@ -1,0 +1,118 @@
+{
+  "method": "effective contact-compliance candidate selected by recorded loaded-jaw tracking; no endpoint objective",
+  "training_episodes": [
+    0,
+    2,
+    7
+  ],
+  "held_out_episodes": [
+    8,
+    9
+  ],
+  "normal_compliance_m_per_n": 0.0001,
+  "tangential_compliance_ratio": 0.25,
+  "damping_time_s": 0.002,
+  "training_loaded_jaw_rms_deg": 0.3532064247881735,
+  "candidates": [
+    {
+      "normal_compliance_m_per_n": 0.0,
+      "loaded_jaw_rms_deg": 13.743105235227324,
+      "samples": 340,
+      "episodes": [
+        {
+          "episode": 0,
+          "samples": 137,
+          "loaded_jaw_rms_deg": 0.15620305775574314,
+          "maximum_contact_force_n": 29.62776345364889,
+          "maximum_penetration_m": 0.00038361195038305596,
+          "source": "output/metric_refit/hardware_contact_validation/episode_000/physics_replay.json"
+        },
+        {
+          "episode": 2,
+          "samples": 94,
+          "loaded_jaw_rms_deg": 17.720996331654653,
+          "maximum_contact_force_n": 839.3819733412225,
+          "maximum_penetration_m": 0.0007225837398436852,
+          "source": "output/metric_refit/hardware_contact_validation/episode_002/physics_replay.json"
+        },
+        {
+          "episode": 7,
+          "samples": 109,
+          "loaded_jaw_rms_deg": 17.84085831294444,
+          "maximum_contact_force_n": 807.695546046139,
+          "maximum_penetration_m": 4.483234806684777e-05,
+          "source": "output/metric_refit/hardware_contact_validation/episode_007/physics_replay.json"
+        }
+      ]
+    },
+    {
+      "normal_compliance_m_per_n": 0.0001,
+      "loaded_jaw_rms_deg": 0.3532064247881735,
+      "samples": 340,
+      "episodes": [
+        {
+          "episode": 0,
+          "samples": 137,
+          "loaded_jaw_rms_deg": 0.06302670243063853,
+          "maximum_contact_force_n": 9.6087641465406,
+          "maximum_penetration_m": 0.0007155662824516185,
+          "source": "output/metric_refit/compliance_1e4_training/episode_000/physics_replay.json"
+        },
+        {
+          "episode": 2,
+          "samples": 94,
+          "loaded_jaw_rms_deg": 0.5192155290465773,
+          "maximum_contact_force_n": 969.8767957069886,
+          "maximum_penetration_m": 0.0030919141790946014,
+          "source": "output/metric_refit/compliance_1e4_training/episode_002/physics_replay.json"
+        },
+        {
+          "episode": 7,
+          "samples": 109,
+          "loaded_jaw_rms_deg": 0.38944141004170313,
+          "maximum_contact_force_n": 209.2801344713906,
+          "maximum_penetration_m": 0.0008961895437096246,
+          "source": "output/metric_refit/compliance_1e4_training/episode_007/physics_replay.json"
+        }
+      ]
+    },
+    {
+      "normal_compliance_m_per_n": 0.001,
+      "loaded_jaw_rms_deg": 12.25957659014618,
+      "samples": 340,
+      "episodes": [
+        {
+          "episode": 0,
+          "samples": 137,
+          "loaded_jaw_rms_deg": 14.218510994228364,
+          "maximum_contact_force_n": 19.497767048781533,
+          "maximum_penetration_m": 0.004122135062061716,
+          "source": "output/metric_refit/compliance_1e3_training/episode_000/physics_replay.json"
+        },
+        {
+          "episode": 2,
+          "samples": 94,
+          "loaded_jaw_rms_deg": 0.379856645094409,
+          "maximum_contact_force_n": 115.02909594646641,
+          "maximum_penetration_m": 0.0016277647300739773,
+          "source": "output/metric_refit/compliance_1e3_training/episode_002/physics_replay.json"
+        },
+        {
+          "episode": 7,
+          "samples": 109,
+          "loaded_jaw_rms_deg": 14.649025798678245,
+          "maximum_contact_force_n": 28.811662671013437,
+          "maximum_penetration_m": 0.002140911361493636,
+          "source": "output/metric_refit/compliance_1e3_training/episode_007/physics_replay.json"
+        }
+      ]
+    }
+  ],
+  "material_parameters_independently_measured": false,
+  "assumptions": [
+    "Effective contact compliance represents omitted printed-jaw and arm compliance; not measured PLA stiffness",
+    "Existing friction, jaw torque saturation and CAD collision geometry are retained",
+    "Later images and final cube positions never drive simulated cube motion",
+    "Large contact-force/penetration outliers remain visible and are not used as a calibrated force response"
+  ]
+}

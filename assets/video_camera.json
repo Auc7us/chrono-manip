@@ -1,0 +1,208 @@
+{
+  "source": "green_cube_red_plate_1/videos/observation.images.external/chunk-000/file-000.mp4, frame 0",
+  "method": "independent optical pose/lens fit to mat, box corners and curved near-wall seam",
+  "pixel_origin": "top-left",
+  "image_size": [
+    640,
+    480
+  ],
+  "optical_position_m": [
+    0.42942477557451153,
+    0.36615960921408,
+    0.47795329558544786
+  ],
+  "yaw_pitch_roll_deg": [
+    13.797045830215815,
+    43.82622453105621,
+    -10.947382854789224
+  ],
+  "world_from_optical_rotation": [
+    [
+      -0.7006272455053079,
+      -0.10643199409834136,
+      -0.7055449620597511
+    ],
+    [
+      0.17205225393540927,
+      -0.9848356133444925,
+      -0.022289831854963
+    ],
+    [
+      -0.6924734541997913,
+      -0.13700746447047218,
+      0.7083145275285421
+    ]
+  ],
+  "lens": {
+    "model": "equidistant_polynomial",
+    "focal_px": 286.44424271338204,
+    "principal_point_px": [
+      331.6193569040149,
+      240.23297064150782
+    ],
+    "theta_coefficients": [
+      -0.005349402851141891,
+      -0.0057887208838837256
+    ]
+  },
+  "landmark_rms_px": 3.281868945059853,
+  "landmarks": {
+    "floor_far_front": {
+      "world_m": [
+        -0.4445,
+        0.0,
+        0.0
+      ],
+      "reference_px": [
+        184.0,
+        153.0
+      ],
+      "projected_px": [
+        183.34158739953702,
+        158.47838170696502
+      ],
+      "error_px": 5.517805114323759,
+      "weight": 0.35
+    },
+    "floor_far_rear": {
+      "world_m": [
+        -0.4445,
+        0.6095999999999999,
+        0.0
+      ],
+      "reference_px": [
+        357.0,
+        158.0
+      ],
+      "projected_px": [
+        354.60817386483933,
+        163.0983832046511
+      ],
+      "error_px": 5.631548948762325,
+      "weight": 1.0
+    },
+    "floor_near_front": {
+      "world_m": [
+        0.4445,
+        0.0,
+        0.0
+      ],
+      "reference_px": [
+        82.0,
+        439.0
+      ],
+      "projected_px": [
+        83.55458873478955,
+        439.51888954743674
+      ],
+      "error_px": 1.6388997824069882,
+      "weight": 1.0
+    },
+    "floor_near_rear": {
+      "world_m": [
+        0.4445,
+        0.6095999999999999,
+        0.0
+      ],
+      "reference_px": [
+        438.0,
+        450.0
+      ],
+      "projected_px": [
+        436.5255666266144,
+        451.753516449809
+      ],
+      "error_px": 2.2910202339359604,
+      "weight": 1.0
+    },
+    "mat_far_front": {
+      "world_m": [
+        -0.2286,
+        0.15239999999999998,
+        0.001
+      ],
+      "reference_px": [
+        209.0,
+        194.0
+      ],
+      "projected_px": [
+        209.6954429160549,
+        193.9878489795251
+      ],
+      "error_px": 0.6955490613821039,
+      "weight": 1.0
+    },
+    "mat_far_rear": {
+      "world_m": [
+        -0.2286,
+        0.45719999999999994,
+        0.001
+      ],
+      "reference_px": [
+        315.0,
+        198.0
+      ],
+      "projected_px": [
+        315.5360127920361,
+        196.47146794435795
+      ],
+      "error_px": 1.619790097003818,
+      "weight": 1.0
+    },
+    "mat_near_front": {
+      "world_m": [
+        0.2286,
+        0.15239999999999998,
+        0.001
+      ],
+      "reference_px": [
+        169.0,
+        348.0
+      ],
+      "projected_px": [
+        167.6643039076165,
+        345.79566197605817
+      ],
+      "error_px": 2.577438685013539,
+      "weight": 1.0
+    },
+    "mat_near_rear": {
+      "world_m": [
+        0.2286,
+        0.45719999999999994,
+        0.001
+      ],
+      "reference_px": [
+        331.0,
+        352.0
+      ],
+      "projected_px": [
+        333.26089718870514,
+        350.90105850869816
+      ],
+      "error_px": 2.513827460109294,
+      "weight": 1.0
+    }
+  },
+  "uncertainties": [
+    "Hand-located corners, approximately 2 px; partly occluded front corner downweighted",
+    "Metric enclosure/mat dimensions and optional known-size stereo plates; optics/pose remain image-derived",
+    "Pixel alignment estimate, not a measured metric camera calibration"
+  ],
+  "lens_source": "independent external-lens fit; wrist-camera estimate used only as a weak same-model prior",
+  "pose_change_from_photo_mm": [
+    6.607212120089356,
+    -28.04764354267453,
+    -21.20946398138901
+  ],
+  "stereo_plate_training_episodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ]
+}

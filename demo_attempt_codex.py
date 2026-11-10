@@ -13,18 +13,17 @@ import math
 import time
 import numpy as np
 from so101_ik import START_POSES_DEG, tool_pose, forward_kinematics as cad_forward_kinematics
-from scene_config import INCH,WIDTH,DEPTH,HEIGHT,SHEET_SIZE,SHEET_CENTER,WORK_SURFACE_Z
-from reference_camera import DEFAULT_PROFILE,PHOTO_FIT_PROFILE,load_profile,fitted_board_pose,camera_metadata
+from scene_config import (INCH,WIDTH,DEPTH,HEIGHT,SHEET_SIZE,SHEET_CENTER,WORK_SURFACE_Z,
+    TRAY_SIZE,TRAY_BASE,TRAY_WALL,TRAY_RIM_HEIGHTS,tray_geometry)
+from reference_camera import DEFAULT_PROFILE,PHOTO_FIT_PROFILE,load_profile,load_wrist_profile,fitted_board_pose,camera_metadata
 from appearance import (COLORS, LIGHT_KELVIN, WHITE_BALANCE_KELVIN, LIGHT_BRIGHTNESS,
-    AMBIENT_FILL, TUBE_CENTER, TUBE_NORMAL, TUBE_U, TUBE_V, TUBE_FRAME, EMITTER_CENTER,
+    AMBIENT_FILL, TUBE_CENTER, TUBE_NORMAL, LIGHT_NORMAL, TUBE_U, TUBE_V, TUBE_FRAME, EMITTER_CENTER,
     EMITTER_SIZE, quadrature, node_strength, floor_bounce_nodes, ceiling_bounce_nodes, appearance_metadata)
 
 ROOT = Path(__file__).resolve().parent
 REFERENCE_LAYOUT=json.loads((ROOT/'assets/reference_layout.json').read_text())
 DEFAULT_JOINTS = REFERENCE_LAYOUT['inspection_joint_deg']
 CUBE_EDGE, CUBE_MASS = .030, .030  # 3 cm PLA cube, 30 grams
-TRAY_SIZE, TRAY_RIM_HEIGHT = .050, .010  # 5 cm square, 1 cm above its inside floor
-TRAY_BASE, TRAY_WALL = .002, .002
 TRAY_CENTER = tuple(REFERENCE_LAYOUT['tray_center_xy_m'])
 
 def unit(v):
@@ -82,7 +81,7 @@ def white_balanced_light(args):
     rgb=blackbody_rgb(args.light_kelvin)/blackbody_rgb(args.white_balance_kelvin)
     return rgb/np.dot(rgb,[.2126,.7152,.0722])
 
-def parse_args():
+def parse_args(argv=None):
     p=argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--motion',action='store_true',help='slow, small joint sweep around the initial pose')
     p.add_argument('--joint-deg',type=float,nargs=6,default=DEFAULT_JOINTS,metavar=('PAN','LIFT','ELBOW','WRIST','ROLL','JAW'))
@@ -93,7 +92,7 @@ def parse_args():
     p.add_argument('--width',type=int,default=640,help='sensor image width (4:3 aspect ratio)')
     p.add_argument('--rate',type=float,default=15,help='both cameras update at this rate in Hz')
     p.add_argument('--global-camera',choices=['top-down','right-45'],default='right-45',
-                   help='fixed camera: nominal centered right-wall 45-degree view (default), or optional virtual top-down')
+                   help='fixed camera: video-fitted right-wall view (default), or optional virtual top-down')
     p.add_argument('--camera-profile',type=Path,default=DEFAULT_PROFILE,help='JSON with fixed optical pose and fitted lens parameters')
     p.add_argument('--lens-model',choices=['reference','pinhole'],default='reference',help='fitted wide-angle projection (default), or rectified pinhole')
     p.add_argument('--raw-response',action='store_true',help='skip the fixed photographic exposure/contrast response for fitting comparisons')
@@ -114,23 +113,40 @@ def parse_args():
     p.add_argument('--auto',action='store_true',help='IK pick-and-place episodes with physical jaw contacts and torque-limited gripping')
     p.add_argument('--start-pose',choices=list(START_POSES_DEG),default='folded',
                    help='automated start/return pose: folded resting position (default), or fully extended to the left side')
+    p.add_argument('--planner',choices=['direct','cautious','aligned','staged'],default='direct',
+                   help='direct: original IK paths over the central patch; cautious: rise/traverse/hover/descend over the whole reachable mat; '
+                        'aligned: cautious, but turn to the tray just above it and lower slowly; '
+                        'staged: aligned, and also turn to the cube just above it')
     p.add_argument('--episodes',type=int,default=1,help='number of automated episodes')
     p.add_argument('--seed',type=int,default=42,help='reproducible cube/tray randomization seed')
     p.add_argument('--tray-every',type=int,default=5,help='move the red tray every N episodes (0 keeps its first sampled pose)')
+    p.add_argument('--tray-style',choices=list(TRAY_RIM_HEIGHTS),
+                   help='reference: 1 mm plate lip (default); raised: 10 mm tray walls; inherited when replaying a saved episode')
     p.add_argument('--fixed-cube',action='store_true',help='use one fixed cube spawn rather than randomizing each episode')
+    p.add_argument('--dart-noise-deg',type=float,default=0.,
+                   help='DART: perturb the executed approach/transfer by smooth joint noise with per-episode RMS drawn from [0, this]; recorded actions stay clean')
     p.add_argument('--replay-episode',type=Path,help='reuse the cube/tray layout from an episode.json with the current planner and physics')
     p.add_argument('--collect-dir',type=Path,help='new directory for synchronized episode images, videos, and trajectories')
+    p.add_argument('--resume',action='store_true',help='resume --collect-dir at the first unfinished episode; --episodes remains the total target')
     p.add_argument('--no-realtime',action='store_true',help='run as fast as physics/rendering allows')
-    a=p.parse_args()
+    a=p.parse_args(argv)
     if a.width<64 or a.rate<=0 or a.samples<1 or not 10<a.hfov_deg<170 or a.exposure<=0:
         p.error('width >= 64, rate > 0, samples >= 1, 10 < hfov-deg < 170, exposure > 0 required')
     if not 2700<=a.light_kelvin<=6500 or not 2000<=a.white_balance_kelvin<=10000 or not 0<=a.light_brightness<=1:
         p.error('light-kelvin must be 2700–6500, white-balance-kelvin 2000–10000, light-brightness 0–1')
     if a.duration is not None and a.duration<=0: p.error('--duration must be positive')
     if a.episodes<1 or a.tray_every<0:p.error('episodes must be positive and tray-every nonnegative')
+    if a.dart_noise_deg<0:p.error('--dart-noise-deg must be nonnegative')
     if a.auto and (a.motion or a.assembly_pose):p.error('--auto cannot be combined with --motion or --assembly-pose')
     if a.replay_episode and not a.auto:p.error('--replay-episode requires --auto')
+    if a.tray_style is None:
+        a.tray_style='reference'
+        if a.replay_episode:
+            saved=json.loads(a.replay_episode.read_text())
+            a.tray_style=saved.get('tray_geometry',{}).get('style','reference')
+            if a.tray_style not in TRAY_RIM_HEIGHTS:p.error('Replay episode has an unsupported tray style')
     if a.collect_dir and (not a.auto or a.no_sensors):p.error('--collect-dir requires --auto and both sensors')
+    if a.resume and not a.collect_dir:p.error('--resume requires --collect-dir')
     if a.collect_dir and abs(a.rate-round(a.rate))>1e-9:p.error('collection rate must be an integer FPS')
     if a.headless and a.duration is None and not a.auto: a.duration=3.
     return a
@@ -161,7 +177,7 @@ def validate(assets):
         if not (ROOT/'assets/textures'/f'{name}.png').is_file():
             raise RuntimeError('Missing surface textures; run python3 tools/prepare_appearance.py')
     print(f'Interior: {WIDTH:.4f} W × {DEPTH:.4f} D × {HEIGHT:.4f} H m (35 × 24 × 20 inches)')
-    print('Five opaque walls, open front at Y=0; base clamped at front center.')
+    print('Five opaque walls, open front at Y=0; base uses the calibrated front mounting pose.')
     print('CAD bore fit: %.6f mm; camera plate center offset: %.6f mm' % (
         assets['alignment']['gripper_bore_fit_max_error_mm'],assets['alignment']['camera_plate_center_error_mm']))
     print(f'Nominal CAD PCB clearance: {clearance*1000:.3f} mm; lens protrusion: {protrusion*1000:.3f} mm (before photo-fit correction)')
@@ -222,10 +238,15 @@ class Scene:
         self.wrist_board=transform(np.array(cam['rotation']),cam['board_center_m'])
         lens=transform(p=[cam['optical_offset_m'],0,0])
         image_frame=lens@transform(np.diag([1.,-1.,-1.]))
-        self.wrist_fit=json.loads((ROOT/'assets/reference_wrist.json').read_text())
+        self.wrist_fit=getattr(args,'wrist_profile_override',None) or load_wrist_profile()
+        if getattr(args,'wrist_profile_override',None):
+            from reference_camera import validate_lens
+            validate_lens(self.wrist_fit['lens'])
         self.wrist_optical=self.wrist_board@image_frame
         if args.lens_model=='reference':
-            self.wrist_optical=self.wrist_optical@np.array(self.wrist_fit['optical_from_corrected_optical'])
+            if 'link_from_optical' in self.wrist_fit:
+                self.wrist_optical=np.array(self.wrist_fit['link_from_optical'])
+            else:self.wrist_optical=self.wrist_optical@np.array(self.wrist_fit['optical_from_corrected_optical'])
             # Place the modeled PCB/lens at the same fitted frame as the sensor,
             # keeping rays clear of its own approximated lens barrel.
             self.wrist_board=self.wrist_optical@np.linalg.inv(image_frame)
@@ -318,8 +339,8 @@ class Scene:
         for x in [-w/2+.006,w/2-.006]:
             self.box(self.world,(.011,.034,.00022),(x,.020,.0019),'tape')
         self.make_room_background()
-        # A small exterior base below the box makes the clamp's underside visible.
-        self.box(self.world,(w+.32,d+.13,.018),(.035,d/2-.012,-.014),'white')
+        # The reference floor ends at the enclosure perimeter. Do not extend a
+        # support slab into the room: that invented geometry formed a white ledge.
 
     def make_room_background(self):
         # Only the open front sees this dim room. Approximate large structures
@@ -376,13 +397,14 @@ class Scene:
 
     def make_clamps(self):
         # Two front-edge screw clamps engage the actual base feet and box support.
+        delta=np.array(self.assets.get('base_world_from_cad',transform(np.diag([-1.,-1.,1.]),[0,.054,-.00039])))[:3,3]-[0,.054,-.00039]
         for x in [-.045,.045]:
-            self.box(self.world,(.017,.064,.009),(x,.016,.010),'black')
-            self.box(self.world,(.017,.012,.068),(x,-.014,-.017),'black')
-            self.box(self.world,(.017,.045,.009),(x,.007,-.049),'black')
-            self.cylinder(self.world,.0025,.043,(x,.026,-.030),'metal')
-            self.cylinder(self.world,.007,.003,(x,.026,-.010),'black')
-            self.cylinder(self.world,.002,.026,(x,.026,-.054),'metal',(1,0,0))
+            self.box(self.world,(.017,.064,.009),np.array([x,.016,.010])+delta,'black')
+            self.box(self.world,(.017,.012,.068),np.array([x,-.014,-.017])+delta,'black')
+            self.box(self.world,(.017,.045,.009),np.array([x,.007,-.049])+delta,'black')
+            self.cylinder(self.world,.0025,.043,np.array([x,.026,-.030])+delta,'metal')
+            self.cylinder(self.world,.007,.003,np.array([x,.026,-.010])+delta,'black')
+            self.cylinder(self.world,.002,.026,np.array([x,.026,-.054])+delta,'metal',(1,0,0))
 
     def camera_model(self,body,pose,mount=None):
         self.mesh(body,'imx335_b_board.obj','pcb',pose)
@@ -406,9 +428,11 @@ class Scene:
         self.box(body,(.004,.006,.006),point(pose,[-.004,0,-.014]),'black',pose[:3,:3])
 
     def make_object_and_tray(self):
-        # The 5 x 5 cm measurement is the tray's outside footprint. Its raised
-        # edge is 1 cm above the inside floor; base and wall thickness are 2 mm.
+        # The reference plate and optional raised tray share their footprint.
+        # Every wall has identical visual and collision dimensions.
         c=self.c
+        self.tray_geometry=tray_geometry(self.args.tray_style)
+        rim=self.tray_geometry['rim_height_above_floor_m']
         contact=c.ChContactMaterialNSC()
         contact.SetFriction(.4); contact.SetRestitution(0.)
         self.world.EnableCollision(True)
@@ -416,7 +440,7 @@ class Scene:
             self.frame(transform(p=[0,DEPTH/2,-.003])))
         self.world.AddCollisionShape(c.ChCollisionShapeBox(contact,*SHEET_SIZE),
             self.frame(transform(p=SHEET_CENTER)))
-        self.tray=self.body('Red placement tray: 5 x 5 cm, 1 cm rim')
+        self.tray=self.body(f'Red {self.args.tray_style} tray: 5 x 5 cm, {rim*1000:g} mm rim')
         self.tray.SetPos(self.vec([*TRAY_CENTER,WORK_SURFACE_Z]))
         self.tray.SetRot(self.quaternion(axis_rotation([0,0,1],REFERENCE_LAYOUT['tray_yaw_rad'])))
         self.tray.EnableCollision(True)
@@ -425,17 +449,19 @@ class Scene:
             self.tray.AddCollisionShape(c.ChCollisionShapeBox(contact,*size),self.frame(transform(p=pos)))
         tray_box((TRAY_SIZE,TRAY_SIZE,TRAY_BASE),(0,0,TRAY_BASE/2))
         edge=(TRAY_SIZE-TRAY_WALL)/2
-        wall_z=TRAY_BASE+TRAY_RIM_HEIGHT/2
+        wall_z=TRAY_BASE+rim/2
         for side in [-1,1]:
-            tray_box((TRAY_WALL,TRAY_SIZE,TRAY_RIM_HEIGHT),(side*edge,0,wall_z))
-            tray_box((TRAY_SIZE-2*TRAY_WALL,TRAY_WALL,TRAY_RIM_HEIGHT),(0,side*edge,wall_z))
+            tray_box((TRAY_WALL,TRAY_SIZE,rim),(side*edge,0,wall_z))
+            tray_box((TRAY_SIZE-2*TRAY_WALL,TRAY_WALL,rim),(0,side*edge,wall_z))
         # Set the requested printed-part mass, rather than assuming solid PLA
         # density. A uniform cube inertia is the approximation used here.
         self.cube=c.ChBodyEasyBox(CUBE_EDGE,CUBE_EDGE,CUBE_EDGE,CUBE_MASS/CUBE_EDGE**3,True,True,contact)
         self.cube.SetName('PLA cube: 3 x 3 x 3 cm, 30 g')
         self.cube.SetMass(CUBE_MASS)
         self.cube.SetInertiaXX(self.vec([CUBE_MASS*CUBE_EDGE**2/6]*3))
-        self.cube.SetPos(self.vec([*TRAY_CENTER,WORK_SURFACE_Z+TRAY_BASE+CUBE_EDGE/2+.0002]))
+        cube_initial=REFERENCE_LAYOUT.get('cube_center_xyz_m',
+            [*REFERENCE_LAYOUT.get('cube_center_xy_m',TRAY_CENTER),WORK_SURFACE_Z+TRAY_BASE+CUBE_EDGE/2+.0002])
+        self.cube.SetPos(self.vec(cube_initial))
         self.cube.SetRot(self.quaternion(axis_rotation([0,0,1],REFERENCE_LAYOUT['cube_yaw_rad'])))
         self.cube.GetVisualShape(0).SetMaterial(0,self.materials['pla'])
         self.system.Add(self.cube)
@@ -482,9 +508,7 @@ class Scene:
                   work_surface=dict(color='black',dimensions_m=list(SHEET_SIZE),center_m=list(SHEET_CENTER),top_z_m=WORK_SURFACE_Z),
                   cube=dict(material='PLA',color='green',dimensions_m=[CUBE_EDGE]*3,mass_kg=self.cube.GetMass(),
                            world_pose_xyz_wxyz=self.cube_pose(),inertia_kg_m2=[CUBE_MASS*CUBE_EDGE**2/6]*3),
-                  tray=dict(color='red',outer_dimensions_m=[TRAY_SIZE]*2,base_thickness_m=TRAY_BASE,
-                            wall_thickness_m=TRAY_WALL,rim_height_above_floor_m=TRAY_RIM_HEIGHT,
-                            inside_dimensions_m=[TRAY_SIZE-2*TRAY_WALL]*2,world_pose_xyz_wxyz=self.tray_pose()))
+                  tray=dict(**self.tray_geometry,world_pose_xyz_wxyz=self.tray_pose()))
         (output/'object_and_tray.json').write_text(json.dumps(data,indent=2)+'\n')
 
     def update_arm(self,t,angles=None,reset=False):
@@ -568,7 +592,7 @@ def render_mode(args):
 def configure_sensors(scene,sens):
     c=scene.c; a=scene.args
     from reference_camera import configure_projection
-    configure_projection(sens,scene.camera_profile)
+    configure_projection(sens,scene.camera_profile,scene.wrist_fit)
     manager=sens.ChSensorManager(scene.system)
     manager.SetRayRecursions(5)
     # Neutral white-panel bounce, scaled with the dimmer and display exposure.
@@ -607,7 +631,7 @@ def configure_sensors(scene,sens):
             # Broad hemispherical emission approximates the tube's diffuser;
             # its opaque backing suppresses grazing/upward spill and wall hotspots.
             manager.scene.AddSpotLight(c.ChVector3f(*map(float,p)),color,-1.,
-                c.ChVector3f(*map(float,TUBE_NORMAL)),1.60,math.pi,False)
+                c.ChVector3f(*map(float,LIGHT_NORMAL)),1.60,math.pi,False)
         # First-bounce illumination from the white parts of the floor. Every
         # node radiates upward, so it cannot create a hotspot on its own plane.
         bounce_positions,bounce_strengths=floor_bounce_nodes(a.light_brightness,a.exposure)
@@ -620,13 +644,16 @@ def configure_sensors(scene,sens):
     sensors={}
     spatial_factor=1 if stochastic_render(a) else a.samples
     rays_per_axis=a.samples if stochastic_render(a) else 1
-    response=json.loads((ROOT/'assets/reference_response.json').read_text())
-    hfov=camera_metadata(a)['effective_hfov_deg']
+    response=json.loads((ROOT/'assets/video_response.json').read_text())
     for name,parent,pose in [('wrist',scene.links[5],scene.wrist_optical),
                              (scene.global_camera_name,scene.world,scene.global_optical)]:
+        hfov=camera_metadata(a,name)['effective_hfov_deg']
+        lens_type=sens.CameraLensModelType_PINHOLE
+        if a.lens_model=='reference':
+            lens_type=sens.CameraLensModelType_RADIAL if name=='wrist' else sens.CameraLensModelType_FOV_LENS
         camera=sens.ChCameraSensor(parent,a.rate,scene.frame(pose),a.width*spatial_factor,(a.width*3//4)*spatial_factor,
             math.radians(hfov),rays_per_axis,
-            sens.CameraLensModelType_FOV_LENS if a.lens_model=='reference' else sens.CameraLensModelType_PINHOLE,
+            lens_type,
             a.path_traced,use_denoiser(a),sens.Integrator_PATH if stochastic_render(a) else sens.Integrator_LEGACY,2.2)
         camera.SetName('attempt-codex / '+name+' / IMX335 B ('+a.lens_model+')')
         camera.SetLag(0.); camera.SetCollectionWindow(0.)
@@ -698,13 +725,13 @@ def save_results(scene,sensors,output):
         poses[name]=dict(world_from_optical=pose.tolist(),forward_axis='+X',up_axis='+Z',
             global_camera_config=scene.args.global_camera,
             mount_to_image_roll_deg=180 if name=='wrist' else 0,
-            width=scene.args.width,height=scene.args.width*3//4,hfov_deg=camera_metadata(scene.args)['effective_hfov_deg'],
-            lens_model=camera_metadata(scene.args),
+            width=scene.args.width,height=scene.args.width*3//4,hfov_deg=camera_metadata(scene.args,name)['effective_hfov_deg'],
+            lens_model=camera_metadata(scene.args,name),
             render_mode=render_mode(scene.args),
             appearance=appearance_metadata(scene.args),
             illumination_model='tube_center_point_light' if scene.args.fast else 'neewer_gc21b_inflatable_tube',
             diffuser_center_m=list(scene.diffuser_center),diffuser_size_m=list(scene.diffuser_size),
-            dominant_illumination_direction=TUBE_NORMAL.tolist(),
+            dominant_illumination_direction=LIGHT_NORMAL.tolist(),
             ambient_fill=(.02 if scene.args.path_traced else AMBIENT_FILL)*scene.args.exposure*scene.args.light_brightness/.5,
             samples_per_pixel=scene.args.samples**2,denoised=use_denoiser(scene.args),added_sensor_noise=False,
             updates=int(data.LaunchedCount))
@@ -754,6 +781,13 @@ def viewport_worker(args,assets,shared_time,shared_state,stop,ready,status):
 
 def main():
     args=parse_args()
+    resume=None
+    if args.resume:
+        from collection_resume import read_resume_state,recording_is_running
+        if recording_is_running(args.collect_dir):raise RuntimeError('This recording is still running; stop it and wait for exit before resuming')
+        resume=read_resume_state(args.collect_dir.resolve())
+        if resume['next_index']>=args.episodes:
+            print(f'Already collected {resume["next_index"]}/{args.episodes} completed episodes.');return
     assets=json.loads((ROOT/'assets/scene_assets.json').read_text())
     validate(assets)
     if args.validate: return
@@ -765,10 +799,10 @@ def main():
     controller=None;episode_writer=None
     if args.auto:
         from pick_place import PickPlaceController
-        controller=PickPlaceController(scene,args)
+        controller=PickPlaceController(scene,args,resume=resume)
     if args.collect_dir:
         from episode_data import EpisodeWriter
-        episode_writer=EpisodeWriter(args.collect_dir.resolve(),scene,args)
+        episode_writer=EpisodeWriter(args.collect_dir.resolve(),scene,args,resume=resume)
         episode_writer.begin(controller)
     vis=None
     viewport=None
@@ -795,7 +829,7 @@ def main():
     activity='IK pick-and-place enabled.' if args.auto else ('Slow joint motion enabled.' if args.motion else 'Static inspection pose.')
     print(f'GC21B: {args.light_kelvin:g} K estimate, {args.light_brightness:.0%} brightness, '
           f'{1300*args.light_brightness:g} lux at 0.5 m nominal ({lighting}). '+activity)
-    print('Green PLA cube: 3 x 3 x 3 cm, 30 g. Red tray: 5 x 5 cm, 1 cm raised edge.')
+    print(f'Green PLA cube: 3 x 3 x 3 cm, 30 g. Red {args.tray_style} tray: 5 x 5 cm, {scene.tray_geometry["rim_height_above_floor_m"]*1000:g} mm rim.')
     if controller:print('Grasp physics: full CAD jaw contacts; torque-limited moving jaw; cube stays dynamic.')
     print('Close the third-person window or press Ctrl-C to exit.')
     start=time.monotonic(); t=0.; dt=min(.001,1/(args.rate*4)); next_render=0.;next_capture=0.

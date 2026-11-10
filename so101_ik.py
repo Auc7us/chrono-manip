@@ -14,15 +14,21 @@ HOME_DEG=np.array([90.,35.,-50.,105.,90.,58.])
 START_POSES_DEG={
     'folded':HOME_DEG,
     'side':np.array([90.,105.,-70.,-5.,90.,58.]),
+    # Raised and centred: TCP ~17 cm over the near mat edge, gripper pitched 50 deg down so
+    # the wrist camera sees the whole mat (SO101 ~[-2.3,-80.7,25.6,118.2,-9.4,29.5]).
+    'ready':np.array([4.8,4.1,-75.,120.4,89.8,58.]),
 }
-OPEN_DEG=58.
-GRASP_DEG=84.  # servo target; physical contacts limit the actual closing angle
+# Recorded teleoperation opens to 31-41% (median ~36%) and commands 0% to grasp,
+# about 14 points past where the cube stops the jaw. 49 deg is ~36%, 97 deg ~0%.
+OPEN_DEG=49.
+GRASP_DEG=97.  # servo target; physical contacts limit the actual closing angle
 TCP_POINT=np.array([.007,-.210,.156])
 APPROACH=np.array([0.,-.9999619,-.0087265])
 CLOSING=np.array([-.0174524,0.,.9998477])
 # Center the 30 mm cube clear of the fixed tooth tips during vertical descent.
 # The former target overlapped the fixed jaw by approximately 2.4 mm.
 TCP_POINT=TCP_POINT+.0035*CLOSING
+DOWN=np.array([0.,0.,-1.])
 LIMITS_DEG=np.array([[-170,170],[-20,190],[-170,60],[-150,150],[-180,180],[45,108]],dtype=float)
 
 def unit(v):
@@ -42,6 +48,7 @@ def transform(r=None,p=None):
 
 def forward_kinematics(assets,angles_deg):
     t=transform(np.diag([-1.,-1.,1.]),[0,.0540,-.00039])
+    if 'base_world_from_cad' in assets:t=np.array(assets['base_world_from_cad'],dtype=float).copy()
     frames=[t.copy()]
     for joint,angle in zip(assets['joints'],angles_deg):
         r=axis_rotation(joint['axis'],math.radians(angle));p=np.asarray(joint['pivot_m'])
@@ -68,14 +75,16 @@ class SO101IK:
         self.assets=assets
         self.limits=np.deg2rad(LIMITS_DEG)
 
-    def solve(self,position,seed=None,yaw=0.,jaw_deg=GRASP_DEG):
+    def solve(self,position,seed=None,yaw=0.,jaw_deg=GRASP_DEG,approach=DOWN):
         target=np.asarray(position,dtype=float)
         if target.shape!=(3,) or not np.isfinite(target).all():raise ValueError('IK target must contain 3 finite meters')
-        closing=np.array([math.cos(yaw),math.sin(yaw),0.])
+        # Yaw sets the horizontal closing heading; for a tilted approach it is projected square to it.
+        approach=unit(approach);closing=np.array([math.cos(yaw),math.sin(yaw),0.])
+        closing=unit(closing-approach*np.dot(approach,closing))
         def residual(x):
             q=np.r_[x,math.radians(jaw_deg)]
             t=tool_pose(self.assets,q)
-            return np.r_[(t[:3,3]-target)*40.,(t[:3,0]-[0,0,-1]),(t[:3,1]-closing)*.5]
+            return np.r_[(t[:3,3]-target)*40.,(t[:3,0]-approach),(t[:3,1]-closing)*.5]
         starts=[np.deg2rad(HOME_DEG) if seed is None else np.asarray(seed,dtype=float)]
         # Alternate elbow/pitch branches are tried only if the warm start fails.
         starts.extend(np.deg2rad([0,lift,elbow,90-lift-elbow,90,jaw_deg]) for lift,elbow in [(110,-90),(140,-120),(75,-50)])
@@ -97,13 +106,13 @@ class SO101IK:
                         x=trial;damping=max(1e-6,damping*.6);accepted=True;break
                 if not accepted:damping*=10
                 if np.linalg.norm(delta)<1e-7 or damping>1e7:break
-            result=self.result(np.r_[best,math.radians(jaw_deg)],target,closing)
+            result=self.result(np.r_[best,math.radians(jaw_deg)],target,closing,approach)
             if result.success:return result
-        return self.result(np.r_[best,math.radians(jaw_deg)],target,closing)
+        return self.result(np.r_[best,math.radians(jaw_deg)],target,closing,approach)
 
-    def result(self,q,target,closing):
+    def result(self,q,target,closing,approach=DOWN):
         t=tool_pose(self.assets,q)
         pos=float(np.linalg.norm(t[:3,3]-target))
-        angle=math.degrees(math.acos(float(np.clip(-t[2,0],-1,1))))
+        angle=math.degrees(math.acos(float(np.clip(np.dot(t[:3,0],approach),-1,1))))
         close=math.degrees(math.acos(float(np.clip(np.dot(t[:3,1],closing),-1,1))))
         return IKResult(q.copy(),pos<.0015 and angle<4. and close<6.,pos,angle,close)

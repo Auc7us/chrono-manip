@@ -1,16 +1,40 @@
 """CPU checks; run from the demo folder: python3 -m unittest discover -s tests."""
 import json
+import tempfile
 from pathlib import Path
 import unittest
 import numpy as np
 from so101_ik import HOME_DEG, START_POSES_DEG, LIMITS_DEG, SO101IK, tool_pose, forward_kinematics
-from pick_place import sample_layout
+from pick_place import sample_layout,DESCENT_CENTERING_M
 from episode_data import capture_synchronized
 from scene_config import WIDTH,WORK_SURFACE_Z,SHEET_SIZE,SHEET_CENTER
 
 ASSETS=json.loads((Path(__file__).resolve().parents[1]/'assets/scene_assets.json').read_text())
 
 class AutomationTests(unittest.TestCase):
+    def test_raised_tray_release_clears_wall_during_opening(self):
+        from scene_config import tray_geometry
+        root=Path(__file__).resolve().parents[1]
+        plan=sample_layout(ASSETS,np.random.default_rng(42),tray_style='raised')
+        phase=next(p for p in plan.phases if p.name=='open_gripper')
+        spec=tray_geometry('raised');wall_top=WORK_SURFACE_Z+spec['rim_top_above_support_m']
+        jaw_vertices={}
+        for name in ['fixed_jaw','moving_jaw']:
+            jaw_vertices[name]=np.array([[float(x) for x in line.split()[1:4]] for line in (root/'assets/meshes'/f'{name}_collision.obj').read_text().splitlines() if line.startswith('v ')])
+        for t in np.linspace(phase.start,phase.start+phase.duration,12):
+            frames=forward_kinematics(ASSETS,np.rad2deg(plan.sample(t)[0]))
+            for link,name in [(5,'fixed_jaw'),(6,'moving_jaw')]:
+                world=jaw_vertices[name]@frames[link][:3,:3].T+frames[link][:3,3]
+                self.assertGreater(world[:,2].min(),wall_top+.001,name)
+
+    def test_saved_raised_tray_style_is_restored_unless_overridden(self):
+        from demo_attempt_codex import parse_args
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'episode.json';path.write_text(json.dumps(dict(tray_geometry=dict(style='raised'))))
+            self.assertEqual(parse_args(['--auto','--replay-episode',str(path)]).tray_style,'raised')
+            self.assertEqual(parse_args(['--auto','--replay-episode',str(path),'--tray-style','reference']).tray_style,'reference')
+        self.assertEqual(parse_args([]).tray_style,'reference')
+
     def test_detailed_jaws_clear_cube_before_closing(self):
         from so101_ik import CLOSING
         root=Path(__file__).resolve().parents[1]
@@ -39,9 +63,9 @@ class AutomationTests(unittest.TestCase):
             f=frames[part['link']];world=vertices@f[:3,:3].T+f[:3,3]
             self.assertFalse(intersects((world-center)@rotation,faces),name)
             if name=='fixed_jaw':
-                # Regression: the old TCP placed the same complete tooth mesh
-                # 3.5 mm farther into the cube. No source recording is required.
-                old_world=world+.0035*(frames[5][:3,:3]@CLOSING)
+                # Regression: the original TCP, before the 3.5 mm tooth fix and
+                # descent centering, placed the same tooth mesh into the cube.
+                old_world=world+(DESCENT_CENTERING_M+.0035)*(frames[5][:3,:3]@CLOSING)
                 self.assertTrue(intersects((old_world-center)@rotation,faces))
 
     def test_lowering_and_lifting_are_vertical(self):
@@ -77,9 +101,11 @@ class AutomationTests(unittest.TestCase):
         np.testing.assert_allclose(right[:3,:3].T@right[:3,:3],np.eye(3),atol=1e-12)
         self.assertGreater(right[2,2],0.,'Image up should point toward the ceiling')
         lens=right[:3,3]+right[:3,0]*ASSETS['wrist_camera']['optical_offset_m']
-        np.testing.assert_allclose(lens,[WIDTH/2-.040,DEPTH/2,HEIGHT-.020],atol=1e-12)
-        np.testing.assert_allclose(right[:3,0],[-2**-.5,0.,-2**-.5],atol=1e-12)
-        # All randomized cube/tray footprints fit in the nominal wide-angle view.
+        from reference_camera import load_profile
+        profile=load_profile()
+        np.testing.assert_allclose(lens,profile['optical_position_m'],atol=1e-12)
+        np.testing.assert_allclose(right[:3,0],np.array(profile['world_from_optical_rotation'])[:,0],atol=1e-12)
+        # All randomized cube/tray footprints fit in the fitted wide-angle view.
         targets=np.array([[x,y,.03] for x in [-.112,.112] for y in [.198,.322]])
         from reference_camera import project_world
         pixels=project_world(targets)
@@ -139,8 +165,9 @@ class AutomationTests(unittest.TestCase):
                 after=plan.sample(phase.start+1e-7)[0]
                 np.testing.assert_allclose(before,after,atol=1e-8)
             np.testing.assert_allclose(plan.sample(10.)[0],np.deg2rad(HOME_DEG))
-            for name,xy,z in [('descend_to_cube',plan.layout.cube_xy,.019),
-                              ('lower_into_tray',plan.layout.tray_xy,.034)]:
+            heading=np.array([np.cos(plan.layout.cube_yaw),np.sin(plan.layout.cube_yaw)])
+            for name,xy,z in [('descend_to_cube',plan.layout.cube_xy-DESCENT_CENTERING_M*heading,.019),
+                              ('lower_into_tray',plan.layout.tray_xy,.026)]:
                 phase=next(p for p in plan.phases if p.name==name)
                 tcp=tool_pose(ASSETS,phase.q1)
                 np.testing.assert_allclose(tcp[:3,3],[*xy,WORK_SURFACE_Z+z],atol=.0015)

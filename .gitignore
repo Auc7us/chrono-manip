@@ -1,4 +1,5 @@
 __pycache__/
+.venv-act/
 *.pyc
 output/
 assets/*_raw.npz

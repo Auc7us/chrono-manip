@@ -1,0 +1,28 @@
+{
+  "source": "green_cube_red_plate_1 episode 0, raw Chrono replay samples at 3 s intervals",
+  "method": "one fixed monotonic response per camera, fitted jointly across multiple wrist poses",
+  "response": "sigmoid(contrast * logit(display_rgb) + log_exposure_bias)",
+  "cameras": {
+    "right_45": {
+      "contrast": 0.9560809682697207,
+      "log_exposure_bias": 0.1562364354105164,
+      "sample_frames": 9,
+      "flat_rgb_pixels_used": 219724,
+      "raw_rgb_mae_8bit": 21.830767023533948,
+      "adjusted_rgb_mae_8bit": 20.493951815813144
+    },
+    "wrist": {
+      "contrast": 1.139119500827579,
+      "log_exposure_bias": 1.393450833465869,
+      "sample_frames": 9,
+      "flat_rgb_pixels_used": 224224,
+      "raw_rgb_mae_8bit": 49.16281599633487,
+      "adjusted_rgb_mae_8bit": 25.26264370013655
+    }
+  },
+  "assumptions": [
+    "No per-frame color fitting or exposure changes; same filter used in live views and datasets",
+    "Fit pixels reject edges and mismatched materials; reported RGB MAE includes the complete frame",
+    "Photographic response estimate; not measured shutter, ISO or spectral sensitivity"
+  ]
+}

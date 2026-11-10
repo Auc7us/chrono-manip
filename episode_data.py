@@ -5,10 +5,13 @@ import os
 import shutil
 import subprocess
 import time
+import fcntl
 import numpy as np
-from so101_ik import JOINT_NAMES
+from so101_ik import JOINT_NAMES,OPEN_DEG,GRASP_DEG
 from jaw_physics import GRASP_MODE,JAW_TORQUE_LIMIT,CONTACT_FRICTION,JAW_MASS,JAW_KP,JAW_KD
+from pick_place import DESCENT_CENTERING_M
 from scene_config import SHEET_SIZE,SHEET_CENTER,WORK_SURFACE_Z
+from collection_resume import write_json_atomic,prepare_recording_resume,checkpoint_for
 
 def capture_synchronized(system,manager,sensors,t):
     """Respect Chrono's float32 launch deadlines without advancing the scene."""
@@ -43,35 +46,54 @@ def synchronized_images(sensors,expected_time,timeout=20.):
                        f'last timestamps {observed}; refusing stale images')
 
 class EpisodeWriter:
-    def __init__(self,root,scene,args):
+    def __init__(self,root,scene,args,resume=None):
         from PIL import Image
         from appearance import appearance_metadata
         from reference_camera import camera_metadata
+        from so101_format import joint_map_snapshot
         self.Image=Image;self.root=Path(root);self.scene=scene;self.args=args
-        if self.root.exists():raise FileExistsError(f'Collection directory already exists: {self.root}; choose a new directory')
-        self.root.mkdir(parents=True)
+        if not resume:
+            if self.root.exists():raise FileExistsError(f'Collection directory already exists: {self.root}; choose a new directory')
+            self.root.mkdir(parents=True)
+        self.lock=(self.root/'.recording.lock').open('a+')
+        try:fcntl.flock(self.lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:raise RuntimeError('Another process is recording in this directory')
         self.manifest=dict(format='attempt-codex-episodes-v1',fps=args.rate,joint_names=list(JOINT_NAMES),
             joint_units='radians_offset_from_STEP_pose',action_semantics='absolute_joint_target_for_next_control_tick',
+            so101_joint_map=joint_map_snapshot(),
             cameras=list(scene.camera_names),grasp_mode=GRASP_MODE,seed=args.seed,
             jaw_collision=scene.jaw_physics.geometry,jaw_torque_limit_nm=JAW_TORQUE_LIMIT,jaw_friction=CONTACT_FRICTION,
             jaw_mass_kg=JAW_MASS,jaw_servo_kp=JAW_KP,jaw_servo_kd=JAW_KD,physics_step_s=.001,
+            jaw_open_deg=OPEN_DEG,jaw_grasp_target_deg=GRASP_DEG,descent_centering_m=DESCENT_CENTERING_M,
+            dart_noise_max_deg=args.dart_noise_deg,
+            jaw_command_response=scene.jaw_physics.response,
+            jaw_contact_compliance_m_per_n=scene.jaw_physics.contact_compliance_m_n,
+            jaw_contact_tangential_compliance_ratio=scene.jaw_physics.contact_tangential_ratio,
+            jaw_contact_damping_time_s=scene.jaw_physics.contact_damping_s,
             appearance=appearance_metadata(args),
             work_surface=dict(color='black',dimensions_m=list(SHEET_SIZE),center_m=list(SHEET_CENTER),top_z_m=WORK_SURFACE_Z),
             camera_config=dict(global_view=args.global_camera,width=args.width,height=args.width*3//4,
-                hfov_deg=camera_metadata(args)['effective_hfov_deg'],lens=camera_metadata(args),global_world_from_optical=scene.global_optical.tolist(),
+                hfov_deg=camera_metadata(args)['effective_hfov_deg'],lens=camera_metadata(args),
+                wrist_lens=camera_metadata(args,'wrist'),global_world_from_optical=scene.global_optical.tolist(),
                 wrist_link_from_optical=scene.wrist_optical.tolist()),
-            tray_every=args.tray_every,start_pose=args.start_pose,episodes=[])
+            tray_geometry=scene.tray_geometry,tray_every=args.tray_every,start_pose=args.start_pose,planner=args.planner,episodes=[])
         self.active=False
+        if resume:
+            for key,value in resume['manifest'].items():
+                if key!='episodes' and self.manifest.get(key)!=value:raise ValueError(f'Resume metadata differs: {key}; use the original scene/settings')
+            self.manifest,archive=prepare_recording_resume(resume)
+            if archive:print(f'Preserved interrupted attempts in {archive}',flush=True)
         self.flush()
 
     def flush(self):
-        (self.root/'dataset.json').write_text(json.dumps(self.manifest,indent=2)+'\n')
+        write_json_atomic(self.root/'dataset.json',self.manifest)
 
     def begin(self,controller):
         self.index=controller.episode_index;self.start_time=controller.start_time
         self.directory=self.root/'episodes'/f'{self.index:06d}'
         self.directory.mkdir(parents=True)
         self.rows=[];self.active=True;self.last_launches={}
+        write_json_atomic(self.root/'checkpoint.json',checkpoint_for(controller))
 
     def add(self,t,controller,images,stamps,launches):
         scene=self.scene;n=len(self.rows)

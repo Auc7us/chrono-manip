@@ -1,0 +1,29 @@
+{
+  "source": "real_external_000.png",
+  "method": "bounded capsule/backing silhouette fit to fixed-camera image",
+  "center_m": [
+    -0.018702839976428205,
+    0.5080828293756057,
+    0.47580025447695784
+  ],
+  "axis": [
+    0.9923568201577931,
+    -0.12316749174423287,
+    -0.0075967403369947995
+  ],
+  "emission_normal": [
+    -0.05842983933101569,
+    -0.41476048854939485,
+    -0.9080526917607914
+  ],
+  "installed_length_m": 0.9395648164533265,
+  "radius_m": 0.037980301689463224,
+  "white_sector_cosine": 0.6958952560696078,
+  "black_mask_iou": 0.8412333179935573,
+  "white_mask_iou": 0.5628249566724437,
+  "assumptions": [
+    "90 cm nominal length prior",
+    "Circular section and rounded capsule ends",
+    "Backing segmentation from upper-right image region"
+  ]
+}

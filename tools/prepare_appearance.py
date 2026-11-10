@@ -41,8 +41,8 @@ def make_mat():
         for i,x in enumerate(np.linspace(-xmax,xmax,nx)):
             # Shallow folds in the photographed sheet, below the collision tolerance.
             fade=np.sin(np.pi*i/(nx-1))*np.sin(np.pi*j/(ny-1))
-            crease=.00032*np.exp(-((x-.014-.10*y)/.006)**2)
-            crease+=.00040*np.exp(-((y+.018+.035*x)/.004)**2)
+            crease=.00055*np.exp(-((x-.014-.10*y)/.009)**2)
+            crease+=.00065*np.exp(-((y+.018+.035*x)/.008)**2)
             ripple=.00006*(1+np.sin(29*x+7*y))*np.sin(43*y)**2
             vertices.append((x,y+SHEET_CENTER[1],t+.000015+fade*(crease+ripple)))
             uv.append((x/w+.5,y/d+.5))
@@ -139,6 +139,11 @@ def make_textures():
         if name=='floor_sheet':
             grain+=.009*np.cos(x*np.pi)*np.sin(y*np.pi/2)
             grain+=.018*np.sin(x*.027+y*.019)*np.sin(y*.041)
+            # Broad crease bands visible in both recorded cameras. These are
+            # procedural material variations, shared by every view and frame.
+            mx=(x/(w-1)-.5)*SHEET_SIZE[0];my=(y/(h-1)-.5)*SHEET_SIZE[1]
+            for distance,width in [(mx-.014-.10*my,.009),(my+.018+.035*mx,.008)]:
+                grain*=1-.28*np.exp(-(distance/width)**2)+.12*np.exp(-((distance-width)/(width*.6))**2)
         linear=np.clip(grain[:,:,None]*np.array(COLORS[name]),0,1)
         # Chrono decodes diffuse textures from sRGB with power 2.2.
         Image.fromarray(np.uint8(np.clip(linear**(1/2.2)*255,0,255))).save(target/f'{name}.png')

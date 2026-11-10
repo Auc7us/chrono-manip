@@ -4,6 +4,9 @@ Run these commands from the `attempt-codex` directory on the host. The existing
 Chrono container runs the simulation; LeRobot conversion/training can run in a
 separate Python environment. Nothing here uploads data or starts a hardware arm.
 
+Inside `chrono-orb`, use `./run.sh` and `./run-parallel.sh` instead of the
+host's `-docker.sh` wrappers.
+
 ## Watch the controller first
 
 ```bash
@@ -65,6 +68,24 @@ modified. You can repeat a layout with current physics:
 The global files default to `right_45`. To use the optional overhead view, add
 `--global-camera top-down` and choose a new collection directory.
 
+For the earlier raised-edge red tray, add `--tray-style raised`. Its four walls
+rise 10 mm above the tray's interior floor (5 × 5 cm outer size, 2 mm base and
+wall thickness). The planner raises its release height to clear the rim;
+rendered and collision geometry use the same dimensions. The default
+`--tray-style reference` uses the reference video's 1 mm lip.
+Tray dimensions are saved in dataset/episode metadata and the LeRobot export.
+For example, inside the container:
+
+```bash
+./run-parallel.sh --workers 4 --episodes 500 --seed 42 \
+  --output output/pick_and_place_raised -- \
+  --rate 30 --global-camera right-45 --start-pose folded --tray-every 5 \
+  --tray-style raised
+```
+
+This is 500 attempts total. Use a fresh output folder; stop an already running
+batch with Ctrl-C before restarting with the new tray option.
+
 Omit `--headless` to keep all three windows. `--no-realtime` permits faster/slower
 wall-clock execution while preserving the requested simulated FPS. Default
 rendering uses the GC21B tube at 50%, fixed spatial sampling, upright
@@ -105,6 +126,10 @@ global simulation time; trajectory timestamps restart at zero per episode.
 Chrono's float camera scheduling can add a few microseconds to image timestamps;
 the scene does not move during that scheduling adjustment.
 
+The motion paths are generated IK demonstrations, rather than copies of the
+reference human trajectories. Their coordinate representation can be converted
+to the reference SO101 recording convention with `--so101` as described below.
+
 ## Export using the official LeRobot writer
 
 In an environment with NumPy and Pillow, validate without installing LeRobot:
@@ -131,6 +156,61 @@ See the
 [LeRobot dataset documentation](https://huggingface.co/docs/lerobot/lerobot-dataset-v3)
 and [writer source](https://github.com/huggingface/lerobot/blob/main/src/lerobot/datasets/lerobot_dataset.py).
 The Chrono environment does not need PyTorch or LeRobot to collect native data.
+
+### Match the supplied SO101 recordings
+
+The reference `green_cube_red_plate_1` uses the six joints in the order above,
+arm positions in **degrees**, gripper position in **0–100 percent**, robot type
+`so_follower`, and camera keys `observation.images.wrist` and
+`observation.images.external`. Its dataset layout is LeRobot **v3.0**.
+The `--so101` preset applies the inverse fitted mapping to both observations
+and absolute action targets:
+
+```text
+so101 = (rad2deg(native_CAD_radians) - fitted_offset_deg) / fitted_scale
+```
+
+New collections retain the mapping snapshot in `dataset.json`. Existing
+collections without a snapshot use the current fitted map; an explicit
+`--so101-joint-map path/to/video_joint_map.json` can select an older or different
+calibration. Firmware homing offsets are already accounted for and are not
+added again. Conversion preserves row timing, FPS, resolution, and the
+distinction between observed positions and commanded targets. It does not clip
+joint values or relabel a virtual top-down camera as the real external view.
+
+After collection, use a Python environment with LeRobot installed for the
+complete Parquet/video dataset:
+
+```bash
+python3 tools/export_lerobot.py output/pick_and_place_raised output/lerobot_so101_raised \
+  --so101 --repo-id local/so101-raised-tray
+```
+
+This exports `float32` state/action vectors with the same `.pos` feature names
+as the reference, `wrist`/`external` video keys, and H.264 videos. Complete
+successful episodes are selected by default. `chrono_metadata.json` preserves
+simulation provenance, tray geometry, camera aliases and conversion parameters.
+You can validate the conversion without installing LeRobot:
+
+```bash
+python3 tools/export_lerobot.py output/pick_and_place_raised output/unused \
+  --so101 --validate-only
+```
+
+For **trajectory arrays only**, this works inside the Chrono container with
+NumPy/Pillow and does not need LeRobot or PyTorch:
+
+```bash
+python3 tools/export_lerobot.py output/pick_and_place_raised output/so101_trajectory_arrays \
+  --so101 --trajectories-only
+```
+
+That mode writes `episodes/NNNNNN/trajectory.npz` containing `observation.state`,
+`action`, original timestamps and diagnostics, plus `conversion.json` and
+per-episode provenance. Joint velocities, when present, use degrees/s and
+percent/s. Images remain at the source. This array bundle is explicitly **not**
+the full LeRobot dataset; omit `--trajectories-only` for the official writer.
+Both modes write a new directory and leave the native recordings untouched.
 
 ### Collect multiple recordings concurrently
 
@@ -171,15 +251,33 @@ demo settings unless passed explicitly. Within the existing container, use
 `./run-parallel.sh` with the same arguments. Ctrl-C requests graceful cleanup
 of all recording worker process groups and retains finished/partial episodes.
 
-Before mixing with real demonstrations, fit the motor sign/offset/scale against
-the real follower's calibration. `--joint-map mapping.json` applies six scales
-and offsets to both state and action: `hardware = scale * sim_radians + offset`.
-The JSON must contain `scale` (six numbers), `offset` (six numbers), and a `units`
-description. No guessed hardware calibration is supplied. The real LeRobot
-SO follower can use degrees or normalized arm coordinates, while its gripper
-uses 0–100 normalization; see the
+To continue an interrupted batch, keep its output directory. After Ctrl-C has
+finished stopping the launcher, resume inside the container with:
+
+```bash
+./run-parallel.sh --resume --output output/pick_and_place
+```
+
+The original worker count, seeds, FPS, tray style and total target are loaded
+from `batch.json`; do not repeat or change the demo flags. For a 500-attempt
+batch, resume finishes the remaining attempts toward 500, rather than adding
+another 500. Completed attempts keep their original files. An unfinished
+attempt restarts at its episode boundary; its earlier files move to
+`worker_NNN/interrupted/` and are not included in the final dataset index.
+New recordings save RNG/layout checkpoints. Existing older batches are also
+supported by reconstructing and checking the saved seeded layout sequence.
+Resume rejects active workers and incompatible scene metadata. Collection
+settings and scene/calibration assets must remain consistent across sessions.
+
+For a different hardware convention, `--joint-map mapping.json` still applies
+six custom scales and offsets to both state and action:
+`hardware = scale * sim_radians + offset`. This is mutually exclusive with
+`--so101`. Its JSON contains `scale`, `offset`, and a `units` description.
+The supplied reference uses degree mode, although other real LeRobot
+SO follower configurations can use normalized arm coordinates; the gripper
+uses 0–100 normalization. See the
 [SO follower implementation](https://github.com/huggingface/lerobot/blob/main/src/lerobot/robots/so_follower/so_follower.py).
-The default export remains in simulation radians and writes that fact into
+Without either mapping option, export remains in simulation radians and writes that fact into
 `chrono_metadata.json`. Camera calibration, wrist mounting and latency also
 need matching before combining simulated and real data.
 
