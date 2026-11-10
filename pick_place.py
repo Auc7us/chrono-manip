@@ -13,6 +13,13 @@ from scene_config import WORK_SURFACE_Z,tray_geometry
 # until it slips (seed 600, 20 grasps: 8 mm 13 pass, 11 mm 6 pass; at 17 mm, 20/20 both).
 DESCENT_CENTERING_M=.006
 GRASP_TCP_HEIGHT_M=.019
+# Staged planner: top-down, the arm is nearly straight (>1 deg of joint motion per mm) past ~.245 m
+# from the base at hover height. Farther out the gripper tilts back toward the base (cube distance m ->
+# pitch deg), which keeps the arm bent out to ~.32 m at 30 deg of tilt.
+REACH_PITCH=((.24,.32),(90.,60.))
+# A 5-DOF arm turning its wrist about a tilted axis also tips the held cube; cap the turn at the tray
+# so the cube tips at most this much (the cube still fits the tray at any yaw).
+TRAY_TURN_TIP_DEG=8.
 # DART noise envelope (start, end weight) per phase. The executed arm path is
 # perturbed while recorded actions stay the clean plan, so demonstrations show
 # the expert pulling back from small pose errors. Weights reach zero before
@@ -23,7 +30,9 @@ DART_ENVELOPE_CAUTIOUS={'approach_cube':(0.,1.),'hover_cube':(1.,1.),'descend_ab
     'transfer_to_tray':(0.,1.),'hover_tray':(1.,1.),'lower_into_tray':(1.,0.)}
 # Aligned planner: noise also holds while the wrist turns to the tray just above it.
 DART_ENVELOPE_ALIGNED={**DART_ENVELOPE_CAUTIOUS,'descend_above_tray':(1.,1.),'align_to_tray':(1.,1.)}
-DART_ENVELOPES={'direct':DART_ENVELOPE,'cautious':DART_ENVELOPE_CAUTIOUS,'aligned':DART_ENVELOPE_ALIGNED}
+# Staged planner: the same, and noise also holds above the cube until the turn to the cube ends.
+DART_ENVELOPE_STAGED={**DART_ENVELOPE_ALIGNED,'descend_above_cube':(1.,1.),'align_to_cube':(1.,0.)}
+DART_ENVELOPES={'direct':DART_ENVELOPE,'cautious':DART_ENVELOPE_CAUTIOUS,'aligned':DART_ENVELOPE_ALIGNED,'staged':DART_ENVELOPE_STAGED}
 DART_JOINT_WEIGHTS=np.array([1.,1.,1.,1.,2.,0.])
 
 @dataclass
@@ -48,7 +57,7 @@ class EpisodePlan:
         self.tray_geometry=tray_geometry(tray_style)
         self.start_pose=start_pose;self.home_deg=START_POSES_DEG[start_pose].copy()
         self.assets=assets;self.ik=SO101IK(assets);self.clock=0.
-        if planner in ['cautious','aligned']:self.plan_cautious()
+        if planner in ['cautious','aligned','staged']:self.plan_cautious()
         else:self.plan_direct()
         self.duration=self.clock
 
@@ -105,7 +114,9 @@ class EpisodePlan:
         Speed, hover/carry heights, a sideways bow in the carry and the start pose vary per layout,
         seeded from the layout itself so replays and resumes rebuild the identical plan.
         The aligned planner carries without turning the wrist, lowers to just above the tray, turns
-        to the tray there (in view of the wrist camera) and then lowers slowly to the release."""
+        to the tray there (in view of the wrist camera) and then lowers slowly to the release. The staged
+        planner also approaches the cube without turning the wrist and turns to the cube just above it;
+        past top-down reach it tilts the gripper and holds that tilt until the cube is released."""
         layout=self.layout
         key=np.r_[layout.cube_xy,layout.cube_yaw,layout.tray_xy,layout.tray_yaw].astype(float).tobytes()
         rng=np.random.default_rng(int.from_bytes(hashlib.sha256(key).digest()[:8],'little'))
@@ -120,6 +131,13 @@ class EpisodePlan:
         place_yaw=natural(layout.tray_xy)+offset+(layout.tray_yaw-natural(layout.tray_xy)-offset+math.pi/4)%(math.pi/2)-math.pi/4
         grasp_xy=layout.cube_xy-DESCENT_CENTERING_M*np.array([math.cos(grasp_yaw),math.sin(grasp_yaw)])
         release=self.tray_geometry['release_tcp_height_above_mat_m']
+        staged=self.planner=='staged';approach_yaw=natural(layout.cube_xy) if staged else grasp_yaw
+        pitch=float(np.interp(np.linalg.norm(grasp_xy-self.base_xy),*REACH_PITCH)) if staged else 90.
+        tilt=pitch if staged else None
+        if staged and pitch<90.:
+            carry_yaw=natural(layout.tray_xy)+offset
+            turn=2*math.asin(min(1.,math.sin(math.radians(TRAY_TURN_TIP_DEG)/2)/math.cos(math.radians(pitch))))
+            place_yaw=carry_yaw+float(np.clip(place_yaw-carry_yaw,-turn,turn))
         home=tool_pose(self.assets,np.deg2rad(self.home_deg));home_pitch=math.degrees(math.asin(float(-home[2,0])))
         home_yaw=math.atan2(home[1,1],home[0,1])
         for lower in [0.,.02,.04,.06]:
@@ -128,28 +146,32 @@ class EpisodePlan:
             self.phases=[];self.ik_results=[];self.clock=0.;self.q=np.deg2rad(self.home_deg)
             try:
                 self.append('settle_start',.4,self.q)
-                self.cart('approach_cube',(.9+np.linalg.norm(grasp_xy-home[:2,3])/.25)*slow,grasp_xy,h,grasp_yaw,OPEN_DEG,25,pitch_deg=90.)
+                self.cart('approach_cube',(.9+np.linalg.norm(grasp_xy-home[:2,3])/.25)*slow,grasp_xy,h,approach_yaw,OPEN_DEG,40 if staged else 25,pitch_deg=pitch)
                 self.append('hover_cube',dwell,self.q)
-                self.cart('descend_above_cube',.6*slow,grasp_xy,GRASP_TCP_HEIGHT_M+.035,grasp_yaw,OPEN_DEG)
-                self.cart('descend_to_cube',.8*slow,grasp_xy,GRASP_TCP_HEIGHT_M,grasp_yaw,OPEN_DEG)
+                self.cart('descend_above_cube',.6*slow,grasp_xy,GRASP_TCP_HEIGHT_M+.035,approach_yaw,OPEN_DEG,pitch_deg=tilt)
+                if staged:
+                    self.cart('align_to_cube',(.4+.8*abs(grasp_yaw-approach_yaw)/(math.pi/4))*slow,grasp_xy,GRASP_TCP_HEIGHT_M+.035,grasp_yaw,OPEN_DEG,
+                              pitch_deg=tilt)
+                self.cart('descend_to_cube',.8*slow,grasp_xy,GRASP_TCP_HEIGHT_M,grasp_yaw,OPEN_DEG,pitch_deg=tilt)
                 closed=self.q.copy();closed[5]=math.radians(GRASP_DEG);self.append('close_gripper',.6,closed)
-                if self.planner=='aligned':
+                if self.planner in ['aligned','staged']:
                     # The cube slowly pivots in the grip (~3-4 deg/s), and past ~20 deg it lands on the rim, so
                     # the lift and carry are quicker and there are no dwells: the cube is held only ~1 s longer
                     # than in the cautious plan, all of it spent turning and lowering just above the tray.
                     carry_yaw=natural(layout.tray_xy)+offset
-                    self.cart('lift_cube',.8*slow,grasp_xy,c,grasp_yaw,GRASP_DEG)
-                    self.cart('transfer_to_tray',(.6+travel/.3)*slow,layout.tray_xy,c,carry_yaw,GRASP_DEG,30,bulge=bulge)
-                    self.cart('descend_above_tray',.6*slow,layout.tray_xy,release+.035,carry_yaw,GRASP_DEG)
-                    self.cart('align_to_tray',(.25+.55*abs(place_yaw-carry_yaw)/(math.pi/4))*slow,layout.tray_xy,release+.035,place_yaw,GRASP_DEG)
-                    self.cart('lower_into_tray',1.2*slow,layout.tray_xy,release,place_yaw,GRASP_DEG)
+                    self.cart('lift_cube',.8*slow,grasp_xy,c,grasp_yaw,GRASP_DEG,pitch_deg=tilt)
+                    self.cart('transfer_to_tray',(.6+travel/.3)*slow,layout.tray_xy,c,carry_yaw,GRASP_DEG,30,pitch_deg=tilt,bulge=bulge)
+                    self.cart('descend_above_tray',.6*slow,layout.tray_xy,release+.035,carry_yaw,GRASP_DEG,pitch_deg=tilt)
+                    self.cart('align_to_tray',(.25+.55*abs(place_yaw-carry_yaw)/(math.pi/4))*slow,layout.tray_xy,release+.035,place_yaw,GRASP_DEG,
+                              pitch_deg=tilt)
+                    self.cart('lower_into_tray',1.2*slow,layout.tray_xy,release,place_yaw,GRASP_DEG,pitch_deg=tilt)
                 else:
                     self.cart('lift_cube',1.*slow,grasp_xy,c,grasp_yaw,GRASP_DEG)
                     self.cart('transfer_to_tray',(.8+travel/.25)*slow,layout.tray_xy,c,place_yaw,GRASP_DEG,30,bulge=bulge)
                     self.append('hover_tray',dwell*.75,self.q)
                     self.cart('lower_into_tray',1.*slow,layout.tray_xy,release,place_yaw,GRASP_DEG)
                 opened=self.q.copy();opened[5]=math.radians(OPEN_DEG);self.append('open_gripper',.6,opened)
-                self.cart('retreat',.8*slow,layout.tray_xy,h,place_yaw,OPEN_DEG)
+                self.cart('retreat',.8*slow,layout.tray_xy,h,place_yaw,OPEN_DEG,pitch_deg=tilt)
                 self.cart('return_home',(.9+np.linalg.norm(layout.tray_xy-home[:2,3])/.25)*slow,home[:2,3],home[2,3]-WORK_SURFACE_Z,
                           home_yaw,OPEN_DEG,25,pitch_deg=home_pitch)
                 rest=np.deg2rad(self.home_deg);rest[5]=self.q[5];self.append('settle_home',.3,rest)
@@ -159,7 +181,7 @@ class EpisodePlan:
                 continue
             break
         self.variation=dict(speed_scale=1/slow,hover_tcp_height_m=h,carry_tcp_height_m=c,carry_bow_m=bulge,dwell_s=dwell,
-            start_joint_deg=self.home_deg.tolist(),grasp_yaw_rad=grasp_yaw,place_yaw_rad=place_yaw)
+            start_joint_deg=self.home_deg.tolist(),grasp_yaw_rad=grasp_yaw,place_yaw_rad=place_yaw,grasp_pitch_deg=pitch)
 
     def sample(self,t):
         phase=self.phases[-1]
@@ -180,9 +202,12 @@ def sample_layout(assets,rng,tray_xy=None,tray_yaw=0.,fixed_cube=False,start_pos
             # Anywhere on the mat the arm can reach top-down; any orientation (both are square).
             tray=np.array(tray_xy if tray_xy is not None else [rng.uniform(-.19,.19),rng.uniform(.19,.34)])
             tyaw=tray_yaw if tray_xy is not None else rng.uniform(-math.pi/4,math.pi/4)
-            cube=np.array([-.045,.235] if fixed_cube else [rng.uniform(-.2,.2),rng.uniform(.175,.34)])
+            # The staged planner tilts the gripper for far cubes, so its cubes cover the mat out to that reach.
+            far=planner=='staged' and not fixed_cube
+            cube=np.array([-.045,.235] if fixed_cube else [rng.uniform(-.21,.21),rng.uniform(.175,.42)] if far else [rng.uniform(-.2,.2),rng.uniform(.175,.34)])
             cyaw=0. if fixed_cube else rng.uniform(-math.pi/4,math.pi/4)
             if np.linalg.norm(cube-tray)<.08:continue
+            if far and np.linalg.norm(cube-forward_kinematics(assets,START_POSES_DEG[start_pose])[0][:2,3])>REACH_PITCH[0][1]:continue
         else:
             tray=np.array(tray_xy if tray_xy is not None else [rng.uniform(-.075,.075),rng.uniform(.235,.285)])
             tyaw=tray_yaw if tray_xy is not None else rng.uniform(-math.pi/3,math.pi/3)
@@ -282,7 +307,7 @@ class PickPlaceController:
         self.max_jaw_penetration=max(self.max_jaw_penetration,penetration)
         self.max_environment_penetration=max(self.max_environment_penetration,scene.jaw_physics.reporter.environment_penetration)
         self.max_grip_force=max(self.max_grip_force,*forces)
-        if self.phase in ['approach_cube','hover_cube','descend_above_cube','descend_to_cube'] and max(forces)>.02:
+        if self.phase in ['approach_cube','hover_cube','descend_above_cube','align_to_cube','descend_to_cube'] and max(forces)>.02:
             self.premature_contact=True
         if min(forces)>.02 and self.phase in ['close_gripper','lift_cube','transfer_to_tray','hover_tray','descend_above_tray','align_to_tray','lower_into_tray']:
             self.ever_grasped=True
