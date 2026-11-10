@@ -9,12 +9,24 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def split_episodes(manifest,validation_fraction=.1,seed=2026):
+def usable(episode,source=None):
+    """Complete demos that place the cube flat in the tray. Jaw-into-cube penetration past 0.5 mm is
+    tolerated (tilted far grasps squeeze harder); early jaw contact, environment penetration and wrist
+    tracking limits still apply."""
+    if not (episode['complete'] and episode['frames']):return False
+    if episode['success']:return True
+    if source is None:return False
+    e=json.loads((Path(source)/episode['path']/'episode.json').read_text())
+    return bool(e['grasped'] and e['lifted'] and e['released'] and e['cube_in_tray'] and not e['premature_jaw_contact']
+        and e['max_environment_penetration_m']<.0005 and e['max_tcp_tracking_error_m']<.0005)
+
+
+def split_episodes(manifest,validation_fraction=.1,seed=2026,source=None):
     interval=manifest['tray_every']
     if interval<1:raise ValueError('Grouped split requires randomized tray layouts (--tray-every > 0)')
     groups={}
     for episode in manifest['episodes']:
-        if not (episode['complete'] and episode['success'] and episode['frames']):continue
+        if not usable(episode,source):continue
         key=(episode.get('worker_id',0),episode.get('worker_episode_index',episode['index'])//interval)
         groups.setdefault(key,[]).append(episode)
     keys=sorted(groups)
@@ -25,7 +37,7 @@ def split_episodes(manifest,validation_fraction=.1,seed=2026):
     validation=sorted(e['index'] for key,episodes in groups.items() if key in held_out for e in episodes)
     return dict(train_indices=train,validation_indices=validation,training_groups=[list(k) for k in keys if k not in held_out],
         validation_groups=[list(k) for k in keys if k in held_out],seed=seed,validation_fraction=validation_fraction,
-        rule='Complete successful episodes only; all repeated tray layouts within a worker stay in the same partition')
+        rule='Complete episodes placing the cube flat in the tray (jaw penetration not limited); all repeated tray layouts within a worker stay in the same partition')
 
 
 def main():
@@ -34,7 +46,7 @@ def main():
     if not 0<a.validation_fraction<1:p.error('validation fraction must be between 0 and 1')
     if a.output.exists():raise FileExistsError(a.output)
     raw=(a.source/'dataset.json').read_bytes();manifest=json.loads(raw)
-    report=split_episodes(manifest,a.validation_fraction,a.seed)
+    report=split_episodes(manifest,a.validation_fraction,a.seed,a.source)
     report.update(source_dataset=str(a.source.resolve()),source_manifest_sha256=hashlib.sha256(raw).hexdigest(),fps=manifest['fps'],
         successful_episodes=len(report['train_indices'])+len(report['validation_indices']),total_attempts=len(manifest['episodes']),
         tray_geometry=manifest.get('tray_geometry'))

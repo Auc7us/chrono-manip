@@ -1,7 +1,8 @@
 """Convert native synchronized episodes with the official LeRobot writer.
 
 This tool never uploads data. Run in a separate environment with LeRobot,
-NumPy and Pillow installed. Only successful complete episodes export by default.
+NumPy and Pillow installed. Only complete episodes that place the cube flat in the tray export by
+default (see prepare_act_split.usable).
 """
 import argparse
 import json
@@ -12,6 +13,7 @@ from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from so101_format import so101_conversion,convert_joints,check_gripper_range
+from tools.prepare_act_split import usable
 
 
 def export_trajectories(source,output,manifest,episodes,conversion):
@@ -61,7 +63,7 @@ def main():
                          'or explicitly use --allow-assisted for legacy pipeline experiments.')
     fps=float(manifest['fps'])
     if abs(fps-round(fps))>1e-9:raise ValueError('LeRobot export requires an integer FPS')
-    episodes=[e for e in manifest['episodes'] if e['frames'] and (args.include_failed or (e['success'] and e['complete']))]
+    episodes=[e for e in manifest['episodes'] if e['frames'] and (args.include_failed or usable(e,args.source))]
     if args.episode_selection:
         selected=json.loads(args.episode_selection.read_text())
         if not isinstance(selected,list) or any(type(i)!=int for i in selected) or len(selected)!=len(set(selected)):
