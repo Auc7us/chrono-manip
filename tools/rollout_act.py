@@ -40,6 +40,7 @@ def main():
     p.add_argument('--training-dataset',type=Path,default=ROOT/'output/act_data/train')
     p.add_argument('--source',type=Path,default=ROOT/'output/pick_and_place')
     p.add_argument('--held-out-split',type=Path,help='Use held-out source layouts instead of fresh seeded layouts')
+    p.add_argument('--layouts-from',type=Path,help="Replay the initial layouts of a previous rollout's results.json, e.g. to compare two policies")
     p.add_argument('--horizon',type=float,default=20.);p.add_argument('--settle',type=float,default=1.)
     p.add_argument('--action-steps',type=int,help='Inference-only chunk execution length; weights and normalization stay unchanged')
     ensemble=p.add_mutually_exclusive_group()
@@ -71,6 +72,10 @@ def main():
             else:seen.add(key);source_layouts.append(e)
         source_layouts+=extra
         if a.episodes>len(source_layouts):raise ValueError('Not enough held-out layouts')
+    if a.layouts_from:
+        previous=json.loads(a.layouts_from.read_text());previous=previous['episodes'] if isinstance(previous,dict) else previous
+        replayed=[e['initial_layout'] for e in sorted(previous,key=lambda e:e['episode'])]
+        if a.episodes>len(replayed):raise ValueError('Not enough layouts in --layouts-from')
     results=[]
     for episode in range(a.episodes):
         seed=a.seed+episode;home=START_POSES_DEG[source.get('start_pose','folded')].copy()
@@ -81,6 +86,8 @@ def main():
         if a.held_out_split:
             entry=source_layouts[episode];original=entry['path'];info=json.loads((a.source/original/'episode.json').read_text())
             layout=Layout(np.array(info['cube_spawn_xy_m']),info['cube_spawn_yaw_rad'],np.array(info['tray_xy_m']),info['tray_yaw_rad'])
+        elif a.layouts_from:
+            l=replayed[episode];layout=Layout(np.array(l['cube_xy_m']),l['cube_yaw_rad'],np.array(l['tray_xy_m']),l['tray_yaw_rad'])
         else:
             # IK is used only to sample a reachable initial layout. It never
             # produces a control action during the learned-policy rollout.
